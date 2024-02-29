@@ -1,34 +1,33 @@
 import React, { createContext, useContext, useReducer } from "react";
-import calcReducer from "./reducers/calcReducer";
-import type { Action, CalcState } from "./types";
 
-interface ICalculatorContext {
-    calc: CalcState;
-    dispatch: (action: Action) => void;
-}
+import type { Action, CalcState } from "./types";
+import calcReducer from "./reducers/calcReducer";
 
 interface CalculatorStoreProvider {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const initialState: CalcState = {
-    currentOperand: "0",
-    expression: [],
-    output: "0",
-    voltageLevel: 1.0,
+  currentOperand: "0",
+  expression: [],
+  output: "0",
+  voltageLevel: 1.0,
 };
 
-const CalculatorStore = createContext({} as ICalculatorContext);
+const DispatchContext = createContext((_: Action) => {});
+const StateContext = createContext({} as CalcState);
 
-export const CalculatorStoreProvider = ({ children }: CalculatorStoreProvider) => {
-  
-    const [calc, dispatch] = useReducer(calcReducer, initialState);
+export const CalculatorStoreProvider = ({
+  children,
+}: CalculatorStoreProvider) => {
+  const [calc, dispatch] = useReducer(calcReducer, initialState);
 
-    return (
-        <CalculatorStore.Provider value={{calc, dispatch}}>
-            {children}
-        </CalculatorStore.Provider>
-    );
-}
+  return (
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={calc}>{children}</StateContext.Provider>
+    </DispatchContext.Provider>
+  );
+};
 
-export const useCalculator = () => useContext(CalculatorStore);
+export const useDispatch = () => useContext(DispatchContext);
+export const useCalcState = () => useContext(StateContext);

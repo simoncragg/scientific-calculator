@@ -1,79 +1,44 @@
-import Button from "./Button";
+import BottomButtonBox from "./BottomButtonBox";
 import Display from "./Display";
-import OperatorButton from "./OperatorButton";
-import ProductLabel from "./ProductLabel";
-import SolarPanel from "./SolarPanel";
-import { ActionTypes, INVERT_SYMBOL } from "../constants";
-import { useCalculator } from "../CalculatorStore";
+import HeaderPanel from "./HeaderPanel";
+import TopButtonBox from "./TopButtonBox";
 
 const Calculator = () => {
   
-  const { calc, dispatch } = useCalculator();
-
-  const handleClearButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const { innerHTML } = e.target as HTMLButtonElement; 
-    const actionType = innerHTML === "AC"
-      ? ActionTypes.ALL_CLEAR
-      : ActionTypes.CLEAR;
-    dispatch({ type: actionType });
-  };
-
-  const handleInvertNumberButtonClick = () => {
-    dispatch({ type: ActionTypes.INVERT_NUMBER });
-  };
-
-  const handleCalculatePercentButtonClick = () => {
-    dispatch({ type: ActionTypes.CALCULATE_PERCENT });
-  };
-
-  const handleDigitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const { innerHTML } = e.target as HTMLButtonElement; 
-    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { digit: innerHTML }});
-  };
-
-  const handleOperatorButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const operator = (e.target as HTMLButtonElement).getAttribute("data-operator")!;
-    dispatch({ type: ActionTypes.UPDATE_EXPRESSION, payload: { operator }});
-  };
-
-  const handleEqualsButtonClick = () => {
-    dispatch({ type: ActionTypes.EVALUATE_EXPRESSION });
-  };
-
   return (
-    <div className="flex flex-col w-full md:w-[370px] max-h-90 md:h-auto p-2 bg-zinc-900 md:shadow-drop rounded-xl">
-      <div className="flex flex-col px-4 py-5 h-full md:h-auto bg-zinc-800 rounded-xl shadow-edge">
+    <div className="flex flex-col">
 
-        <Display />
- 
-        <div className="flex flex-row justify-between">
-          <SolarPanel />
-          <ProductLabel />
+      <div className="flex flex-col pt-2 px-2 bg-zinc-900 rounded-t-xl rounded-x-xl md:shadow-drop">
+
+        <div 
+          className="flex flex-col px-2 pb-3 h-full bg-charcoal-dark rounded-t-xl rounded-x-xl shadow-edge"
+          style={{ clipPath: "inset(-8px -8px 0px -8px)"}}
+        >
+          <div className="border border-slate-950 border-1 bg-gradient-to-br from-slate-600 to-slate-950 px-3 mb-4 -mt-0.5 -mx-2 rounded-lg shadow-edge">
+            <HeaderPanel />
+            <Display />
+          </div>
+
+          <div className="flex flex-col space-y-4 mt-1">
+            <TopButtonBox />
+            <BottomButtonBox />
+          </div>
         </div>
-
-        <div className="w-full h-full grid grid-cols-4 grid-rows-5 gap-2.5">
-          <Button className="fn" onClick={handleClearButtonClick}>{calc.output === "0" ? "AC" : "C"}</Button>
-          <Button className="fn" onClick={handleInvertNumberButtonClick}>{INVERT_SYMBOL}</Button>
-          <Button className="fn" onClick={handleCalculatePercentButtonClick}>%</Button>
-          <OperatorButton op="/" lastInput={calc.lastInput} onClick={handleOperatorButtonClick}>÷</OperatorButton>
-          <Button onClick={handleDigitButtonClick}>7</Button>
-          <Button onClick={handleDigitButtonClick}>8</Button>
-          <Button onClick={handleDigitButtonClick}>9</Button>
-          <OperatorButton op="*" lastInput={calc.lastInput} onClick={handleOperatorButtonClick}>×</OperatorButton>
-          <Button onClick={handleDigitButtonClick}>4</Button>
-          <Button onClick={handleDigitButtonClick}>5</Button>
-          <Button onClick={handleDigitButtonClick}>6</Button>
-          <OperatorButton op="-" lastInput={calc.lastInput} onClick={handleOperatorButtonClick}>−</OperatorButton>
-          <Button onClick={handleDigitButtonClick}>1</Button>
-          <Button onClick={handleDigitButtonClick}>2</Button>
-          <Button onClick={handleDigitButtonClick}>3</Button>
-          <OperatorButton op="+" lastInput={calc.lastInput} onClick={handleOperatorButtonClick}>+</OperatorButton>
-          <Button className="col-span-2 text-left pl-8" onClick={handleDigitButtonClick}>0</Button>
-          <Button onClick={handleDigitButtonClick}>.</Button>
-          <Button onClick={handleEqualsButtonClick} className="sign">=</Button>
-        </div>
-
+        
       </div>
+
+      <CurvedBase />
+    </div>
+  );
+};
+
+const CurvedBase: React.FC = () => {
+  return (
+    <div className="pb-2 px-2 bg-zinc-900 rounded-x-xl rounded-b-[50%] md:shadow-drop">
+      <div 
+        className="px-2 pb-4 h-full md:h-auto bg-charcoal-dark rounded-b-[50%] rounded-x-xl shadow-edge"
+        style={{ clipPath: "inset(0px -8px -8px -8px)"}}
+        />
     </div>
   );
 };

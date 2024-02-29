@@ -14,7 +14,7 @@ export interface Action {
 }
 
 export interface UpdateCurrentOperandPayload {
-  digit: string;
+  entry: string;
 }
   
 export interface UpdateExpressionPayload {

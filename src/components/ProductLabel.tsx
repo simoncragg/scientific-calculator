@@ -5,8 +5,9 @@ const ProductLabel = () => {
             <span className="mr-1">SOLAR</span>
             <strong>SIM</strong>
           </div>
-          <div className="self-end">
-            <span className="px-1 text-center bg-zinc-400 rounded text-black">fx-GPT</span>
+          <div className="flex flex-row px-1 text-center bg-zinc-400 rounded text-black self-start gap-0.5">
+            <span className="">fx-82</span>
+            <span>TS</span>
           </div>
       </div>
   );

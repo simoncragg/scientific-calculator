@@ -6,14 +6,10 @@
 
 @layer components {
   button, [type='button'] {
-    @apply p-[10%] bg-charcoal-light opacity-100 text-3xl text-white cursor-pointer rounded-lg border-0 outline-0 shadow shadow-black active:shadow-none active:scale-95;
+    @apply h-9 bg-charcoal-light opacity-100 text-3xl text-white cursor-pointer rounded border-0 outline-0 shadow shadow-black active:shadow-none active:scale-95;
   }
 
   button.fn {
-    @apply text-charcoal-dark bg-gray
-  }
-
-  button.sign {
-    @apply text-4xl font-serif bg-orange
+    @apply text-sm text-white bg-zinc-900 h-6
   }
 }

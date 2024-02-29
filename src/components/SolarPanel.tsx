@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { ActionTypes } from "../constants";
-import { useCalculator } from "../CalculatorStore";
+import { useDispatch } from "../CalculatorStore";
 import { random } from "mathjs";
 
 const SolarPanel = () => {
 
-  const { dispatch } = useCalculator();
+  const dispatch = useDispatch();
   const solarPanelRef = useRef<HTMLDivElement>(null);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {

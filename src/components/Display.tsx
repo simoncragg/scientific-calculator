@@ -1,37 +1,18 @@
 import { useState, useEffect } from "react";
 
 import OperatorIndicator from "./OperatorIndicator";
-import { useCalculator } from "../CalculatorStore";
-
-const calculateFontSize = (value: string): string => {
-  const len = value.replace(/,/g, "").length;
-  if (len < 6) return "86px";
-  if (len < 7) return "84px";
-  if (len < 8) return "70px";
-  if (len < 9) return "62px";
-  if (len < 10) return "56px";
-  return "53px";
-};
+import { useCalcState } from "../CalculatorStore";
 
 const Display = () => {
-  const { calc } = useCalculator();
-  const { output, lastInput, voltageLevel } = calc;
-  
-  const [fontSize, setFontSize] = useState<string>("86px");
+  const { output, lastInput, voltageLevel } = useCalcState();
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
-
-  useEffect(() => {
-    if (output) {
-      setFontSize(calculateFontSize(output));
-    }
-  }, [output]);
 
   useEffect(() => {
     setShowEqualsIndicator(lastInput === "=");
   }, [lastInput]);
 
   return (
-    <div className="relative flex w-full h-24 items-center justify-end mb-6 bg-[#687] font-sans rounded shadow-inner shadow-black">
+    <div className="relative flex w-full h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
       
       <OperatorIndicator />
 
@@ -39,7 +20,7 @@ const Display = () => {
         <span 
           data-testid="equals-indicator"
           aria-label="Equals sign"
-          className="absolute -top-[7px] right-2 text-3xl text-stone-800"
+          className="absolute -top-[7px] left-2 text-3xl text-stone-800"
           style={{ opacity: voltageLevel }}
         >
             =
@@ -48,8 +29,8 @@ const Display = () => {
 
       <span 
         data-testid="output" 
-        className="pt-4 px-3.5 text-stone-800" 
-        style={{ fontSize, opacity: voltageLevel }}>
+        className="leading-none self-end pr-5 text-stone-800 text-[45px] whitespace-nowrap" 
+        style={{ opacity: voltageLevel }}>
         {output}
       </span>
       

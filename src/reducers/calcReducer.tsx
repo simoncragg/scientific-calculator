@@ -29,8 +29,8 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
       return calculatePercent(calc);
 
     case ActionTypes.UPDATE_CURRENT_OPERAND:
-      const { digit } = action.payload as UpdateCurrentOperandPayload; 
-      return updateCurrentOperand(calc, digit);
+      const { entry } = action.payload as UpdateCurrentOperandPayload; 
+      return updateCurrentOperand(calc, entry);
 
     case ActionTypes.UPDATE_EXPRESSION:
       const { operator } = action.payload as UpdateExpressionPayload; 

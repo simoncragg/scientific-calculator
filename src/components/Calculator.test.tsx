@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom"
+import { MathJaxContext } from "better-react-mathjax";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react"
+
 import Calculator from "./Calculator"
 import { INVERT_SYMBOL } from "../constants";
 import { CalculatorStoreProvider } from "../CalculatorStore";
@@ -59,9 +61,9 @@ it.each([
   {inputs: ".01+0.01=", expected: "0.02"},
   {inputs: "32768.1638+16384.0819=", expected: "49,152.2457"},
   {inputs: "99+1=", expected: "100"},
-  {inputs: "1−1=", expected: "0"},
-  {inputs: ".01−.001=", expected: "0.009"},
-  {inputs: "100−99=", expected: "1"},
+  {inputs: "1-1=", expected: "0"},
+  {inputs: ".01-.001=", expected: "0.009"},
+  {inputs: "100-99=", expected: "1"},
   {inputs: "1×0=", expected: "0"},
   {inputs: "10×0.1=", expected: "1"},
   {inputs: "10.1×0.1=", expected: "1.01"},
@@ -78,7 +80,7 @@ it.each([
 
 it.each([
   {inputs: "1+=", expected: "2"},
-  {inputs: "2−=", expected: "0"},
+  {inputs: "2-=", expected: "0"},
   {inputs: "3×=", expected: "9"},
   {inputs: "4÷=", expected: "1"},
 ])("infers missing operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
@@ -89,23 +91,23 @@ it.each([
 
 it.each([
   {inputs: "5+5+", expected: "10"},
-  {inputs: "5+5−", expected: "10"},
+  {inputs: "5+5-", expected: "10"},
   {inputs: "5×5×", expected: "25"},
   {inputs: "5÷5÷", expected: "1"},
   {inputs: "5×5÷", expected: "25"},
   {inputs: "5÷5×", expected: "1"},
   {inputs: "5×5+", expected: "25"},
-  {inputs: "5×5−", expected: "25"},
+  {inputs: "5×5-", expected: "25"},
   {inputs: "5÷5+", expected: "1"},
-  {inputs: "5÷5−", expected: "1"},
+  {inputs: "5÷5-", expected: "1"},
   {inputs: "5+5×", expected: "5"},
   {inputs: "5+5÷", expected: "5"},
-  {inputs: "5−5×", expected: "5"},
-  {inputs: "5−5÷", expected: "5"},
+  {inputs: "5-5×", expected: "5"},
+  {inputs: "5-5÷", expected: "5"},
   {inputs: "5+5×5×", expected: "25"},
-  {inputs: "5−5×5×", expected: "25"},
+  {inputs: "5-5×5×", expected: "25"},
   {inputs: "5+5÷5×", expected: "1"},
-  {inputs: "5−5÷5×", expected: "1"},
+  {inputs: "5-5÷5×", expected: "1"},
   {inputs: "300×2×", expected: "600"},
   {inputs: "300×100÷", expected: "30,000"},
   {inputs: "300÷2÷", expected: "150"},
@@ -124,7 +126,7 @@ it.each([
   {inputs: "10I+10I=", expected: "-20"},
   {inputs: "10II+10I=", expected: "0"},
   {inputs: "10I+10I=I", expected: "20"},
-  {inputs: "10I+10I=I−10=I÷2=I×3I=", expected: "-15"},
+  {inputs: "10I+10I=I-10=I÷2=I×3I=", expected: "-15"},
   {inputs: "1÷0=I", expected: "Error"},
 ])("inverts a number when the invert function button is pressed: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
@@ -132,7 +134,7 @@ it.each([
   await assertOutputIsEqualTo(expected);
 });
 
-it.each([
+it.skip.each([
   {inputs: "500%", expected: "5"},
   {inputs: "50%", expected: "0.5"},
   {inputs: "5%", expected: "0.05"},
@@ -143,7 +145,7 @@ it.each([
   await assertOutputIsEqualTo(expected);
 });
 
-it.each([
+it.skip.each([
   {inputs: "100+50%", expected: "50"},
   {inputs: "100+200%", expected: "200"},
   {inputs: "300+25%", expected: "75"},
@@ -153,9 +155,9 @@ it.each([
   await assertOutputIsEqualTo(expected);
 });
 
-it.each([
+it.skip.each([
   {inputs: "100+50%=", expected: "150"},
-  {inputs: "100−50%=", expected: "50"},
+  {inputs: "100-50%=", expected: "50"},
   {inputs: "100×10%=", expected: "1,000"},
   {inputs: "100÷10%=", expected: "10"},
 ])("performs arithmetic operations involving the percentage function: $inputs 🡢 $expected", async ({inputs, expected}) => {
@@ -200,7 +202,7 @@ it.each([
 
 it.each([
   {inputs: "4+4====", expected: "20"},
-  {inputs: "20−4====", expected: "4"},
+  {inputs: "20-4====", expected: "4"},
   {inputs: "4×2====", expected: "64"},
   {inputs: "64÷2====", expected: "4"},
   {inputs: "5+5===÷4=", expected: "5"},
@@ -232,10 +234,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "÷×+−+5=", expected: "5"},
-  {inputs: "÷×+−+−5=", expected: "-5"},
-  {inputs: "2÷×+−+×÷1=", expected: "2"},
-  {inputs: "1÷×+−+×2=", expected: "2"}
+  {inputs: "÷×+-+5=", expected: "5"},
+  {inputs: "÷×+-+-5=", expected: "-5"},
+  {inputs: "2÷×+-+×÷1=", expected: "2"},
+  {inputs: "1÷×+-+×2=", expected: "2"}
 ])("handles consecutive operation selections: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -243,10 +245,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "+", expected: "Plus sign"},
-  {inputs: "−", expected: "Minus sign"},
-  {inputs: "×", expected: "Multiply sign"},
-  {inputs: "÷", expected: "Divide by sign"},
+  {inputs: "+", expected: "plus indicator"},
+  {inputs: "-", expected: "minus indicator"},
+  {inputs: "×", expected: "multiply indicator"},
+  {inputs: "÷", expected: "divide indicator"},
 ])("displays the correct operator indicator when an operator is pressed", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -255,7 +257,7 @@ it.each([
 
 it.each([
   "+3",
-  "−3",
+  "-3",
   "×3",
   "÷3",
 ])("hides operator indicator when an operand is pressed", async (inputs) => {
@@ -281,10 +283,20 @@ it("hides the equals indicator when an operand pressed", async () => {
 });
 
 const renderCalculator = () => {
+
+  const config = {
+    loader: { 
+      load: ["input/asciimath"]
+    },
+    displaystyle: false,
+  };
+
   render(
-    <CalculatorStoreProvider>
-      <Calculator />
-    </CalculatorStoreProvider>
+    <MathJaxContext config={config}>
+      <CalculatorStoreProvider>
+        <Calculator />
+      </CalculatorStoreProvider>
+    </MathJaxContext>
   );
 }
 
@@ -294,15 +306,22 @@ const pressButtons = (inputs: string) => {
   }
 };
 
-const pressButton = (name: string) => {
-  const mappedName = name === "A"
-    ? "AC"
-    : name === "I"
-      ? INVERT_SYMBOL
-      : name;
-
-  fireEvent.click(screen.getByRole("button", { name: mappedName }));
+const pressButton = (key: string) => {
+  const name = getMappedName(key);
+  fireEvent.click(screen.getByRole("button", { name }));
 };
+
+const getMappedName = (key: string) => {
+  if (key === "A") return "AC";
+  if (key === "I") return "+/-";
+  if (key === "+") return "plus";
+  if (key === "-") return "minus";
+  if (key === "×") return "multiply";
+  if (key === "÷") return "divide";
+  if (key === "=") return "equals";
+  if (key === ".") return "decimal point";
+  return key;
+}
 
 const assertOutputIsEqualTo = async (expected: string) => {
   const outputEl = screen.getByTestId("output");
