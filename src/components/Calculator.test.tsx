@@ -1,9 +1,8 @@
 import "@testing-library/jest-dom"
 import { MathJaxContext } from "better-react-mathjax";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 
 import Calculator from "./Calculator"
-import { INVERT_SYMBOL } from "../constants";
 import { CalculatorStoreProvider } from "../CalculatorStore";
 
 it("displays zero on start up", async () => {
@@ -22,10 +21,10 @@ it("does not display the equals indicator on start up", async () => {
 });
 
 it.each([
-  {inputs: "1234567890", expected: "123,456,789"},
-  {inputs: "1.234567890", expected: "1.23456789"},
-  {inputs: "1.234567890I", expected: "-1.23456789"},
-  {inputs: "1.23I4567890", expected: "-1.23456789"}
+  {inputs: ["1234567890"], expected: "123,456,789"},
+  {inputs: ["1.234567890"], expected: "1.23456789"},
+  {inputs: ["1.234567890", "+/-"], expected: "-1.23456789"},
+  {inputs: ["1.23", "+/-", "4567890"], expected: "-1.23456789"}
 ])("limits the maximum length of an operand to 9 digits: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -33,10 +32,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "0", expected: "0"},
-  {inputs: "00", expected: "0"},
-  {inputs: "01", expected: "1"},
-  {inputs: "123", expected: "123"},
+  {inputs: ["0"], expected: "0"},
+  {inputs: ["00"], expected: "0"},
+  {inputs: ["01"], expected: "1"},
+  {inputs: ["123"], expected: "123"},
 ])("displays inputed integer operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -44,11 +43,11 @@ it.each([
 });
 
 it.each([
-  {inputs: "0.0", expected: "0.0"},
-  {inputs: ".0", expected: "0.0"},
-  {inputs: "0.00", expected: "0.00"},
-  {inputs: "0.009", expected: "0.009"},
-  {inputs: "12.0210", expected: "12.0210"},
+  {inputs: ["0.0"], expected: "0.0"},
+  {inputs: [".0"], expected: "0.0"},
+  {inputs: ["0.00"], expected: "0.00"},
+  {inputs: ["0.009"], expected: "0.009"},
+  {inputs: ["12.0210"], expected: "12.0210"},
 ])("displays inputed decimal operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -56,22 +55,22 @@ it.each([
 });
 
 it.each([
-  {inputs: "1+1=", expected: "2"},
-  {inputs: "0.1+0.1=", expected: "0.2"},
-  {inputs: ".01+0.01=", expected: "0.02"},
-  {inputs: "32768.1638+16384.0819=", expected: "49,152.2457"},
-  {inputs: "99+1=", expected: "100"},
-  {inputs: "1-1=", expected: "0"},
-  {inputs: ".01-.001=", expected: "0.009"},
-  {inputs: "100-99=", expected: "1"},
-  {inputs: "1×0=", expected: "0"},
-  {inputs: "10×0.1=", expected: "1"},
-  {inputs: "10.1×0.1=", expected: "1.01"},
-  {inputs: "10×10=", expected: "100"},
-  {inputs: "1÷0=", expected: "Error"},
-  {inputs: "1÷1=", expected: "1"},
-  {inputs: "10÷5=", expected: "2"},
-  {inputs: "100÷0.5=", expected: "200"},
+  {inputs: ["1", "+", "1", "="], expected: "2"},
+  {inputs: ["0.1", "+", "0.1", "="], expected: "0.2"},
+  {inputs: [".01", "+", "0.01", "="], expected: "0.02"},
+  {inputs: ["32768.1638", "+", "16384.0819", "="], expected: "49,152.2457"},
+  {inputs: ["99", "+", "1", "="], expected: "100"},
+  {inputs: ["1", "-", "1", "="], expected: "0"},
+  {inputs: [".01", "-", ".001", "="], expected: "0.009"},
+  {inputs: ["100", "-", "99", "="], expected: "1"},
+  {inputs: ["1", "×", "0", "="], expected: "0"},
+  {inputs: ["10", "×", "0.1", "="], expected: "1"},
+  {inputs: ["10.1", "×", "0.1", "="], expected: "1.01"},
+  {inputs: ["10", "×", "10", "="], expected: "100"},
+  {inputs: ["1", "÷", "0", "="], expected: "Error"},
+  {inputs: ["1", "÷", "1", "="], expected: "1"},
+  {inputs: ["10", "÷", "5", "="], expected: "2"},
+  {inputs: ["100", "÷", "0.5", "="], expected: "200"},
 ])("performs arithmetic: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -79,10 +78,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "1+=", expected: "2"},
-  {inputs: "2-=", expected: "0"},
-  {inputs: "3×=", expected: "9"},
-  {inputs: "4÷=", expected: "1"},
+  {inputs: ["1", "+", "="], expected: "2"},
+  {inputs: ["2", "-", "="], expected: "0"},
+  {inputs: ["3", "×", "="], expected: "9"},
+  {inputs: ["4", "÷", "="], expected: "1"},
 ])("infers missing operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -90,28 +89,28 @@ it.each([
 });
 
 it.each([
-  {inputs: "5+5+", expected: "10"},
-  {inputs: "5+5-", expected: "10"},
-  {inputs: "5×5×", expected: "25"},
-  {inputs: "5÷5÷", expected: "1"},
-  {inputs: "5×5÷", expected: "25"},
-  {inputs: "5÷5×", expected: "1"},
-  {inputs: "5×5+", expected: "25"},
-  {inputs: "5×5-", expected: "25"},
-  {inputs: "5÷5+", expected: "1"},
-  {inputs: "5÷5-", expected: "1"},
-  {inputs: "5+5×", expected: "5"},
-  {inputs: "5+5÷", expected: "5"},
-  {inputs: "5-5×", expected: "5"},
-  {inputs: "5-5÷", expected: "5"},
-  {inputs: "5+5×5×", expected: "25"},
-  {inputs: "5-5×5×", expected: "25"},
-  {inputs: "5+5÷5×", expected: "1"},
-  {inputs: "5-5÷5×", expected: "1"},
-  {inputs: "300×2×", expected: "600"},
-  {inputs: "300×100÷", expected: "30,000"},
-  {inputs: "300÷2÷", expected: "150"},
-  {inputs: "300÷100×", expected: "3"},
+  {inputs: ["5", "+", "5", "+"], expected: "10"},
+  {inputs: ["5", "+", "5", "-"], expected: "10"},
+  {inputs: ["5", "×", "5", "×"], expected: "25"},
+  {inputs: ["5", "÷", "5", "÷"], expected: "1"},
+  {inputs: ["5", "×", "5", "÷"], expected: "25"},
+  {inputs: ["5", "÷", "5", "×"], expected: "1"},
+  {inputs: ["5", "×", "5", "+"], expected: "25"},
+  {inputs: ["5", "×", "5", "-"], expected: "25"},
+  {inputs: ["5", "÷", "5", "+"], expected: "1"},
+  {inputs: ["5", "÷", "5", "-"], expected: "1"},
+  {inputs: ["5", "+", "5", "×"], expected: "5"},
+  {inputs: ["5", "+", "5", "÷"], expected: "5"},
+  {inputs: ["5", "-", "5", "×"], expected: "5"},
+  {inputs: ["5", "-", "5", "÷"], expected: "5"},
+  {inputs: ["5", "+", "5", "×", "5", "×"], expected: "25"},
+  {inputs: ["5", "-", "5", "×", "5", "×"], expected: "25"},
+  {inputs: ["5", "+", "5", "÷", "5", "×"], expected: "1"},
+  {inputs: ["5", "-", "5", "÷", "5", "×"], expected: "1"},
+  {inputs: ["300", "×", "2", "×"], expected: "600"},
+  {inputs: ["300", "×", "100", "÷"], expected: "30,000"},
+  {inputs: ["300", "÷", "2", "÷"], expected: "150"},
+  {inputs: ["300", "÷", "100", "×"], expected: "3"},
 ])("displays interim MDAS evaluation steps: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -119,94 +118,88 @@ it.each([
 });
 
 it.each([
-  {inputs: "10I", expected: "-10"},
-  {inputs: "0.1×10I=", expected: "-1"},
-  {inputs: "10II", expected: "10"},
-  {inputs: "10I+10=", expected: "0"},
-  {inputs: "10I+10I=", expected: "-20"},
-  {inputs: "10II+10I=", expected: "0"},
-  {inputs: "10I+10I=I", expected: "20"},
-  {inputs: "10I+10I=I-10=I÷2=I×3I=", expected: "-15"},
-  {inputs: "1÷0=I", expected: "Error"},
+  {inputs: ["10", "+/-"], expected: "-10"},
+  {inputs: ["0.1", "×", "10", "+/-", "="], expected: "-1"},
+  {inputs: ["10", "+/-", "+/-"], expected: "10"},
+  {inputs: ["10", "+/-", "+", "10", "="], expected: "0"},
+  {inputs: ["10", "+/-", "+", "10", "+/-", "="], expected: "-20"},
+  {inputs: ["10", "+/-", "+/-", "+", "10", "+/-", "="], expected: "0"},
+  {inputs: ["10", "+/-", "+", "10", "+/-", "=", "+/-"], expected: "20"},
+  {
+    inputs: ["10", "+/-", "+", "10", "+/-", "=", "+/-", "-", "10", "=", "+/-", "÷", "2", "=", "+/-", "×", "3", "+/-", "="],
+    expected: "-15"
+  },
+  {inputs: ["1", "÷", "0", "=", "+/-"], expected: "Error"},
 ])("inverts a number when the invert function button is pressed: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
 });
 
-it.skip.each([
-  {inputs: "500%", expected: "5"},
-  {inputs: "50%", expected: "0.5"},
-  {inputs: "5%", expected: "0.05"},
-  {inputs: "0.5%", expected: "0.005"}
-])("correctly calculates the decimal percentage of a single operand in relation to 100: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
-
-it.skip.each([
-  {inputs: "100+50%", expected: "50"},
-  {inputs: "100+200%", expected: "200"},
-  {inputs: "300+25%", expected: "75"},
-])("correctly calculates the percentage of current operand in relation to the previous operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
-
-it.skip.each([
-  {inputs: "100+50%=", expected: "150"},
-  {inputs: "100-50%=", expected: "50"},
-  {inputs: "100×10%=", expected: "1,000"},
-  {inputs: "100÷10%=", expected: "10"},
-])("performs arithmetic operations involving the percentage function: $inputs 🡢 $expected", async ({inputs, expected}) => {
+it.each([
+  {inputs: ["5", "0", "0", "SHIFT", "%"], expected: "5"},
+  {inputs: ["5", "0", "SHIFT", "%"], expected: "0.5"},
+  {inputs: ["5", "SHIFT", "%"], expected: "0.05"},
+  {inputs: ["0", ".", "5", "SHIFT", "%"], expected: "0.005"}
+])("performs percentage calculations involving a single operand: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
 });
 
 it.each([
-  {inputs: "A", expected: "0"},
-  {inputs: "5C", expected: "0"},
-  {inputs: "5+5C6", expected: "6"},
-  {inputs: "5+5C6=", expected: "11"},
-  {inputs: "5+5CA", expected: "0"},
+  {inputs: ["1500", "×", "12", "SHIFT", "%"], expected: "180"},
+  {inputs: ["660", "÷", "880", "SHIFT", "%"], expected: "75"},
+  {inputs: ["2500", "+", "15", "SHIFT", "%"], expected: "2,875"},
+  {inputs: ["3500", "-", "25", "SHIFT", "%"], expected: "2,625"},
+])("performs percentage calculations involving two operands: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
+  {inputs: ["AC"], expected: "0"},
+  {inputs: ["5", "C"], expected: "0"},
+  {inputs: ["5", "+", "5", "C", "6"], expected: "6"},
+  {inputs: ["5", "+", "5", "C", "6", "="], expected: "11"},
+  {inputs: ["5", "+", "5", "C", "AC"], expected: "0"},
 ])("clears memory: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
   await assertElementIsHidden("operator-indicator");
-  if (!inputs.endsWith("=")) {
+  if (inputs[inputs.length - 1] !== "=") {
     await assertElementIsHidden("equals-indicator");
   }
 });
 
 it.each([
-  "5+C",
-  "5÷5CA"
-])("clears operator indicators: $inputs 🡢 $expected", async (inputs) => {
+  {inputs: ["5", "+", "C"]},
+  {inputs: ["5", "÷", "5", "C", "AC"]}
+])("clears operator indicators: $inputs 🡢 $expected", async ({inputs}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertElementIsHidden("operator-indicator");
 });
 
 it.each([
-  "1+1=C",
-  "5÷5=CA"
-])("clears equals indicators: $inputs 🡢 $expected", async (inputs) => {
+  {inputs: ["1", "+", "1", "=", "C"]},
+  {inputs: ["5", "÷", "5", "=", "C", "AC"]}
+])("clears equals indicators: $inputs 🡢 $expected", async ({inputs}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertElementIsHidden("equals-indicator");
 });
 
 it.each([
-  {inputs: "4+4====", expected: "20"},
-  {inputs: "20-4====", expected: "4"},
-  {inputs: "4×2====", expected: "64"},
-  {inputs: "64÷2====", expected: "4"},
-  {inputs: "5+5===÷4=", expected: "5"},
-  {inputs: "5+====", expected: "25"},
+  {inputs: ["4","+", "4", "=", "=", "=", "="], expected: "20"},
+  {inputs: ["20","-", "4", "=", "=", "=", "="], expected: "4"},
+  {inputs: ["4", "×", "2", "=", "=", "=", "="], expected: "64"},
+  {inputs: ["64", "÷", "2", "=", "=", "=", "="], expected: "4"},
+  {inputs: ["5", "+", "5", "=", "=", "=", "÷", "4", "="], expected: "5"},
+  {inputs: ["5", "+", "=", "=", "=", "="], expected: "25"},
+  {inputs: ["1500", "×", "12", "SHIFT", "%", "=", "=", "="], expected: "0.31104"},
 ])("repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -214,10 +207,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "999999999+1=", expected: "1e9"},
-  {inputs: "999999999+2=", expected: "1e9"},
-  {inputs: "0.00000001÷100=", expected: "1e-10"},
-  {inputs: "0.00000001÷100×1000=", expected: "1e-7"}, 
+  {inputs: ["999999999", "+", "1", "="], expected: "1e9"},
+  {inputs: ["999999999", "+", "2", "="], expected: "1e9"},
+  {inputs: ["0.00000001", "÷", "100", "="], expected: "1e-10"},
+  {inputs: ["0.00000001", "÷", "100", "×", "1000", "="], expected: "1e-7"}, 
 ])("displays longer numbers using low precision exponential notation: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -225,8 +218,8 @@ it.each([
 });
 
 it.each([
-  {inputs: "0.00000001÷100×100=", expected: "0.00000001"},
-  {inputs: "0.00000001÷10×10=", expected: "0.00000001"},
+  {inputs: ["0.00000001", "÷", "100", "×", "100", "="], expected: "0.00000001"},
+  {inputs: ["0.00000001", "÷", "10", "×", "10", "="], expected: "0.00000001"},
 ])("displays exponential results using fixed-point notation when 9 digits or less: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -234,10 +227,10 @@ it.each([
 });
 
 it.each([
-  {inputs: "÷×+-+5=", expected: "5"},
-  {inputs: "÷×+-+-5=", expected: "-5"},
-  {inputs: "2÷×+-+×÷1=", expected: "2"},
-  {inputs: "1÷×+-+×2=", expected: "2"}
+  {inputs: ["÷", "×", "+", "-", "+", "5", "="], expected: "5"},
+  {inputs: ["÷", "×", "+", "-", "+", "-", "5", "="], expected: "-5"},
+  {inputs: ["2", "÷", "×", "+", "-", "+", "×", "÷", "1", "="], expected: "2"},
+  {inputs: ["1", "÷", "×", "+", "-", "+", "×", "2"], expected: "2"}
 ])("handles consecutive operation selections: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -245,10 +238,27 @@ it.each([
 });
 
 it.each([
-  {inputs: "+", expected: "plus indicator"},
-  {inputs: "-", expected: "minus indicator"},
-  {inputs: "×", expected: "multiply indicator"},
-  {inputs: "÷", expected: "divide indicator"},
+  {inputs: ["SHIFT"]},
+  {inputs: ["5", "+", "10", "SHIFT"]},
+])("displays the shift indicator when shift key is pressed", async ({inputs}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertShiftIndicatorIsDisplayed();
+});
+
+it.each([
+  {inputs: ["5", "+", "10", "SHIFT", "%"]},
+])("hides the shift indicator when a function is selected", async ({inputs}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertShiftIndicatorIsNotDisplayed();
+});
+
+it.each([
+  {inputs: ["+"], expected: "plus indicator"},
+  {inputs: ["-"], expected: "minus indicator"},
+  {inputs: ["×"], expected: "multiply indicator"},
+  {inputs: ["÷"], expected: "divide indicator"},
 ])("displays the correct operator indicator when an operator is pressed", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -256,29 +266,27 @@ it.each([
 });
 
 it.each([
-  "+3",
-  "-3",
-  "×3",
-  "÷3",
-])("hides operator indicator when an operand is pressed", async (inputs) => {
+  {inputs: ["+", "3"]},
+  {inputs: ["-", "3"]},
+  {inputs: ["×", "3"]},
+  {inputs: ["÷", "3"]},
+])("hides operator indicator when an operand is pressed", async ({inputs}) => {
   renderCalculator();
   pressButtons(inputs);
   const indicatorEl = screen.queryByTestId("operator-indicator");
-  await waitFor(() => indicatorEl);
   expect(indicatorEl).not.toBeInTheDocument();
 });
 
 it("displays the equals indicator when the equals button is pressed", async () => {
   renderCalculator();
-  pressButtons("1+1=");
-  const indicatorEl = screen.queryByTestId("equals-indicator");
-  await waitFor(() => indicatorEl);
+  pressButtons(["1", "+", "1", "="]);
+  const indicatorEl = screen.queryByLabelText("equals indicator");
   expect(indicatorEl).toBeInTheDocument();
 });
 
 it("hides the equals indicator when an operand pressed", async () => {
   renderCalculator();
-  pressButtons("=3");
+  pressButtons(["=", "3"]);
   await assertElementIsHidden("equals-operator");
 });
 
@@ -300,8 +308,14 @@ const renderCalculator = () => {
   );
 }
 
-const pressButtons = (inputs: string) => {
-  for (const input of inputs.split("")) {
+const pressButtons = (inputs: string[]) => {
+  const rawInput = inputs.flatMap(input => 
+    isNaN(Number(input))
+      ? input
+      : input.split("")
+  );
+
+  for (const input of rawInput) {
     pressButton(input);
   }
 };
@@ -312,31 +326,38 @@ const pressButton = (key: string) => {
 };
 
 const getMappedName = (key: string) => {
-  if (key === "A") return "AC";
-  if (key === "I") return "+/-";
+  if (key === "SHIFT") return "shift";
   if (key === "+") return "plus";
   if (key === "-") return "minus";
   if (key === "×") return "multiply";
   if (key === "÷") return "divide";
-  if (key === "=") return "equals";
   if (key === ".") return "decimal point";
+  if (key === "%") return "percent";
+  if (key === "=") return "equals";
   return key;
 }
 
 const assertOutputIsEqualTo = async (expected: string) => {
   const outputEl = screen.getByTestId("output");
-  await waitFor(() => outputEl);
   expect(outputEl).toHaveTextContent(expected);
+};
+
+const assertShiftIndicatorIsDisplayed = async () => {
+  const indicatorEl = screen.getByLabelText('shift indicator');
+  expect(indicatorEl).toBeInTheDocument();
+};
+
+const assertShiftIndicatorIsNotDisplayed = async () => {
+  const indicatorEl = screen.queryByLabelText('shift indicator');
+  expect(indicatorEl).not.toBeInTheDocument();
 };
 
 const assertOperatorIndicatorIsDisplayed = async (expectedAriaLabel: string) => {
   const indicatorEl = screen.getByTestId('operator-indicator');
-  await waitFor(() => indicatorEl);
   expect(indicatorEl).toHaveAccessibleName(expectedAriaLabel);
 };
 
 const assertElementIsHidden = async (testId: string) => {
   const el = screen.queryByTestId(testId);
-  await waitFor(() => el);
   expect(el).not.toBeInTheDocument();
 };

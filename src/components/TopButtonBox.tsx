@@ -4,26 +4,30 @@ import { MathJax } from "better-react-mathjax";
 import Button, { ButtonLabel } from "./Button";
 import { ActionTypes } from "../constants";
 import { useDispatch } from "../CalculatorStore";
+import { useShift } from "../ShiftProvider";
 
 const TopButtonBox: React.FC = () => {
 
   const dispatch = useDispatch();
+  const { toggleShift } = useShift();
   
   const handleInvertNumberButtonClick = () => {
     dispatch({ type: ActionTypes.INVERT_NUMBER });
   };
+
+  console.log("rendering TopButtonBox");
 
   return (
     <div className="grid grid-cols-6 grid-rows-3 gap-x-2.5 gap-y-1">
 
       {/* Row 1 */}
 
-      <Button ariaLabel="shift" className="fn" onClick={() => null}>
+      <Button ariaLabel="shift" className="fn" onClick={() => toggleShift()}>
         <ButtonLabel>SHIFT</ButtonLabel>
         &nbsp;
       </Button>
 
-      <Button  className="fn" onClick={() => null}>
+      <Button ariaLabel="square" className="fn" onClick={() => null}>
         <ButtonLabel>
           <MathJax>{"`x^2`"}</MathJax>
         </ButtonLabel>
@@ -102,7 +106,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button className="fn" onClick={handleInvertNumberButtonClick}>
         <ButtonLabel>
-          <MathJax>{"`root(3)( )`"}</MathJax>
+          <MathJax>{"`root(3)(x)`"}</MathJax>
         </ButtonLabel>
         +/-
       </Button>

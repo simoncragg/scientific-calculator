@@ -1,9 +1,14 @@
+export interface ShiftState {
+  isShiftEnabled: boolean;
+  toggleShift: () => void;
+}
+
 export interface CalcState {
-  currentOperand: string,
-  expression: string[],
-  lastInput?: string,
+  currentOperand: string;
+  expression: string[];
+  lastInput?: string;
   lastOperand?: string;
-  lastOperation?: string,
+  lastOperation?: string;
   output: string;
   voltageLevel: number;
 }
@@ -26,6 +31,6 @@ export interface AdjustVoltagePayload {
 }
 
 export interface GetLastOperatorResultType {
-  lastOperator: string | undefined,
-  index: number
+  lastOperator: string | undefined;
+  index: number;
 };

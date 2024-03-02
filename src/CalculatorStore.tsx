@@ -7,24 +7,25 @@ interface CalculatorStoreProvider {
   children: React.ReactNode;
 }
 
-const initialState: CalcState = {
-  currentOperand: "0",
-  expression: [],
-  output: "0",
-  voltageLevel: 1.0,
-};
-
 const DispatchContext = createContext((_: Action) => {});
 const StateContext = createContext({} as CalcState);
 
 export const CalculatorStoreProvider = ({
   children,
 }: CalculatorStoreProvider) => {
-  const [calc, dispatch] = useReducer(calcReducer, initialState);
+   
+  const [calc, dispatch] = useReducer(calcReducer, {
+    currentOperand: "0",
+    expression: [],
+    output: "0",
+    voltageLevel: 1.0,
+  });
 
   return (
     <DispatchContext.Provider value={dispatch}>
-      <StateContext.Provider value={calc}>{children}</StateContext.Provider>
+      <StateContext.Provider value={calc}>
+        {children}        
+      </StateContext.Provider>
     </DispatchContext.Provider>
   );
 };

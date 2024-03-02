@@ -22,12 +22,6 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.CLEAR:
       return clear(calc);
 
-    case ActionTypes.INVERT_NUMBER:
-      return invertNumber(calc);
-
-    case ActionTypes.CALCULATE_PERCENT:
-      return calculatePercent(calc);
-
     case ActionTypes.UPDATE_CURRENT_OPERAND:
       const { entry } = action.payload as UpdateCurrentOperandPayload; 
       return updateCurrentOperand(calc, entry);
@@ -38,6 +32,12 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
 
     case ActionTypes.EVALUATE_EXPRESSION:
       return evaluateExpression(calc);
+
+    case ActionTypes.INVERT_NUMBER:
+      return invertNumber(calc);
+  
+    case ActionTypes.PERCENT:
+      return percent(calc);
 
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
@@ -83,21 +83,26 @@ function invertNumber(calc: CalcState): CalcState {
   };
 }
 
-function calculatePercent(calc: CalcState): CalcState {
-  if (calc.lastInput === "=" && calc.output === "Error") return calc;
+function percent(calc: CalcState): CalcState {
+  if (calc.lastInput === "=" && calc.output === "Error") return calc;  
 
-  const percentResult = calc.lastOperand
-    ? parseFloat(calc.currentOperand) * parseFloat(calc.lastOperand) / 100
-    : parseFloat(calc.currentOperand) / 100;
+  const expression = [
+    ...calc.expression, 
+    calc.currentOperand, 
+    "%"
+  ];
 
-  const strPercentResult = percentResult.toString();
-  const output = formatNumberString(strPercentResult, { maxDigits: MAX_DIGITS });
+  const result = evaluate(expression.join("")).toString();
+  const formattedResult = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const lastOperation = getLastOperation(expression, "");
 
   return {
     ...calc,
-    currentOperand: strPercentResult,
+    currentOperand: formattedResult,
+    expression: [],
     lastInput: "%",
-    output,
+    lastOperation,
+    output: formattedResult,
   };
 }
 
@@ -119,7 +124,7 @@ function updateCurrentOperand (calc: CalcState, digit: string): CalcState {
 
 function updateExpression (calc: CalcState, newOperator: string): CalcState {
   if (newOperator === calc.lastInput) return calc;
-
+  
   const expression = calc.currentOperand !== ""
     ? [...calc.expression, calc.currentOperand]
     : calc.expression.slice(0, -1);
@@ -136,15 +141,16 @@ function updateExpression (calc: CalcState, newOperator: string): CalcState {
     expression: [...expression, newOperator],
     lastOperand: operand,
     lastInput: newOperator,
+    lastOperation: undefined,
     output,
   };
 }
 
-function evaluateExpression (calc: CalcState): CalcState {
-  if (calc.lastInput === "=") return repeatLastOperation(calc);
+function evaluateExpression(calc: CalcState): CalcState {
+  if (calc.lastInput === "=" || calc.lastInput === "%") return repeatLastOperation(calc);
   
   const currentOperand = calc.currentOperand ? calc.currentOperand : calc.lastOperand!;
-  const expression = [...calc.expression, currentOperand].join("");
+  const expression = [...calc.expression, currentOperand].join("").replace(",", "");
   const result = evaluate(expression).toString();
   const lastOperation = getLastOperation(calc.expression, currentOperand);
   const output = formatNumberString(result, { maxDigits: MAX_DIGITS, useRounding: true });
@@ -179,6 +185,7 @@ function adjustVoltage(calc: CalcState, voltageLevel: number): CalcState {
 
 function getLastOperation(expression: string[], currentOperand: string): string {
   const { lastOperator, index } = getLastOperator(expression);
+  
   const lastOperation = lastOperator
     ? [...expression.slice(index), currentOperand]
     : [];

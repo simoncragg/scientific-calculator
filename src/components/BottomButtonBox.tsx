@@ -5,9 +5,11 @@ import { MathJax } from "better-react-mathjax";
 import Button, { ButtonLabel } from "./Button";
 import { ActionTypes } from "../constants";
 import { useDispatch } from "../CalculatorStore";
+import { useShift } from "../ShiftProvider";
 
 const BottomButtonBox: React.FC = () => {
 
+  const { isShiftEnabled, toggleShift } = useShift();
   const dispatch = useDispatch();
 
   const handleAllClearButtonClick = () => {
@@ -16,10 +18,6 @@ const BottomButtonBox: React.FC = () => {
 
   const handleClearButtonClick = () => {
     dispatch({ type: ActionTypes.CLEAR });
-  };
-
-  const handleCalculatePercentButtonClick = () => {
-    dispatch({ type: ActionTypes.CALCULATE_PERCENT });
   };
 
   const handleDigitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -37,8 +35,15 @@ const BottomButtonBox: React.FC = () => {
   };
 
   const handleEqualsButtonClick = () => {
-    dispatch({ type: ActionTypes.EVALUATE_EXPRESSION });
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.PERCENT });
+      toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.EVALUATE_EXPRESSION });
+    }
   };
+
+  console.log("rendering BottomButtonBox");
 
   return (
     <div className="grid grid-cols-5 grid-rows-4 gap-x-3 gap-y-1">
@@ -131,7 +136,10 @@ const BottomButtonBox: React.FC = () => {
         <span className="scale-75">Ans</span>
       </Button>
 
-      <Button ariaLabel="equals" onClick={handleEqualsButtonClick}>
+      <Button 
+        ariaLabel={isShiftEnabled ? "percent" : "equals"} 
+        onClick={handleEqualsButtonClick}
+      >
         <ButtonLabel>
           %
         </ButtonLabel>
@@ -139,6 +147,6 @@ const BottomButtonBox: React.FC = () => {
       </Button>
     </div>
   );
-}
+};
 
 export default BottomButtonBox;
