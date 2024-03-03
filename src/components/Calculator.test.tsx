@@ -159,6 +159,15 @@ it.each([
 });
 
 it.each([
+  {inputs: ["5", "SHIFT", "square"], expected: "25"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1,023"},
+])("performs square calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
   {inputs: ["AC"], expected: "0"},
   {inputs: ["5", "C"], expected: "0"},
   {inputs: ["5", "+", "5", "C", "6"], expected: "6"},
@@ -199,7 +208,9 @@ it.each([
   {inputs: ["64", "÷", "2", "=", "=", "=", "="], expected: "4"},
   {inputs: ["5", "+", "5", "=", "=", "=", "÷", "4", "="], expected: "5"},
   {inputs: ["5", "+", "=", "=", "=", "="], expected: "25"},
+  {inputs: ["2", "SHIFT", "square", "=", "=", "="], expected: "65,536"},
   {inputs: ["1500", "×", "12", "SHIFT", "%", "=", "=", "="], expected: "0.31104"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "="], expected: "2,823"},
 ])("repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);

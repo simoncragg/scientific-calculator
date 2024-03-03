@@ -39,6 +39,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.PERCENT:
       return percent(calc);
 
+    case ActionTypes.SQUARE:
+      return square(calc);
+
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
       return adjustVoltage(calc, voltageLevel);
@@ -106,6 +109,21 @@ function percent(calc: CalcState): CalcState {
   };
 }
 
+function square(calc: CalcState): CalcState {
+  const result = evaluate(`${calc.currentOperand}^2`);
+  const strResult = result.toString();
+  const formattedResult = formatNumberString(strResult, { maxDigits: MAX_DIGITS });
+
+  return {
+    ...calc,
+    currentOperand: strResult,
+    lastOperand: calc.currentOperand,
+    lastInput: "square",
+    lastOperation: "^2",
+    output: formattedResult,
+  };
+}
+
 function updateCurrentOperand (calc: CalcState, digit: string): CalcState {
   if (getDigitCount(calc.currentOperand) === MAX_DIGITS) return calc;
   if (digit === "." && calc.currentOperand.includes(".")) return calc;
@@ -147,7 +165,11 @@ function updateExpression (calc: CalcState, newOperator: string): CalcState {
 }
 
 function evaluateExpression(calc: CalcState): CalcState {
-  if (calc.lastInput === "=" || calc.lastInput === "%") return repeatLastOperation(calc);
+  
+  const { lastOperator } = getLastOperator(calc.expression);
+  if (calc.lastInput === "=" || calc.lastInput === "%" || (calc.lastInput === "square" && !lastOperator)) {
+    return repeatLastOperation(calc);
+  }
   
   const currentOperand = calc.currentOperand ? calc.currentOperand : calc.lastOperand!;
   const expression = [...calc.expression, currentOperand].join("").replace(",", "");

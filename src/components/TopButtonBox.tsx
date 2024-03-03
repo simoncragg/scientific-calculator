@@ -9,11 +9,18 @@ import { useShift } from "../ShiftProvider";
 const TopButtonBox: React.FC = () => {
 
   const dispatch = useDispatch();
-  const { toggleShift } = useShift();
+  const { isShiftEnabled, toggleShift } = useShift();
   
   const handleInvertNumberButtonClick = () => {
     dispatch({ type: ActionTypes.INVERT_NUMBER });
   };
+
+  const handleSquareRootButtonClick = () => {
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.SQUARE }); 
+      toggleShift();
+    }
+  }
 
   console.log("rendering TopButtonBox");
 
@@ -27,7 +34,11 @@ const TopButtonBox: React.FC = () => {
         &nbsp;
       </Button>
 
-      <Button ariaLabel="square" className="fn" onClick={() => null}>
+      <Button 
+        ariaLabel={isShiftEnabled ? "square" : "square root"} 
+        className="fn" 
+        onClick={() => handleSquareRootButtonClick()}
+      >
         <ButtonLabel>
           <MathJax>{"`x^2`"}</MathJax>
         </ButtonLabel>
