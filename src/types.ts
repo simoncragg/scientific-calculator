@@ -26,7 +26,7 @@ export interface Action {
 }
 
 export interface UpdateCurrentOperandPayload {
-  entry: string;
+  input: string;
 }
   
 export interface UpdateExpressionPayload {

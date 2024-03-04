@@ -23,11 +23,11 @@ const BottomButtonBox: React.FC = () => {
 
   const handleDigitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { innerHTML } = e.currentTarget as HTMLButtonElement; 
-    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { entry: innerHTML }});
+    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { input: innerHTML }});
   };
 
   const handleDecimalPointClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { entry: "." }});
+    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { input: "." }});
   };
 
   const handleOperatorButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

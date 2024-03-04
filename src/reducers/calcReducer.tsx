@@ -25,8 +25,8 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
       return clear(calc);
 
     case ActionTypes.UPDATE_CURRENT_OPERAND:
-      const { entry } = action.payload as UpdateCurrentOperandPayload; 
-      return updateCurrentOperand(calc, entry);
+      const { input } = action.payload as UpdateCurrentOperandPayload; 
+      return updateCurrentOperand(calc, input);
 
     case ActionTypes.UPDATE_EXPRESSION:
       const { operator } = action.payload as UpdateExpressionPayload; 
@@ -150,18 +150,18 @@ function squareRoot(calc: CalcState): CalcState {
   };
 }
 
-function updateCurrentOperand (calc: CalcState, digit: string): CalcState {
+function updateCurrentOperand (calc: CalcState, input: string): CalcState {
   if (getDigitCount(calc.currentOperand) === MAX_DIGITS) return calc;
-  if (digit === "." && calc.currentOperand.includes(".")) return calc;
+  if (input === "." && calc.currentOperand.includes(".")) return calc;
 
-  const isFirstDigit = calc.currentOperand === "0" && digit !== "." || calc.lastInput === "=";
-  const currentOperand = isFirstDigit ? digit : calc.currentOperand + digit;
+  const isFirstDigit = calc.currentOperand === "0" && input !== "." || calc.lastInput === "=";
+  const currentOperand = isFirstDigit ? input : calc.currentOperand + input;
   const output = formatNumberString(currentOperand, { maxDigits: MAX_DIGITS });
 
   return {
     ...calc,
     currentOperand,
-    lastInput: digit,
+    lastInput: input,
     output,
   };
 }
