@@ -1,4 +1,8 @@
-import { GetLastOperatorResultType, OperandAffixes, OperatorType } from "../types";
+import type { 
+  GetLastOperatorResultType, 
+  OperandAffixes, 
+  OperatorType
+} from "../types";
 
 class ExpressionParser {
 
