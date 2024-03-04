@@ -252,7 +252,7 @@ function buildOutputForNewOperator(
   const expressionToEvaluate = parser.getExpressionToEvaluate(newOperator);
   if (expressionToEvaluate) {
     const evaluation = evaluate(expressionToEvaluate);
-    return formatNumberString(evaluation.toString(), { maxDigits: MAX_DIGITS });
+    return formatNumberString(evaluation, { maxDigits: MAX_DIGITS });
   }
 
   return formatNumberString(operand, { maxDigits: MAX_DIGITS });
