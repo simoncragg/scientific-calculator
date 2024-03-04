@@ -1,3 +1,5 @@
+export type OperatorType = "+" | "-" | "*" | "/";
+
 export interface ShiftState {
   isShiftEnabled: boolean;
   toggleShift: () => void;
@@ -28,7 +30,7 @@ export interface UpdateCurrentOperandPayload {
 }
   
 export interface UpdateExpressionPayload {
-  operator: string;
+  operator: OperatorType;
 }
 
 export interface AdjustVoltagePayload {
@@ -36,6 +38,6 @@ export interface AdjustVoltagePayload {
 }
 
 export interface GetLastOperatorResultType {
-  lastOperator: string | undefined;
+  lastOperator: OperatorType | undefined;
   index: number;
 };

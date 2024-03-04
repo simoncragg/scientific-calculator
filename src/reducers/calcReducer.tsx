@@ -4,6 +4,7 @@ import type {
   CalcState,
   GetLastOperatorResultType,
   OperandAffixes,
+  OperatorType,
   UpdateCurrentOperandPayload,
   UpdateExpressionPayload
 } from "../types";
@@ -165,7 +166,7 @@ function updateCurrentOperand (calc: CalcState, digit: string): CalcState {
   };
 }
 
-function updateExpression (calc: CalcState, newOperator: string): CalcState {
+function updateExpression (calc: CalcState, newOperator: OperatorType): CalcState {
   if (newOperator === calc.lastInput) return calc;
   
   const operatorHasChanged = isOperator(calc.lastInput);
@@ -270,7 +271,7 @@ function getLastOperation(expression: string[]): OperandAffixes {
 function buildOutputForNewOperator(
   operand: string, 
   expression: string[], 
-  newOperator: string,
+  newOperator: OperatorType,
 ): string {
 
   const expressionToEvaluate = getExpressionToEvaluate(expression, newOperator);
@@ -284,7 +285,7 @@ function buildOutputForNewOperator(
 
 function getExpressionToEvaluate(
   expression: string[], 
-  newOperator: string
+  newOperator: OperatorType
 ): string[] | undefined {
 
   const { lastOperator, index } = getLastOperator(expression);
@@ -306,7 +307,7 @@ function getLastOperator(expression: string[]): GetLastOperatorResultType {
   for (let i = expression.length - 1; i > -1; i--) {
     if (isOperator(expression[i])) {
       return { 
-        lastOperator: expression[i],
+        lastOperator: expression[i] as OperatorType,
         index: i
       };
     }
@@ -328,10 +329,10 @@ function isNumber(candidate: string): boolean {
   return !isNaN(Number(candidate));
 }
 
-function isAddOrSubtract(operator: string): boolean {
+function isAddOrSubtract(operator: OperatorType): boolean {
   return "+-".indexOf(operator) > -1;
 }
 
-function isDivideOrMultiply(operator: string): boolean {
+function isDivideOrMultiply(operator: OperatorType): boolean {
   return "/*".indexOf(operator) > -1;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { LuPlus, LuMinus, LuX, LuDivide, LuEqual } from "react-icons/lu";
 import { MathJax } from "better-react-mathjax";
 
+import type { OperatorType } from "../types";
 import Button, { ButtonLabel } from "./Button";
 import { ActionTypes } from "../constants";
 import { useDispatch } from "../CalculatorStore";
@@ -30,7 +31,8 @@ const BottomButtonBox: React.FC = () => {
   };
 
   const handleOperatorButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const operator = (e.currentTarget as HTMLButtonElement).getAttribute("data-operator")!;
+    const currentTarget = e.currentTarget as HTMLButtonElement;
+    const operator = currentTarget.getAttribute("data-operator")! as OperatorType;
     dispatch({ type: ActionTypes.UPDATE_EXPRESSION, payload: { operator }});
   };
 
