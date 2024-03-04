@@ -2,13 +2,13 @@ import type {
   Action,
   AdjustVoltagePayload,
   CalcState,
-  GetLastOperatorResultType,
   OperandAffixes,
   OperatorType,
   UpdateCurrentOperandPayload,
   UpdateExpressionPayload
 } from "../types";
 
+import ExpressionParser from "../classes/ExpressionParser";
 import evaluate from '../utils/evaluate';
 import formatNumberString from "../utils/formatNumberString";
 import getDigitCount from "../utils/getDigitCount";
@@ -102,7 +102,7 @@ function percent(calc: CalcState): CalcState {
 
   const result = evaluate(expression);
   const formattedResult = formatNumberString(result, { maxDigits: MAX_DIGITS });
-  const lastOperation = getLastOperation(expression);
+  const lastOperation = new ExpressionParser(expression).getLastOperation();
 
   return {
     ...calc,
@@ -117,7 +117,8 @@ function percent(calc: CalcState): CalcState {
 function square(calc: CalcState): CalcState {
   const result = evaluate([calc.currentOperand, "^", "2"]);
   const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
-  const { lastOperator } = getLastOperator(calc.expression);
+  const parser = new ExpressionParser(calc.expression);
+  const { lastOperator } = parser.getLastOperator();
   const lastOperation = lastOperator
     ? { prefix: "", suffix: `${lastOperator}${result}`}
     : { prefix: "", suffix: "^2" };
@@ -135,7 +136,8 @@ function square(calc: CalcState): CalcState {
 function squareRoot(calc: CalcState): CalcState {
   const result = evaluate([`sqrt(${calc.currentOperand})`]);
   const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
-  const { lastOperator } = getLastOperator(calc.expression);
+  const parser = new ExpressionParser(calc.expression);
+  const { lastOperator } = parser.getLastOperator();
   const lastOperation = lastOperator
     ? { prefix: "", suffix: `${lastOperator}${result}`}
     : { prefix: "sqrt(", suffix: ")" };
@@ -169,13 +171,9 @@ function updateCurrentOperand (calc: CalcState, input: string): CalcState {
 function updateExpression (calc: CalcState, newOperator: OperatorType): CalcState {
   if (newOperator === calc.lastInput) return calc;
   
-  const operatorHasChanged = isOperator(calc.lastInput);
+  const currentOperand = resolveCurrentOperand(calc);
 
-  const currentOperand = !operatorHasChanged
-    ? resolveCurrentOperand(calc)
-    : calc.lastOperand ?? "0";
-
-  const expression = !operatorHasChanged
+  const expression = calc.currentOperand !== ""
     ? [...calc.expression, currentOperand]
     : calc.expression.slice(0, -1);
   
@@ -241,31 +239,7 @@ function resolveCurrentOperand(calc: CalcState): string {
 function resolveLastOperation(calc: CalcState, expression: string[]): OperandAffixes {
   return calc.lastOperation
     ? calc.lastOperation
-    : getLastOperation(expression);
-}
-
-function getLastOperation(expression: string[]): OperandAffixes {
-
-  const { lastOperator, index } = getLastOperator(expression);
-  
-  if (lastOperator) {
-    return { 
-      prefix: "",
-      suffix: expression.slice(index).join(""),
-    }
-  }
-
-  if (expression[0].startsWith("sqrt")) {
-    return {
-      prefix: "sqrt(",
-      suffix: ")",
-    }
-  }
-
-  return {
-    prefix: "",
-    suffix: "",
-  };
+    : new ExpressionParser(expression).getLastOperation();
 }
 
 function buildOutputForNewOperator(
@@ -274,65 +248,12 @@ function buildOutputForNewOperator(
   newOperator: OperatorType,
 ): string {
 
-  const expressionToEvaluate = getExpressionToEvaluate(expression, newOperator);
+  const parser = new ExpressionParser(expression);
+  const expressionToEvaluate = parser.getExpressionToEvaluate(newOperator);
   if (expressionToEvaluate) {
     const evaluation = evaluate(expressionToEvaluate);
     return formatNumberString(evaluation.toString(), { maxDigits: MAX_DIGITS });
   }
 
   return formatNumberString(operand, { maxDigits: MAX_DIGITS });
-}
-
-function getExpressionToEvaluate(
-  expression: string[], 
-  newOperator: OperatorType
-): string[] | undefined {
-
-  const { lastOperator, index } = getLastOperator(expression);
-
-  if (!lastOperator) {
-    return !isNumber(expression.join())
-      ? expression
-      : undefined
-  }
-
-  if (isDivideOrMultiply(newOperator) && isAddOrSubtract(lastOperator)) {
-    return undefined;
-  }
-
-  return expression.slice(index - 1);
-}
-
-function getLastOperator(expression: string[]): GetLastOperatorResultType {
-  for (let i = expression.length - 1; i > -1; i--) {
-    if (isOperator(expression[i])) {
-      return { 
-        lastOperator: expression[i] as OperatorType,
-        index: i
-      };
-    }
-  }
-  
-  return { 
-    lastOperator: undefined,
-    index: -1
-  };
-}
- 
-function isOperator(candidate: string | undefined): boolean {
-  return candidate 
-    ? "/*-+".includes(candidate)
-    : false;
-}
-
-function isNumber(candidate: string): boolean {
-  return !isNaN(Number(candidate));
-}
-
-function isAddOrSubtract(operator: OperatorType): boolean {
-  return "+-".indexOf(operator) > -1;
-}
-
-function isDivideOrMultiply(operator: OperatorType): boolean {
-  return "/*".indexOf(operator) > -1;
 }
