@@ -10,7 +10,7 @@ const Display = () => {
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
 
   useEffect(() => {
-    setShowEqualsIndicator(lastInput === "=" || lastInput === "%");
+    setShowEqualsIndicator(lastInput === "=");
   }, [lastInput]);
 
   console.log("rendering Display");

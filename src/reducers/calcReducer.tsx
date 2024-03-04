@@ -191,10 +191,7 @@ function updateExpression (calc: CalcState, newOperator: string): CalcState {
 }
 
 function evaluateExpression(calc: CalcState): CalcState {
-  const { lastOperator } = getLastOperator(calc.expression);
-  if (["=", "%"].includes(calc.lastInput!) || 
-    (calc.lastInput === "square" && !lastOperator) ||
-    (calc.lastInput === "sqrt" && !lastOperator)) {
+  if (calc.lastInput === "=") {
     return repeatLastOperation(calc);
   }
   

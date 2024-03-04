@@ -217,10 +217,10 @@ it.each([
   {inputs: ["64", "÷", "2", "=", "=", "=", "="], expected: "4"},
   {inputs: ["5", "+", "5", "=", "=", "=", "÷", "4", "="], expected: "5"},
   {inputs: ["5", "+", "=", "=", "=", "="], expected: "25"},
-  {inputs: ["2", "SHIFT", "square", "=", "=", "="], expected: "65,536"},
-  {inputs: ["1500", "×", "12", "SHIFT", "%", "=", "=", "="], expected: "0.31104"},
-  {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "="], expected: "2,823"},
-  {inputs: ["144", "square root", "=", "=", "=", "="], expected: "1.1680161"},
+  {inputs: ["2", "SHIFT", "square", "=", "=", "=", "="], expected: "65,536"},
+  {inputs: ["1500", "×", "12", "SHIFT", "%", "=", "=", "=", "="], expected: "0.31104"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "=", "="], expected: "3,723"},
+  {inputs: ["144", "square root", "=", "=", "=", "="], expected: "1.3642616"},
   {inputs: ["1", "+", "144", "square root", "=", "=", "=", "="], expected: "49"},
 ])("repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
