@@ -19,6 +19,8 @@ const TopButtonBox: React.FC = () => {
     if (isShiftEnabled) {
       dispatch({ type: ActionTypes.SQUARE }); 
       toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.SQUARE_ROOT }); 
     }
   }
 

@@ -2,6 +2,7 @@ import {
     create, 
     evaluateDependencies, 
     factory,
+    sqrtDependencies,
     unaryMinusDependencies,
 } from 'mathjs';
 
@@ -15,7 +16,8 @@ const divide = (a: number, b: number) => a / b;
 const createOperation = (name: string, fn: OperationFunction) => factory(name, [], () => fn);
 
 const { evaluate } = create({
-  evaluateDependencies, 
+  evaluateDependencies,
+  sqrtDependencies,
   unaryMinusDependencies,
   createAdd: createOperation('add', add),
   createSubtract: createOperation('subtract', subtract),
@@ -23,4 +25,6 @@ const { evaluate } = create({
   createDivide: createOperation('divide', divide),
 });
 
-export default evaluate;
+export default (expression: string[]): string => {
+  return evaluate(expression.join("")).toString();
+}

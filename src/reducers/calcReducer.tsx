@@ -3,6 +3,7 @@ import type {
   AdjustVoltagePayload,
   CalcState,
   GetLastOperatorResultType,
+  OperandAffixes,
   UpdateCurrentOperandPayload,
   UpdateExpressionPayload
 } from "../types";
@@ -41,6 +42,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
 
     case ActionTypes.SQUARE:
       return square(calc);
+
+    case ActionTypes.SQUARE_ROOT:
+      return squareRoot(calc);
 
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
@@ -95,9 +99,9 @@ function percent(calc: CalcState): CalcState {
     "%"
   ];
 
-  const result = evaluate(expression.join("")).toString();
+  const result = evaluate(expression);
   const formattedResult = formatNumberString(result, { maxDigits: MAX_DIGITS });
-  const lastOperation = getLastOperation(expression, "");
+  const lastOperation = getLastOperation(expression);
 
   return {
     ...calc,
@@ -110,17 +114,38 @@ function percent(calc: CalcState): CalcState {
 }
 
 function square(calc: CalcState): CalcState {
-  const result = evaluate(`${calc.currentOperand}^2`);
-  const strResult = result.toString();
-  const formattedResult = formatNumberString(strResult, { maxDigits: MAX_DIGITS });
+  const result = evaluate([calc.currentOperand, "^", "2"]);
+  const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const { lastOperator } = getLastOperator(calc.expression);
+  const lastOperation = lastOperator
+    ? { prefix: "", suffix: `${lastOperator}${result}`}
+    : { prefix: "", suffix: "^2" };
 
   return {
     ...calc,
-    currentOperand: strResult,
+    currentOperand: result,
     lastOperand: calc.currentOperand,
     lastInput: "square",
-    lastOperation: "^2",
-    output: formattedResult,
+    lastOperation,
+    output,
+  };
+}
+
+function squareRoot(calc: CalcState): CalcState {
+  const result = evaluate([`sqrt(${calc.currentOperand})`]);
+  const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const { lastOperator } = getLastOperator(calc.expression);
+  const lastOperation = lastOperator
+    ? { prefix: "", suffix: `${lastOperator}${result}`}
+    : { prefix: "sqrt(", suffix: ")" };
+
+  return {
+    ...calc,
+    currentOperand: result,
+    lastOperand: calc.currentOperand,
+    lastInput: "sqrt",
+    lastOperation,
+    output,
   };
 }
 
@@ -143,52 +168,56 @@ function updateCurrentOperand (calc: CalcState, digit: string): CalcState {
 function updateExpression (calc: CalcState, newOperator: string): CalcState {
   if (newOperator === calc.lastInput) return calc;
   
-  const expression = calc.currentOperand !== ""
-    ? [...calc.expression, calc.currentOperand]
-    : calc.expression.slice(0, -1);
+  const operatorHasChanged = isOperator(calc.lastInput);
 
-  const operand = calc.currentOperand !== ""
-    ? calc.currentOperand
+  const currentOperand = !operatorHasChanged
+    ? resolveCurrentOperand(calc)
     : calc.lastOperand ?? "0";
 
-  const output = buildOutputForNewOperator(operand, expression, newOperator);
+  const expression = !operatorHasChanged
+    ? [...calc.expression, currentOperand]
+    : calc.expression.slice(0, -1);
+  
+  const output = buildOutputForNewOperator(currentOperand, expression, newOperator);
 
   return {
     ...calc,
     currentOperand: "",
     expression: [...expression, newOperator],
-    lastOperand: operand,
+    lastOperand: currentOperand,
     lastInput: newOperator,
-    lastOperation: undefined,
     output,
   };
 }
 
 function evaluateExpression(calc: CalcState): CalcState {
-  
   const { lastOperator } = getLastOperator(calc.expression);
-  if (calc.lastInput === "=" || calc.lastInput === "%" || (calc.lastInput === "square" && !lastOperator)) {
+  if (["=", "%"].includes(calc.lastInput!) || 
+    (calc.lastInput === "square" && !lastOperator) ||
+    (calc.lastInput === "sqrt" && !lastOperator)) {
     return repeatLastOperation(calc);
   }
   
-  const currentOperand = calc.currentOperand ? calc.currentOperand : calc.lastOperand!;
-  const expression = [...calc.expression, currentOperand].join("").replace(",", "");
-  const result = evaluate(expression).toString();
-  const lastOperation = getLastOperation(calc.expression, currentOperand);
+  const currentOperand = resolveCurrentOperand(calc);
+  const expression = [...calc.expression, currentOperand];
+  const result = evaluate(expression);
+  const lastOperation = resolveLastOperation(calc, expression);
   const output = formatNumberString(result, { maxDigits: MAX_DIGITS, useRounding: true });
 
   return {
     ...calc,
     currentOperand: result,
     expression: [],
-    lastOperation,
     lastInput: "=",
+    lastOperation,
     output,
   };
 }
 
 function repeatLastOperation(calc: CalcState): CalcState {
-  const result = evaluate(calc.currentOperand + calc.lastOperation).toString();
+  const { prefix, suffix } = calc.lastOperation!;
+  const expression = [prefix, calc.currentOperand, suffix];
+  const result = evaluate(expression);
   const output = formatNumberString(result, { maxDigits: MAX_DIGITS, useRounding: true });
 
   return {
@@ -203,19 +232,50 @@ function adjustVoltage(calc: CalcState, voltageLevel: number): CalcState {
     ...calc,
     voltageLevel,
   }
-} 
-
-function getLastOperation(expression: string[], currentOperand: string): string {
-  const { lastOperator, index } = getLastOperator(expression);
-  
-  const lastOperation = lastOperator
-    ? [...expression.slice(index), currentOperand]
-    : [];
-
-  return lastOperation.join("");
 }
 
-function buildOutputForNewOperator(operand: string, expression: string[], newOperator: string): string {
+function resolveCurrentOperand(calc: CalcState): string {
+  return calc.currentOperand !== ""
+    ? calc.currentOperand
+    : calc.lastOperand ?? "0";
+}
+
+function resolveLastOperation(calc: CalcState, expression: string[]): OperandAffixes {
+  return calc.lastOperation
+    ? calc.lastOperation
+    : getLastOperation(expression);
+}
+
+function getLastOperation(expression: string[]): OperandAffixes {
+
+  const { lastOperator, index } = getLastOperator(expression);
+  
+  if (lastOperator) {
+    return { 
+      prefix: "",
+      suffix: expression.slice(index).join(""),
+    }
+  }
+
+  if (expression[0].startsWith("sqrt")) {
+    return {
+      prefix: "sqrt(",
+      suffix: ")",
+    }
+  }
+
+  return {
+    prefix: "",
+    suffix: "",
+  };
+}
+
+function buildOutputForNewOperator(
+  operand: string, 
+  expression: string[], 
+  newOperator: string,
+): string {
+
   const expressionToEvaluate = getExpressionToEvaluate(expression, newOperator);
   if (expressionToEvaluate) {
     const evaluation = evaluate(expressionToEvaluate);
@@ -225,15 +285,24 @@ function buildOutputForNewOperator(operand: string, expression: string[], newOpe
   return formatNumberString(operand, { maxDigits: MAX_DIGITS });
 }
 
-function getExpressionToEvaluate(expression: string[], newOperator: string): string | undefined {
-  let { lastOperator, index } = getLastOperator(expression);
+function getExpressionToEvaluate(
+  expression: string[], 
+  newOperator: string
+): string[] | undefined {
 
-  if (!lastOperator) return undefined;
-  if (isDivideOrMultiply(newOperator) && isAddOrSubtract(lastOperator)) return undefined;
+  const { lastOperator, index } = getLastOperator(expression);
 
-  return expression
-    .slice(index - 1)
-    .join("");
+  if (!lastOperator) {
+    return !isNumber(expression.join())
+      ? expression
+      : undefined
+  }
+
+  if (isDivideOrMultiply(newOperator) && isAddOrSubtract(lastOperator)) {
+    return undefined;
+  }
+
+  return expression.slice(index - 1);
 }
 
 function getLastOperator(expression: string[]): GetLastOperatorResultType {
@@ -256,6 +325,10 @@ function isOperator(candidate: string | undefined): boolean {
   return candidate 
     ? "/*-+".includes(candidate)
     : false;
+}
+
+function isNumber(candidate: string): boolean {
+  return !isNaN(Number(candidate));
 }
 
 function isAddOrSubtract(operator: string): boolean {

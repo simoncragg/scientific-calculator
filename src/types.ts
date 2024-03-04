@@ -8,11 +8,16 @@ export interface CalcState {
   expression: string[];
   lastInput?: string;
   lastOperand?: string;
-  lastOperation?: string;
+  lastOperation?: OperandAffixes;
   output: string;
   voltageLevel: number;
 }
-  
+
+export interface OperandAffixes {
+  prefix: string;
+  suffix: string;
+}
+
 export interface Action {
   type: string;
   payload?: UpdateCurrentOperandPayload | UpdateExpressionPayload | AdjustVoltagePayload;
