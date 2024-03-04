@@ -69,7 +69,7 @@ function clear(calc: CalcState): CalcState {
   return {
     ...calc,
     currentOperand: "0",
-    lastInput: "AC",
+    lastInput: undefined,
     lastOperand: undefined,
     lastOperation: undefined,
     output: "0",
