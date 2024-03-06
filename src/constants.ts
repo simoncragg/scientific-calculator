@@ -1,4 +1,4 @@
-export const MAX_DIGITS = 9;
+export const MAX_DIGITS = 10;
 export const INVERT_SYMBOL = "+/-";
 export const ALL_CLEAR_SYMBOL = "AC";
 

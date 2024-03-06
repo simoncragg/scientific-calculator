@@ -21,11 +21,11 @@ it("does not display the equals indicator on start up", async () => {
 });
 
 it.each([
-  {inputs: ["1234567890"], expected: "123,456,789"},
-  {inputs: ["1.234567890"], expected: "1.23456789"},
-  {inputs: ["1.234567890", "+/-"], expected: "-1.23456789"},
-  {inputs: ["1.23", "+/-", "4567890"], expected: "-1.23456789"}
-])("limits the maximum length of an operand to 9 digits: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  {inputs: ["12345678901"], expected: "1234567890"},
+  {inputs: ["0.1234567890"], expected: "0.123456789"},
+  {inputs: ["0.1234567890", "+/-"], expected: "-0.123456789"},
+  {inputs: ["0.123", "+/-", "4567890"], expected: "-0.123456789"}
+])("limits the maximum length of an operand to 10 digits: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
@@ -58,7 +58,7 @@ it.each([
   {inputs: ["1", "+", "1", "="], expected: "2"},
   {inputs: ["0.1", "+", "0.1", "="], expected: "0.2"},
   {inputs: [".01", "+", "0.01", "="], expected: "0.02"},
-  {inputs: ["32768.1638", "+", "16384.0819", "="], expected: "49,152.2457"},
+  {inputs: ["32768.1638", "+", "16384.0819", "="], expected: "49152.2457"},
   {inputs: ["99", "+", "1", "="], expected: "100"},
   {inputs: ["1", "-", "1", "="], expected: "0"},
   {inputs: [".01", "-", ".001", "="], expected: "0.009"},
@@ -108,7 +108,7 @@ it.each([
   {inputs: ["5", "+", "5", "÷", "5", "×"], expected: "1"},
   {inputs: ["5", "-", "5", "÷", "5", "×"], expected: "1"},
   {inputs: ["300", "×", "2", "×"], expected: "600"},
-  {inputs: ["300", "×", "100", "÷"], expected: "30,000"},
+  {inputs: ["300", "×", "100", "÷"], expected: "30000"},
   {inputs: ["300", "÷", "2", "÷"], expected: "150"},
   {inputs: ["300", "÷", "100", "×"], expected: "3"},
 ])("displays interim MDAS evaluation steps: $inputs 🡢 $expected", async ({inputs, expected}) => {
@@ -150,8 +150,8 @@ it.each([
 it.each([
   {inputs: ["1500", "×", "12", "SHIFT", "%"], expected: "180"},
   {inputs: ["660", "÷", "880", "SHIFT", "%"], expected: "75"},
-  {inputs: ["2500", "+", "15", "SHIFT", "%"], expected: "2,875"},
-  {inputs: ["3500", "-", "25", "SHIFT", "%"], expected: "2,625"},
+  {inputs: ["2500", "+", "15", "SHIFT", "%"], expected: "2875"},
+  {inputs: ["3500", "-", "25", "SHIFT", "%"], expected: "2625"},
 ])("performs percentage calculations involving two operands: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -160,7 +160,7 @@ it.each([
 
 it.each([
   {inputs: ["5", "SHIFT", "square"], expected: "25"},
-  {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1,023"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1023"},
 ])("performs square calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -217,9 +217,9 @@ it.each([
   {inputs: ["64", "÷", "2", "=", "=", "=", "="], expected: "4"},
   {inputs: ["5", "+", "5", "=", "=", "=", "÷", "4", "="], expected: "5"},
   {inputs: ["5", "+", "=", "=", "=", "="], expected: "25"},
-  {inputs: ["2", "SHIFT", "square", "=", "=", "=", "="], expected: "65,536"},
+  {inputs: ["2", "SHIFT", "square", "=", "=", "=", "="], expected: "65536"},
   {inputs: ["1500", "×", "12", "SHIFT", "%", "=", "=", "=", "="], expected: "0.31104"},
-  {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "=", "="], expected: "3,723"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "=", "="], expected: "3723"},
   {inputs: ["144", "square root", "=", "=", "=", "="], expected: "1.3642616"},
   {inputs: ["1", "+", "144", "square root", "=", "=", "=", "="], expected: "49"},
 ])("repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", async ({inputs, expected}) => {
@@ -229,10 +229,10 @@ it.each([
 });
 
 it.each([
-  {inputs: ["999999999", "+", "1", "="], expected: "1e9"},
-  {inputs: ["999999999", "+", "2", "="], expected: "1e9"},
-  {inputs: ["0.00000001", "÷", "100", "="], expected: "1e-10"},
-  {inputs: ["0.00000001", "÷", "100", "×", "1000", "="], expected: "1e-7"}, 
+  {inputs: ["9999999999", "+", "1", "="], expected: "1e10"},
+  {inputs: ["9999999999", "+", "2", "="], expected: "1e10"},
+  {inputs: ["0.000000001", "÷", "100", "="], expected: "1e-11"},
+  {inputs: ["0.000000001", "÷", "1000", "×", "100", "="], expected: "1e-10"}, 
 ])("displays longer numbers using low precision exponential notation: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
@@ -240,9 +240,9 @@ it.each([
 });
 
 it.each([
-  {inputs: ["0.00000001", "÷", "100", "×", "100", "="], expected: "0.00000001"},
-  {inputs: ["0.00000001", "÷", "10", "×", "10", "="], expected: "0.00000001"},
-])("displays exponential results using fixed-point notation when 9 digits or less: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  {inputs: ["0.000000001", "÷", "100", "×", "100", "="], expected: "0.000000001"},
+  {inputs: ["0.000000001", "÷", "10", "×", "10", "="], expected: "0.000000001"},
+])("displays exponential results using fixed-point notation when 10 digits or less: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);

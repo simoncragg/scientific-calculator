@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
 import OperatorIndicator from "./OperatorIndicator";
 import { useCalcState } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
 
-const Display = () => {
+const Display: React.FC = () => {
   const { output, voltageLevel, lastInput } = useCalcState();
   const { isShiftEnabled } = useShift();
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
@@ -16,7 +15,7 @@ const Display = () => {
   console.log("rendering Display");
 
   return (
-    <div className="relative flex w-full h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
+    <div className="relative flex w-[307px] h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
       
       <OperatorIndicator />
 
@@ -42,9 +41,11 @@ const Display = () => {
 
       <span 
         data-testid="output" 
-        className="leading-none self-end pr-5 text-stone-800 text-[45px]" 
+        className="leading-none self-end text-stone-800 text-[45px]" 
         style={{ opacity: voltageLevel }}>
-        {output}
+          <div className="pr-7">
+            <span className="pr-0.5">{output}</span>
+          </div>
       </span>
       
     </div>

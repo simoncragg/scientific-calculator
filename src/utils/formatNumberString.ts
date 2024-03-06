@@ -43,11 +43,12 @@ function formatFixedPointNumber(strNumber: string, parsedNumber: number): string
   const fractionalDigits = strNumber.split(".")[1]?.length ?? 0;
   const suffix = strNumber.endsWith(".") ? "." : "";
 
-  return parsedNumber.toLocaleString("en", { 
+  return (parsedNumber.toLocaleString("en", { 
       minimumFractionDigits: fractionalDigits, 
-      maximumFractionDigits: 20
+      maximumFractionDigits: 20,
     }
-  ) + suffix;
+  ) + suffix)
+  .replaceAll(",", "");
 }
 
 function isExponentialNotation(strNumber: string): boolean {
