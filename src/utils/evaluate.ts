@@ -25,6 +25,6 @@ const { evaluate } = create({
   createDivide: createOperation('divide', divide),
 });
 
-export default (expression: string[]): string => {
-  return evaluate(expression.join("")).toString();
+export default (expression: string[]): number => {
+  return evaluate(expression.join(""));
 }

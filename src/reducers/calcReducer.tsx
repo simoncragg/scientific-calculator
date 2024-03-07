@@ -10,7 +10,7 @@ import type {
 
 import ExpressionParser from "../classes/ExpressionParser";
 import evaluate from '../utils/evaluate';
-import formatNumberString from "../utils/formatNumberString";
+import formatNumber from "../utils/formatNumber";
 import getDigitCount from "../utils/getDigitCount";
 import { ActionTypes, INVERT_SYMBOL, MAX_DIGITS } from '../constants';
 
@@ -80,12 +80,11 @@ function invertNumber(calc: CalcState): CalcState {
   if (calc.lastInput === "=" && calc.output === "Error") return calc;
 
   const invertedNumber = parseFloat(calc.currentOperand) * -1;
-  const strInvertedNumber = invertedNumber.toString();
-  const output = formatNumberString(strInvertedNumber, { maxDigits: MAX_DIGITS });
+  const output = formatNumber(invertedNumber, MAX_DIGITS);
 
   return {
     ...calc,
-    currentOperand: strInvertedNumber,
+    currentOperand: invertedNumber.toString(),
     lastInput: INVERT_SYMBOL,
     output,
   };
@@ -101,7 +100,7 @@ function percent(calc: CalcState): CalcState {
   ];
 
   const result = evaluate(expression);
-  const formattedResult = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const formattedResult = formatNumber(result, MAX_DIGITS);
   const lastOperation = new ExpressionParser(expression).getLastOperation();
 
   return {
@@ -116,7 +115,7 @@ function percent(calc: CalcState): CalcState {
 
 function square(calc: CalcState): CalcState {
   const result = evaluate([calc.currentOperand, "^", "2"]);
-  const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const output = formatNumber(result, MAX_DIGITS);
   const parser = new ExpressionParser(calc.expression);
   const { lastOperator } = parser.getLastOperator();
   const lastOperation = lastOperator
@@ -125,7 +124,7 @@ function square(calc: CalcState): CalcState {
 
   return {
     ...calc,
-    currentOperand: result,
+    currentOperand: result.toString(),
     lastOperand: calc.currentOperand,
     lastInput: "square",
     lastOperation,
@@ -135,7 +134,7 @@ function square(calc: CalcState): CalcState {
 
 function squareRoot(calc: CalcState): CalcState {
   const result = evaluate([`sqrt(${calc.currentOperand})`]);
-  const output = formatNumberString(result, { maxDigits: MAX_DIGITS });
+  const output = formatNumber(result, MAX_DIGITS);
   const parser = new ExpressionParser(calc.expression);
   const { lastOperator } = parser.getLastOperator();
   const lastOperation = lastOperator
@@ -144,7 +143,7 @@ function squareRoot(calc: CalcState): CalcState {
 
   return {
     ...calc,
-    currentOperand: result,
+    currentOperand: result.toString(),
     lastOperand: calc.currentOperand,
     lastInput: "sqrt",
     lastOperation,
@@ -158,7 +157,7 @@ function updateCurrentOperand (calc: CalcState, input: string): CalcState {
 
   const isFirstDigit = calc.currentOperand === "0" && input !== "." || calc.lastInput === "=";
   const currentOperand = isFirstDigit ? input : calc.currentOperand + input;
-  const output = formatNumberString(currentOperand, { maxDigits: MAX_DIGITS });
+  const output = currentOperand;
 
   return {
     ...calc,
@@ -198,11 +197,11 @@ function evaluateExpression(calc: CalcState): CalcState {
   const expression = [...calc.expression, currentOperand];
   const result = evaluate(expression);
   const lastOperation = resolveLastOperation(calc, expression);
-  const output = formatNumberString(result, { maxDigits: MAX_DIGITS, useRounding: true });
+  const output = formatNumber(result, MAX_DIGITS);
 
   return {
     ...calc,
-    currentOperand: result,
+    currentOperand: result.toString(),
     expression: [],
     lastInput: "=",
     lastOperation,
@@ -214,11 +213,11 @@ function repeatLastOperation(calc: CalcState): CalcState {
   const { prefix, suffix } = calc.lastOperation!;
   const expression = [prefix, calc.currentOperand, suffix];
   const result = evaluate(expression);
-  const output = formatNumberString(result, { maxDigits: MAX_DIGITS, useRounding: true });
+  const output = formatNumber(result, MAX_DIGITS);
 
   return {
     ...calc,
-    currentOperand: result,
+    currentOperand: result.toString(),
     output,
   };
 }
@@ -252,8 +251,8 @@ function buildOutputForNewOperator(
   const expressionToEvaluate = parser.getExpressionToEvaluate(newOperator);
   if (expressionToEvaluate) {
     const evaluation = evaluate(expressionToEvaluate);
-    return formatNumberString(evaluation, { maxDigits: MAX_DIGITS });
+    return formatNumber(evaluation, MAX_DIGITS);
   }
 
-  return formatNumberString(operand, { maxDigits: MAX_DIGITS });
+  return formatNumber(parseFloat(operand), MAX_DIGITS);
 }

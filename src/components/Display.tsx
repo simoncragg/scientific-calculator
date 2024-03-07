@@ -7,10 +7,15 @@ const Display: React.FC = () => {
   const { output, voltageLevel, lastInput } = useCalcState();
   const { isShiftEnabled } = useShift();
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
+  const [isExponential, setIsExponential] = useState(false);
 
   useEffect(() => {
     setShowEqualsIndicator(lastInput === "=");
   }, [lastInput]);
+
+  useEffect(() => {
+    setIsExponential(output.includes("e"));
+  }, [output])
 
   console.log("rendering Display");
 
@@ -43,13 +48,46 @@ const Display: React.FC = () => {
         data-testid="output" 
         className="leading-none self-end text-stone-800 text-[45px]" 
         style={{ opacity: voltageLevel }}>
-          <div className="pr-7">
-            <span className="pr-0.5">{output}</span>
-          </div>
+          {isExponential ? (
+            <ExponentialOutput exponentialNumber={output} />
+          ) : (
+            <div className="pr-7">
+              <span className="pr-0.5">{output}</span>
+            </div>
+          )}
       </span>
       
     </div>
   );
 };
 
+interface ExponentialOutputProps {
+  exponentialNumber: string;
+}
+
+const ExponentialOutput: React.FC<ExponentialOutputProps> = ({ exponentialNumber }) => {
+
+  const [coefficient, setCoefficient] = useState<string>();
+  const [exponent, setExponent] = useState<string>();
+
+  useEffect(() => {
+    if (exponentialNumber) {
+      const parts = exponentialNumber.split("e");
+      if (parts.length == 2) {
+        setCoefficient(parts[0]);
+        setExponent(parts[1].replace("+", ""));
+      }
+    }
+  }, [exponentialNumber]);
+
+  return (
+    <div className="flex items-center pr-1">
+      <span aria-label="coefficient">{coefficient}</span>
+      <span aria-label="times base" className="text-xs">x10</span>
+      <sup aria-label="exponent" className="text-lg -ml-1.5 -mt-2">{exponent}</sup>
+    </div>
+  );
+};
+
 export default Display;
+

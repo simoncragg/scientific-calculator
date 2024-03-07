@@ -222,31 +222,68 @@ it.each([
   {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "=", "="], expected: "3723"},
   {inputs: ["144", "square root", "=", "=", "=", "="], expected: "1.3642616"},
   {inputs: ["1", "+", "144", "square root", "=", "=", "=", "="], expected: "49"},
-])("repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
+])(
+  "repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+  async ({inputs, expected}) => {
+    renderCalculator();
+    pressButtons(inputs);
+    await assertOutputIsEqualTo(expected);
+  }
+);
 
 it.each([
-  {inputs: ["9999999999", "+", "1", "="], expected: "1e10"},
-  {inputs: ["9999999999", "+", "2", "="], expected: "1e10"},
-  {inputs: ["0.000000001", "÷", "100", "="], expected: "1e-11"},
-  {inputs: ["0.000000001", "÷", "1000", "×", "100", "="], expected: "1e-10"}, 
-])("displays longer numbers using low precision exponential notation: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
+  {
+    inputs: ["9999999999", "×", "9999999999", "="], 
+    expectedCoefficient: "9.999999998", 
+    expectedBase: "10",
+    expectedExponent: "19",
+  },
+  {
+    inputs: ["9999999999", "SHIFT", "square", "=", "=", "=", "="], 
+    expectedCoefficient: "9.999999984",
+    expectedBase: "10",
+    expectedExponent: "159",
+  },
+  {
+    inputs: ["9999999999", "×", "9999999999", "="], 
+    expectedCoefficient: 9.999999998,
+    expectedBase: 10,
+    expectedExponent: 19,
+  },
+  {
+    inputs: ["6.25", "÷", "9999999999", "="],
+    expectedCoefficient: 6.250000001,
+    expectedBase: 10,
+    expectedExponent: -10,
+  },
+  {
+    inputs: ["0.5", "÷", "1111111111", "="],
+    expectedCoefficient: 4.5,
+    expectedBase: 10,
+    expectedExponent: -10,
+  }
+])(
+  "displays exponential correctly: $inputs 🡢 $expected", 
+  async ({inputs, expectedCoefficient, expectedBase, expectedExponent }) => {
+    renderCalculator();
+    pressButtons(inputs);
+    await assertCoefficientIsDisplayed(expectedCoefficient);
+    await assertTimesBaseIsDisplayed(expectedBase);
+    await assertExponentIsDisplayed(expectedExponent);
+  }
+);
 
 it.each([
   {inputs: ["0.000000001", "÷", "100", "×", "100", "="], expected: "0.000000001"},
   {inputs: ["0.000000001", "÷", "10", "×", "10", "="], expected: "0.000000001"},
-])("displays exponential results using fixed-point notation when 10 digits or less: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
+])(
+  "displays an exponential number result in fixed-point notation when exponent is 10 or less: $inputs 🡢 $expected", 
+  async ({inputs, expected}) => {
+    renderCalculator();
+    pressButtons(inputs);
+    await assertOutputIsEqualTo(expected);
+  }
+);
 
 it.each([
   {inputs: ["÷", "×", "+", "-", "+", "5", "="], expected: "5"},
@@ -377,6 +414,24 @@ const assertShiftIndicatorIsNotDisplayed = async () => {
 const assertOperatorIndicatorIsDisplayed = async (expectedAriaLabel: string) => {
   const indicatorEl = screen.getByTestId('operator-indicator');
   expect(indicatorEl).toHaveAccessibleName(expectedAriaLabel);
+};
+
+const assertCoefficientIsDisplayed = async (expectedCoefficient: number) => {
+  const coefficientEl = screen.getByLabelText("coefficient");
+  expect(coefficientEl).toBeInTheDocument();
+  expect(coefficientEl.innerHTML).toEqual(`${expectedCoefficient}`);
+};
+
+const assertTimesBaseIsDisplayed = async (expectedBase: number) => {
+  const timeBaseEl = screen.getByLabelText("times base");
+  expect(timeBaseEl).toBeInTheDocument();
+  expect(timeBaseEl.innerHTML).toEqual(`x${expectedBase}`);
+};
+
+const assertExponentIsDisplayed = async (expectedExponent: number) => {
+  const assertExponentEl = screen.getByLabelText("exponent");
+  expect(assertExponentEl).toBeInTheDocument();
+  expect(assertExponentEl.innerHTML).toEqual(`${expectedExponent}`);
 };
 
 const assertElementIsHidden = async (testId: string) => {
