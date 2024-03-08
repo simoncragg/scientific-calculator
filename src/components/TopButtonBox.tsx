@@ -42,6 +42,13 @@ const TopButtonBox: React.FC = () => {
     }
   };
 
+  const handleOffButtonClick = () => {
+    dispatch({ 
+      type: ActionTypes.ADJUST_VOLTAGE, 
+      payload: { voltageLevel: 0.0 }
+    });
+  };
+
   //console.log("rendering TopButtonBox");
 
   return (
@@ -91,7 +98,7 @@ const TopButtonBox: React.FC = () => {
         <span className="ml-1">DRG▸</span>
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={handleOffButtonClick}>
         OFF
       </Button>
 
