@@ -17,7 +17,7 @@ const Display: React.FC = () => {
     setIsExponential(output.includes("e"));
   }, [output])
 
-  console.log("rendering Display");
+  //console.log("rendering Display");
 
   return (
     <div className="relative flex w-[307px] h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">

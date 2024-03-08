@@ -42,7 +42,7 @@ const TopButtonBox: React.FC = () => {
     }
   };
 
-  console.log("rendering TopButtonBox");
+  //console.log("rendering TopButtonBox");
 
   return (
     <div className="grid grid-cols-6 grid-rows-3 gap-x-2.5 gap-y-1">

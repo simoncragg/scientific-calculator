@@ -45,7 +45,7 @@ const BottomButtonBox: React.FC = () => {
     }
   };
 
-  console.log("rendering BottomButtonBox");
+  //console.log("rendering BottomButtonBox");
 
   return (
     <div className="grid grid-cols-5 grid-rows-4 gap-x-3 gap-y-1">
