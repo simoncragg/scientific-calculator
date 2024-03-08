@@ -160,6 +160,7 @@ it.each([
 
 it.each([
   {inputs: ["5", "SHIFT", "square"], expected: "25"},
+  {inputs: ["5", "SHIFT", "square", "="], expected: "25"},
   {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1023"},
 ])("performs square calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
@@ -169,6 +170,7 @@ it.each([
 
 it.each([
   {inputs: ["144", "square root"], expected: "12"},
+  {inputs: ["144", "square root", "="], expected: "12"},
   {inputs: ["100", "+", "144", "square root", "="], expected: "112"},
 ])("performs square root calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
