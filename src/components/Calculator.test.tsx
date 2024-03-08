@@ -234,15 +234,15 @@ it.each([
 it.each([
   {
     inputs: ["9999999999", "×", "9999999999", "="], 
-    expectedCoefficient: "9.999999998", 
-    expectedBase: "10",
-    expectedExponent: "19",
+    expectedCoefficient: 9.999999998, 
+    expectedBase: 10,
+    expectedExponent: 19,
   },
   {
     inputs: ["9999999999", "SHIFT", "square", "=", "=", "=", "="], 
-    expectedCoefficient: "9.999999984",
-    expectedBase: "10",
-    expectedExponent: "159",
+    expectedCoefficient: 9.999999984,
+    expectedBase: 10,
+    expectedExponent: 159,
   },
   {
     inputs: ["9999999999", "×", "9999999999", "="], 
