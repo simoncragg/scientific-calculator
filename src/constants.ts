@@ -13,5 +13,6 @@ export const ActionTypes = {
   PERCENT: "PERCENT",
   SQUARE: "SQUARE",
   SQUARE_ROOT: "SQUARE_ROOT",
+  LOG: "LOG",
   ADJUST_VOLTAGE: "ADJUST_VOLTAGE",
 };

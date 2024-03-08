@@ -179,6 +179,16 @@ it.each([
 });
 
 it.each([
+  {inputs: ["1.23", "log"], expected: "0.089905111"},
+  {inputs: ["1.23", "log", "="], expected: "0.089905111"},
+  {inputs: ["100", "+", "1.23", "log", "="], expected: "100.0899051"},
+])("performs log calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
   {inputs: ["AC"], expected: "0"},
   {inputs: ["5", "C"], expected: "0"},
   {inputs: ["5", "+", "5", "C", "6"], expected: "6"},
@@ -224,6 +234,8 @@ it.each([
   {inputs: ["123", "+", "30", "SHIFT", "square", "=", "=", "=", "="], expected: "3723"},
   {inputs: ["144", "square root", "=", "=", "=", "="], expected: "1.3642616"},
   {inputs: ["1", "+", "144", "square root", "=", "=", "=", "="], expected: "49"},
+  {inputs: ["1.23", "log", "=", "="], expected: "-1.046215616"},
+  {inputs: ["1", "+", "1.23", "log", "=", "=", "=", "="], expected: "1.359620446"},
 ])(
   "repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
   async ({inputs, expected}) => {

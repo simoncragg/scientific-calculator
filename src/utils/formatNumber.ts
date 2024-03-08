@@ -2,7 +2,7 @@ import { format } from "mathjs";
 import getDigitCount from "./getDigitCount";
 
 export default function formatNumber(number: number, maxDigits: number): string {
-  if (isInfinity(number)) return "Error";
+  if (isInfinity(number) || isComplex(number)) return "Error";
 
   if (isExponentialNotation(number)) {
     return handleExponentialNotation(number, maxDigits);
@@ -62,6 +62,10 @@ function isInfinity(number: number): boolean {
   return number === Infinity || number === -Infinity;
 }
 
+function isComplex(number: number): boolean {
+  return typeof number === "object" && "re" in number;
+}
+
 function isExponentialNotation(number: number): boolean {
   return number.toString().includes("e");
 }
@@ -78,15 +82,13 @@ function trimTrailingFractionalZeros(numberString: string): string {
     endIndex--;
   }
 
-  if (endIndex <= decimalIndex) {
-    return numberString.substring(0, decimalIndex);
-  }
-
-  return numberString.substring(0, endIndex + 1);
+  return endIndex <= decimalIndex
+    ? numberString.substring(0, decimalIndex)
+    : numberString.substring(0, endIndex + 1);
 }
 
 function roundToMaximalPrecision(number: number, maxDigits: number): string {
-  const fractionalDigits = computeAvailableFractionalDigits(number.toString(), maxDigits)
+  const fractionalDigits = computeAvailableFractionalDigits(number.toString(), maxDigits);
   return number.toFixed(fractionalDigits);
 }
 

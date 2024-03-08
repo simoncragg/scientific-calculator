@@ -2,6 +2,7 @@ import {
     create, 
     evaluateDependencies, 
     factory,
+    log10Dependencies,
     sqrtDependencies,
     unaryMinusDependencies,
 } from 'mathjs';
@@ -17,6 +18,7 @@ const createOperation = (name: string, fn: OperationFunction) => factory(name, [
 
 const { evaluate } = create({
   evaluateDependencies,
+  log10Dependencies,
   sqrtDependencies,
   unaryMinusDependencies,
   createAdd: createOperation('add', add),

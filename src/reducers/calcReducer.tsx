@@ -47,6 +47,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.SQUARE_ROOT:
       return squareRoot(calc);
 
+    case ActionTypes.LOG:
+      return log(calc);
+
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
       return adjustVoltage(calc, voltageLevel);
@@ -133,22 +136,11 @@ function square(calc: CalcState): CalcState {
 }
 
 function squareRoot(calc: CalcState): CalcState {
-  const result = evaluate([`sqrt(${calc.currentOperand})`]);
-  const output = formatNumber(result, MAX_DIGITS);
-  const parser = new ExpressionParser(calc.expression);
-  const { lastOperator } = parser.getLastOperator();
-  const lastOperation = lastOperator
-    ? { prefix: "", suffix: `${lastOperator}${result}`}
-    : { prefix: "sqrt(", suffix: ")" };
+  return applyFunc("sqrt", calc);
+}
 
-  return {
-    ...calc,
-    currentOperand: result.toString(),
-    lastOperand: calc.currentOperand,
-    lastInput: "sqrt",
-    lastOperation,
-    output,
-  };
+function log(calc: CalcState): CalcState {
+  return applyFunc("log10", calc);
 }
 
 function updateCurrentOperand (calc: CalcState, input: string): CalcState {
@@ -239,6 +231,26 @@ function resolveLastOperation(calc: CalcState, expression: string[]): OperandAff
   return calc.lastOperation
     ? calc.lastOperation
     : new ExpressionParser(expression).getLastOperation();
+}
+
+function applyFunc(func: string, calc: CalcState): CalcState {
+  const expression = [`${func}(${calc.currentOperand})`];
+  const result = evaluate(expression);
+  const output = formatNumber(result, MAX_DIGITS);
+  const parser = new ExpressionParser(calc.expression);
+  const { lastOperator } = parser.getLastOperator();
+  const lastOperation = lastOperator
+    ? { prefix: "", suffix: `${lastOperator}${result}`}
+    : { prefix: `${func}(`, suffix: ")" };
+
+  return {
+    ...calc,
+    currentOperand: result.toString(),
+    lastOperand: calc.currentOperand,
+    lastInput: func,
+    lastOperation,
+    output,
+  };
 }
 
 function buildOutputForNewOperator(

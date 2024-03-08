@@ -24,6 +24,10 @@ const TopButtonBox: React.FC = () => {
     }
   }
 
+  const handleLogButtonClick = () => {
+    dispatch({ type: ActionTypes.LOG }); 
+  }
+
   console.log("rendering TopButtonBox");
 
   return (
@@ -47,7 +51,11 @@ const TopButtonBox: React.FC = () => {
         <MathJax className="scale-75">{"`root()(x)`"}</MathJax>
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button 
+        ariaLabel="log"
+        className="fn"
+        onClick={handleLogButtonClick}
+      >
         <ButtonLabel>
           <MathJax>{"`10^x`"}</MathJax>
         </ButtonLabel>
