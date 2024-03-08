@@ -15,5 +15,7 @@ export const ActionTypes = {
   SQUARE: "SQUARE",
   LOG: "LOG",
   POWER_OF_TEN: "POWER_OF_TEN",
+  NATURAL_LOG: "NATURAL_LOG",
+  EXP_X: "EXP_X",
   ADJUST_VOLTAGE: "ADJUST_VOLTAGE",
 };

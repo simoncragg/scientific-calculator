@@ -1,6 +1,7 @@
 import { 
     create, 
-    evaluateDependencies, 
+    evaluateDependencies,
+    expDependencies,
     factory,
     logDependencies,
     log10Dependencies,
@@ -21,6 +22,7 @@ const createOperation = (name: string, fn: OperationFunction) => factory(name, [
 
 const { evaluate } = create({
   evaluateDependencies,
+  expDependencies,
   logDependencies,
   log10Dependencies,
   sqrtDependencies,
