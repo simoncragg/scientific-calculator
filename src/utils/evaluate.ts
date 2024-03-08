@@ -2,8 +2,10 @@ import {
     create, 
     evaluateDependencies, 
     factory,
+    logDependencies,
     log10Dependencies,
     sqrtDependencies,
+    squareDependencies,
     unaryMinusDependencies,
 } from 'mathjs';
 
@@ -13,21 +15,21 @@ const add = (a: number, b: number) => a + b;
 const subtract = (a: number, b: number) => a - b;
 const multiply = (a: number, b: number) => a * b;
 const divide = (a: number, b: number) => a / b;
-const square = (base: number) => Math.pow(base, 2);
 const powerOfTen = (exponent: number) => Math.pow(10, exponent);
 
 const createOperation = (name: string, fn: OperationFunction) => factory(name, [], () => fn);
 
 const { evaluate } = create({
   evaluateDependencies,
+  logDependencies,
   log10Dependencies,
   sqrtDependencies,
+  squareDependencies,
   unaryMinusDependencies,
   createAdd: createOperation("add", add),
   createSubtract: createOperation("subtract", subtract),
   createMultiply: createOperation("multiply", multiply),
   createDivide: createOperation("divide", divide),
-  createSquare: createOperation("square", square),
   createPowerOfTen: createOperation("powerOfTen", powerOfTen),
 });
 

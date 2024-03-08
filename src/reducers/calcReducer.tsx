@@ -53,6 +53,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.POWER_OF_TEN:
       return powerOfTen(calc);
 
+    case ActionTypes.NATURAL_LOG:
+      return naturalLog(calc);
+
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
       return adjustVoltage(calc, voltageLevel);
@@ -133,6 +136,10 @@ function log(calc: CalcState): CalcState {
 
 function powerOfTen(calc: CalcState): CalcState {
   return applyFunc("powerOfTen", calc);
+}
+
+function naturalLog(calc: CalcState): CalcState {
+  return applyFunc("log", calc);
 }
 
 function updateCurrentOperand (calc: CalcState, input: string): CalcState {

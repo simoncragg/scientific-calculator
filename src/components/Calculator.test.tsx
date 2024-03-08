@@ -199,6 +199,16 @@ it.each([
 });
 
 it.each([
+  {inputs: ["10", "SHIFT", "natural log"], expected: "2.302585093"},
+  {inputs: ["10", "natural log", "="], expected: "2.302585093"},
+  {inputs: ["100", "+", "10", "natural log", "="], expected: "102.3025851"},
+])("performs natural log calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
   {inputs: ["AC"], expected: "0"},
   {inputs: ["5", "C"], expected: "0"},
   {inputs: ["5", "+", "5", "C", "6"], expected: "6"},
@@ -248,6 +258,8 @@ it.each([
   {inputs: ["1", "+", "1.23", "log", "=", "=", "=", "="], expected: "1.359620446"},
   {inputs: ["0.000000001", "SHIFT", "power of ten", "=", "="], expected: "10.00000005"},
   {inputs: ["1", "+", "0.4", "SHIFT", "power of ten", "=", "=", "=", "="], expected: "11.04754573"},
+  {inputs: ["100", "natural log", "=", "=", "=", "="], expected: "-0.85938442"},
+  {inputs: ["1", "+", "10", "natural log", "=", "=", "=", "="], expected: "10.2103403"},
 ])(
   "repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
   async ({inputs, expected}) => {

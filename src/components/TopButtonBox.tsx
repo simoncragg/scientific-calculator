@@ -22,7 +22,7 @@ const TopButtonBox: React.FC = () => {
     } else {
       dispatch({ type: ActionTypes.SQUARE_ROOT }); 
     }
-  }
+  };
 
   const handleLogButtonClick = () => {
     if (isShiftEnabled) {
@@ -31,7 +31,11 @@ const TopButtonBox: React.FC = () => {
     } else {
       dispatch({ type: ActionTypes.LOG });
     }
-  }
+  };
+
+  const handleNaturalLogButtonClick = () => {
+    dispatch({ type: ActionTypes.NATURAL_LOG });
+  };
 
   console.log("rendering TopButtonBox");
 
@@ -67,7 +71,7 @@ const TopButtonBox: React.FC = () => {
         log
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button ariaLabel="natural log" className="fn" onClick={handleNaturalLogButtonClick}>
         <ButtonLabel>
           <MathJax>{"`e^x`"}</MathJax>
         </ButtonLabel>
