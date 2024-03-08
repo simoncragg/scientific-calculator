@@ -25,7 +25,12 @@ const TopButtonBox: React.FC = () => {
   }
 
   const handleLogButtonClick = () => {
-    dispatch({ type: ActionTypes.LOG }); 
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.POWER_OF_TEN });
+      toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.LOG });
+    }
   }
 
   console.log("rendering TopButtonBox");
@@ -52,7 +57,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="log"
+        ariaLabel={isShiftEnabled ? "power of ten" : "log"}
         className="fn"
         onClick={handleLogButtonClick}
       >

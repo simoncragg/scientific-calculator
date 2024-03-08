@@ -41,14 +41,17 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.PERCENT:
       return percent(calc);
 
+    case ActionTypes.SQUARE_ROOT:
+        return squareRoot(calc);
+
     case ActionTypes.SQUARE:
       return square(calc);
 
-    case ActionTypes.SQUARE_ROOT:
-      return squareRoot(calc);
-
     case ActionTypes.LOG:
       return log(calc);
+
+    case ActionTypes.POWER_OF_TEN:
+      return powerOfTen(calc);
 
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
@@ -117,22 +120,7 @@ function percent(calc: CalcState): CalcState {
 }
 
 function square(calc: CalcState): CalcState {
-  const result = evaluate([calc.currentOperand, "^", "2"]);
-  const output = formatNumber(result, MAX_DIGITS);
-  const parser = new ExpressionParser(calc.expression);
-  const { lastOperator } = parser.getLastOperator();
-  const lastOperation = lastOperator
-    ? { prefix: "", suffix: `${lastOperator}${result}`}
-    : { prefix: "", suffix: "^2" };
-
-  return {
-    ...calc,
-    currentOperand: result.toString(),
-    lastOperand: calc.currentOperand,
-    lastInput: "square",
-    lastOperation,
-    output,
-  };
+  return applyFunc("square", calc);
 }
 
 function squareRoot(calc: CalcState): CalcState {
@@ -141,6 +129,10 @@ function squareRoot(calc: CalcState): CalcState {
 
 function log(calc: CalcState): CalcState {
   return applyFunc("log10", calc);
+}
+
+function powerOfTen(calc: CalcState): CalcState {
+  return applyFunc("powerOfTen", calc);
 }
 
 function updateCurrentOperand (calc: CalcState, input: string): CalcState {

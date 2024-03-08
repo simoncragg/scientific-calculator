@@ -159,16 +159,6 @@ it.each([
 });
 
 it.each([
-  {inputs: ["5", "SHIFT", "square"], expected: "25"},
-  {inputs: ["5", "SHIFT", "square", "="], expected: "25"},
-  {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1023"},
-])("performs square calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
-  renderCalculator();
-  pressButtons(inputs);
-  await assertOutputIsEqualTo(expected);
-});
-
-it.each([
   {inputs: ["144", "square root"], expected: "12"},
   {inputs: ["144", "square root", "="], expected: "12"},
   {inputs: ["100", "+", "144", "square root", "="], expected: "112"},
@@ -179,10 +169,30 @@ it.each([
 });
 
 it.each([
+  {inputs: ["5", "SHIFT", "square"], expected: "25"},
+  {inputs: ["5", "SHIFT", "square", "="], expected: "25"},
+  {inputs: ["123", "+", "30", "SHIFT", "square", "="], expected: "1023"},
+])("performs square calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
   {inputs: ["1.23", "log"], expected: "0.089905111"},
   {inputs: ["1.23", "log", "="], expected: "0.089905111"},
   {inputs: ["100", "+", "1.23", "log", "="], expected: "100.0899051"},
 ])("performs log calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
+  renderCalculator();
+  pressButtons(inputs);
+  await assertOutputIsEqualTo(expected);
+});
+
+it.each([
+  {inputs: ["0.4", "SHIFT", "power of ten"], expected: "2.511886432"},
+  {inputs: ["0.4", "SHIFT", "power of ten", "="], expected: "2.511886432"},
+  {inputs: ["100", "+", "10", "SHIFT", "power of ten", "="], expected: "101"},
+])("performs power of ten calculations: $inputs 🡢 $expected", async ({inputs, expected}) => {
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
@@ -236,6 +246,8 @@ it.each([
   {inputs: ["1", "+", "144", "square root", "=", "=", "=", "="], expected: "49"},
   {inputs: ["1.23", "log", "=", "="], expected: "-1.046215616"},
   {inputs: ["1", "+", "1.23", "log", "=", "=", "=", "="], expected: "1.359620446"},
+  {inputs: ["0.000000001", "SHIFT", "power of ten", "=", "="], expected: "10.00000005"},
+  {inputs: ["1", "+", "0.4", "SHIFT", "power of ten", "=", "=", "=", "="], expected: "11.04754573"},
 ])(
   "repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
   async ({inputs, expected}) => {
