@@ -140,7 +140,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="sin"
+        ariaLabel="sine"
         className="fn" 
         onClick={handleSinButtonClick}>
         <ButtonLabel>

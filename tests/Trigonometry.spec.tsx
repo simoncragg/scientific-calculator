@@ -14,7 +14,7 @@ describe("Trigonometry", () => {
     {inputs: ["45", "sin"], expected: "0.707106781"},
     {inputs: ["45", "sin", "="], expected: "0.707106781"},
     {inputs: ["45", "sin", "SHIFT", "square"], expected: "0.5"},
-  ])("can perform a sin operations in DEG mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+  ])("can perform a sine operations in DEG mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });
@@ -23,7 +23,7 @@ describe("Trigonometry", () => {
     {inputs: ["DRG▸", "45", "sin"], expected: "0.850903525"},
     {inputs: ["DRG▸", "45", "sin", "="], expected: "0.850903525"},
     {inputs: ["DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.724036808"},
-  ])("can perform a sin operations in RAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+  ])("can perform a sine operations in RAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });
@@ -32,7 +32,7 @@ describe("Trigonometry", () => {
     {inputs: ["DRG▸", "DRG▸", "45", "sin"], expected: "0.649448048"},
     {inputs: ["DRG▸", "DRG▸", "45", "sin", "="], expected: "0.649448048"},
     {inputs: ["DRG▸", "DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.421782767"},
-  ])("can perform a sin operations in GRAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+  ])("can perform a sine operations in GRAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });

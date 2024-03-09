@@ -26,6 +26,7 @@ export const mapToAriaLabel = (input: string): string => {
   if (input === "÷") return "divide";
   if (input === ".") return "decimal point";
   if (input === "%") return "percent";
+  if (input === "sin") return "sine";
   if (input === "=") return "equals";
   return input;
 };
