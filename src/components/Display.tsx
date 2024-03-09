@@ -4,9 +4,9 @@ import { useCalcState } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
 
 const drgModePositions = { 
-  "DEG": "left-32",
-  "RAD": "left-40",
-  "GRA": "left-48",
+  "deg": "left-32",
+  "rad": "left-40",
+  "grad": "left-48",
 };
 
 const Display: React.FC = () => {
@@ -36,7 +36,7 @@ const Display: React.FC = () => {
       
       <span 
         aria-label="drg mode indicator"
-        className={`leading-none absolute top-1.5 px-0.5 text-xs text-stone-800 rounded-sm ${drgModePosition}`}
+        className={`leading-none absolute top-1.5 px-0.5 uppercase text-xs text-stone-800 rounded-sm ${drgModePosition}`}
         style={{ opacity: voltageLevel }}
       >
         {drgMode}

@@ -1,5 +1,5 @@
 export type OperatorType = "+" | "-" | "*" | "/";
-export type DrgModeType = "DEG" | "RAD" | "GRA";
+export type DrgModeType = "deg" | "rad" | "grad";
 
 export interface ShiftState {
   isShiftEnabled: boolean;

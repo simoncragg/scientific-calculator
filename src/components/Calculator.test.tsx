@@ -207,16 +207,43 @@ describe("Calculator", () => {
     assertOutputIsEqualTo(expected);
   });
 
-  it("can cycle through all three DRG modes", () => {
+  it("can cycle through all three DRG▸s", () => {
     const drgModeEl = screen.getByLabelText("drg mode indicator");
     const modeCount = DRG_MODES.length;
     for (let i = 0; i < modeCount; i++) {
       const expectedCurrentMode = DRG_MODES[i % modeCount];
       const expectedNewMode = DRG_MODES[(i + 1) % modeCount];
       expect(drgModeEl).toHaveTextContent(expectedCurrentMode);
-      pressButton("drg mode");
+      pressButton("DRG▸");
       expect(drgModeEl).toHaveTextContent(expectedNewMode);
     }
+  });
+
+  it.each([
+    {inputs: ["45", "sin"], expected: "0.707106781"},
+    {inputs: ["45", "sin", "="], expected: "0.707106781"},
+    {inputs: ["45", "sin", "SHIFT", "square"], expected: "0.5"},
+  ])("can perform a sin operations in DEG mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
+    {inputs: ["DRG▸", "45", "sin"], expected: "0.850903525"},
+    {inputs: ["DRG▸", "45", "sin", "="], expected: "0.850903525"},
+    {inputs: ["DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.724036808"},
+  ])("can perform a sin operations in RAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
+    {inputs: ["DRG▸", "DRG▸", "45", "sin"], expected: "0.649448048"},
+    {inputs: ["DRG▸", "DRG▸", "45", "sin", "="], expected: "0.649448048"},
+    {inputs: ["DRG▸", "DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.421782767"},
+  ])("can perform a sin operations in GRAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
   });
 
   it.each([
@@ -270,6 +297,10 @@ describe("Calculator", () => {
     {inputs: ["1", "+", "10", "natural log", "=", "=", "=", "="], expected: "10.2103403"},
     {inputs: ["1", "SHIFT", "exp x", "=", "=", "=" ], expected: "3814279.105"},
     {inputs: ["1", "+", "10", "SHIFT", "exp x", "=", "=", "=", "="], expected: "88106.86318"},
+    {inputs: ["45", "sin", "=", "=", "=", "=" ], expected: "0.000003759"},
+    {inputs: ["1", "+", "45", "sin", "=", "=", "=", "="], expected: "3.828427125"},
+    {inputs: ["DRG▸", "45", "sin", "=", "=", "=", "=" ], expected: "0.631131059"},
+     {inputs: ["DRG▸", "1", "+", "45", "sin", "=", "=", "=", "="], expected: "4.403614098"},
   ])(
     "repeats the last operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
     ({inputs, expected}) => {
@@ -427,6 +458,7 @@ describe("Calculator", () => {
 
   const getMappedName = (key: string) => {
     if (key === "SHIFT") return "shift";
+    if (key === "DRG▸") return "drg mode";
     if (key === "+") return "plus";
     if (key === "-") return "minus";
     if (key === "×") return "multiply";

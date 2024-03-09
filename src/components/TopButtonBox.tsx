@@ -51,7 +51,11 @@ const TopButtonBox: React.FC = () => {
 
   const handleDrgModeButtonClick = () => {
     dispatch({ type: ActionTypes.CYCLE_DRG_MODE });
-  }
+  };
+
+  const handleSinButtonClick = () => {
+    dispatch({ type: ActionTypes.SIN });
+  };
 
   //console.log("rendering TopButtonBox");
 
@@ -135,7 +139,10 @@ const TopButtonBox: React.FC = () => {
         hyp
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button 
+        ariaLabel="sin"
+        className="fn" 
+        onClick={handleSinButtonClick}>
         <ButtonLabel>
           <MathJax>{"`sin^-1`"}</MathJax>
         </ButtonLabel>

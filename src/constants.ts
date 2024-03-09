@@ -3,7 +3,7 @@ import type { DrgModeType } from "./types";
 export const MAX_DIGITS = 10;
 export const INVERT_SYMBOL = "+/-";
 export const ALL_CLEAR_SYMBOL = "AC";
-export const DRG_MODES: DrgModeType[] = ["DEG", "RAD", "GRA"];
+export const DRG_MODES: DrgModeType[] = ["deg", "rad", "grad"];
 
 export const ActionTypes = {
   ALL_CLEAR: "ALL_CLEAR",
@@ -21,5 +21,6 @@ export const ActionTypes = {
   POWER_OF_TEN: "POWER_OF_TEN",
   NATURAL_LOG: "NATURAL_LOG",
   EXP_X: "EXP_X",
+  SIN: "SIN",
   ADJUST_VOLTAGE: "ADJUST_VOLTAGE",
 };

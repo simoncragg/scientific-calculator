@@ -15,7 +15,7 @@ export const CalculatorStoreProvider = ({
 }: CalculatorStoreProvider) => {
    
   const [calc, dispatch] = useReducer(calcReducer, {
-    drgMode: "DEG",
+    drgMode: "deg",
     currentOperand: "0",
     expression: [],
     output: "0",
