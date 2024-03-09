@@ -50,4 +50,12 @@ describe("Input", () => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });
+
+  it.each([
+    {inputs: ["2", "SHIFT", "square", "1", "2", "3"], expected: "123"},
+    {inputs: ["144", "square root", "7", "7", "7"], expected: "777"},
+  ])("replaces current operand after function with new digit", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
 });

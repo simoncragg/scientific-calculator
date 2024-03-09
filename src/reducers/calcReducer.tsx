@@ -174,8 +174,7 @@ function updateCurrentOperand (calc: CalcState, input: string): CalcState {
   if (getDigitCount(calc.currentOperand) === MAX_DIGITS) return calc;
   if (input === "." && calc.currentOperand.includes(".")) return calc;
 
-  const isFirstDigit = calc.currentOperand === "0" && input !== "." || calc.lastInput === "=";
-  const currentOperand = isFirstDigit ? input : calc.currentOperand + input;
+  const currentOperand = isFirstDigit(input, calc) ? input : calc.currentOperand + input;
   const output = currentOperand;
 
   return {
@@ -312,4 +311,18 @@ function buildOutputForNewOperator(
   }
 
   return formatNumber(parseFloat(operand), MAX_DIGITS);
+}
+
+function isFirstDigit(input: string, calc: CalcState) {
+  return calc.currentOperand === "0" && 
+    input !== "." || 
+    calc.lastInput === "=" ||
+    isFunction(calc.lastInput)
+}
+
+function isFunction(input: string | undefined): boolean {
+  return input !== undefined &&
+    input !== "." && 
+    input !== "+/-" &&
+    isNaN(Number(input));
 }
