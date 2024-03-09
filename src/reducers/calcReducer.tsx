@@ -12,7 +12,7 @@ import ExpressionParser from "../classes/ExpressionParser";
 import evaluate from '../utils/evaluate';
 import formatNumber from "../utils/formatNumber";
 import getDigitCount from "../utils/getDigitCount";
-import { ActionTypes, DRG_MODES, INVERT_SYMBOL, MAX_DIGITS } from '../constants';
+import { ActionTypes, DRG_MODES, MAX_DIGITS } from '../constants';
 
 export default function calcReducer(calc: CalcState, action: Action): CalcState {
 
@@ -104,7 +104,7 @@ function invertNumber(calc: CalcState): CalcState {
   return {
     ...calc,
     currentOperand: invertedNumber.toString(),
-    lastInput: INVERT_SYMBOL,
+    lastInput: "+/-",
     output,
   };
 }

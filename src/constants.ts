@@ -1,8 +1,6 @@
 import type { DrgModeType } from "./types";
 
 export const MAX_DIGITS = 10;
-export const INVERT_SYMBOL = "+/-";
-export const ALL_CLEAR_SYMBOL = "AC";
 export const DRG_MODES: DrgModeType[] = ["deg", "rad", "grad"];
 
 export const ActionTypes = {
