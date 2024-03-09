@@ -2,6 +2,8 @@ import type {
   Action,
   AdjustVoltagePayload,
   CalcState,
+  ExecuteFunctionPayload,
+  FunctionType,
   OperandAffixes,
   OperatorType,
   UpdateCurrentOperandPayload,
@@ -44,26 +46,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
     case ActionTypes.PERCENT:
       return percent(calc);
 
-    case ActionTypes.SQUARE_ROOT:
-        return squareRoot(calc);
-
-    case ActionTypes.SQUARE:
-      return square(calc);
-
-    case ActionTypes.LOG:
-      return log(calc);
-
-    case ActionTypes.POWER_OF_TEN:
-      return powerOfTen(calc);
-
-    case ActionTypes.NATURAL_LOG:
-      return naturalLog(calc);
-
-    case ActionTypes.EXP_X:
-      return expX(calc);
-
-    case ActionTypes.SIN:
-      return sin(calc);
+    case ActionTypes.EXECUTE_FUNCTION:
+      const { func } = action.payload as ExecuteFunctionPayload;
+      return executeFunction(func, calc);
 
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
@@ -130,34 +115,6 @@ function percent(calc: CalcState): CalcState {
     lastOperation,
     output: formattedResult,
   };
-}
-
-function square(calc: CalcState): CalcState {
-  return applyFunc("square", calc);
-}
-
-function squareRoot(calc: CalcState): CalcState {
-  return applyFunc("sqrt", calc);
-}
-
-function log(calc: CalcState): CalcState {
-  return applyFunc("log10", calc);
-}
-
-function powerOfTen(calc: CalcState): CalcState {
-  return applyFunc("powerOfTen", calc);
-}
-
-function naturalLog(calc: CalcState): CalcState {
-  return applyFunc("log", calc);
-}
-
-function expX(calc: CalcState): CalcState {
-  return applyFunc("exp", calc);
-}
-
-function sin(calc: CalcState): CalcState {
-  return applyFunc("sin", calc);
 }
 
 function cycleDrgMode(calc: CalcState): CalcState {
@@ -259,7 +216,7 @@ function resolveLastOperation(calc: CalcState, expression: string[]): OperandAff
     : new ExpressionParser(expression).getLastOperation();
 }
 
-function applyFunc(func: string, calc: CalcState): CalcState {
+function executeFunction(func: FunctionType, calc: CalcState): CalcState {
   const isTrig = isTrigonometric(func);
   const mode = isTrig ? ` ${calc.drgMode}` : "";
 

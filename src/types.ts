@@ -1,5 +1,6 @@
 export type OperatorType = "+" | "-" | "*" | "/";
 export type DrgModeType = "deg" | "rad" | "grad";
+export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | "sin";
 
 export interface ShiftState {
   isShiftEnabled: boolean;
@@ -24,7 +25,15 @@ export interface OperandAffixes {
 
 export interface Action {
   type: string;
-  payload?: UpdateCurrentOperandPayload | UpdateExpressionPayload | AdjustVoltagePayload;
+  payload?: AdjustVoltagePayload | ExecuteFunctionPayload | UpdateCurrentOperandPayload | UpdateExpressionPayload;
+}
+
+export interface AdjustVoltagePayload {
+  voltageLevel: number;
+}
+
+export interface ExecuteFunctionPayload {
+  func: FunctionType;
 }
 
 export interface UpdateCurrentOperandPayload {
@@ -33,10 +42,6 @@ export interface UpdateCurrentOperandPayload {
   
 export interface UpdateExpressionPayload {
   operator: OperatorType;
-}
-
-export interface AdjustVoltagePayload {
-  voltageLevel: number;
 }
 
 export interface GetLastOperatorResultType {

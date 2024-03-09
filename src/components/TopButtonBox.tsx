@@ -17,28 +17,28 @@ const TopButtonBox: React.FC = () => {
 
   const handleSquareRootButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.SQUARE }); 
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "square" } }); 
       toggleShift();
     } else {
-      dispatch({ type: ActionTypes.SQUARE_ROOT }); 
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sqrt" } });
     }
   };
 
   const handleLogButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.POWER_OF_TEN });
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "powerOfTen" } });
       toggleShift();
     } else {
-      dispatch({ type: ActionTypes.LOG });
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "log10" } });
     }
   };
 
   const handleNaturalLogButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXP_X });
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "exp" } });
       toggleShift();
     } else {
-      dispatch({ type: ActionTypes.NATURAL_LOG });
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "log" } });
     }
   };
 
@@ -54,7 +54,7 @@ const TopButtonBox: React.FC = () => {
   };
 
   const handleSinButtonClick = () => {
-    dispatch({ type: ActionTypes.SIN });
+    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sin" }});
   };
 
   //console.log("rendering TopButtonBox");
