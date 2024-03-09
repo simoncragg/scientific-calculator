@@ -1,37 +1,33 @@
 import { 
-    create, 
-    evaluateDependencies,
-    expDependencies,
-    factory,
-    logDependencies,
-    log10Dependencies,
-    sqrtDependencies,
-    squareDependencies,
-    unaryMinusDependencies,
+  addDependencies,
+  create,
+  divideDependencies,
+  evaluateDependencies,
+  expDependencies,
+  factory,
+  logDependencies,
+  log10Dependencies,
+  multiplyDependencies,
+  sqrtDependencies,
+  squareDependencies,
+  subtractDependencies,
 } from 'mathjs';
 
-type OperationFunction = (a: number, b: number) => number;
-
-const add = (a: number, b: number) => a + b;
-const subtract = (a: number, b: number) => a - b;
-const multiply = (a: number, b: number) => a * b;
-const divide = (a: number, b: number) => a / b;
+type OperationFunction = (...args: number[]) => number;
+const createOperation = (name: string, fn: OperationFunction) => factory(name, [], () => fn);
 const powerOfTen = (exponent: number) => Math.pow(10, exponent);
 
-const createOperation = (name: string, fn: OperationFunction) => factory(name, [], () => fn);
-
 const { evaluate } = create({
+  addDependencies,
+  divideDependencies,
   evaluateDependencies,
   expDependencies,
   logDependencies,
   log10Dependencies,
+  multiplyDependencies,
   sqrtDependencies,
   squareDependencies,
-  unaryMinusDependencies,
-  createAdd: createOperation("add", add),
-  createSubtract: createOperation("subtract", subtract),
-  createMultiply: createOperation("multiply", multiply),
-  createDivide: createOperation("divide", divide),
+  subtractDependencies,
   createPowerOfTen: createOperation("powerOfTen", powerOfTen),
 });
 
