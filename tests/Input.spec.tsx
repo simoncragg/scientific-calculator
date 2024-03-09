@@ -1,0 +1,53 @@
+import "@testing-library/jest-dom"
+import React from "react";
+import { render } from "@testing-library/react"
+import App from "../src/components/App"
+import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
+
+describe("Input", () => {
+
+  beforeEach(() => {
+    render(<App />);
+  });
+
+  it.each([
+    {inputs: ["12345678901"], expected: "1234567890"},
+    {inputs: ["0.1234567890"], expected: "0.123456789"},
+    {inputs: ["0.1234567890", "+/-"], expected: "-0.123456789"},
+    {inputs: ["0.123", "+/-", "4567890"], expected: "-0.123456789"}
+  ])("limits the maximum length of an operand to 10 digits: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
+    {inputs: ["0"], expected: "0"},
+    {inputs: ["00"], expected: "0"},
+    {inputs: ["01"], expected: "1"},
+    {inputs: ["123"], expected: "123"},
+  ])("displays inputed integer operand: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
+    {inputs: ["0.0"], expected: "0.0"},
+    {inputs: [".0"], expected: "0.0"},
+    {inputs: ["0.00"], expected: "0.00"},
+    {inputs: ["0.009"], expected: "0.009"},
+    {inputs: ["12.0210"], expected: "12.0210"},
+  ])("displays inputed decimal operand: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
+    {inputs: ["÷", "×", "+", "-", "+", "5", "="], expected: "5"},
+    {inputs: ["÷", "×", "+", "-", "+", "-", "5", "="], expected: "-5"},
+    {inputs: ["2", "÷", "×", "+", "-", "+", "×", "÷", "1", "="], expected: "2"},
+    {inputs: ["1", "÷", "×", "+", "-", "+", "×", "2"], expected: "2"}
+  ])("handles consecutive operation selections: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+});
