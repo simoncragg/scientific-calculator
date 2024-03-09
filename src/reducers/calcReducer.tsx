@@ -12,17 +12,20 @@ import ExpressionParser from "../classes/ExpressionParser";
 import evaluate from '../utils/evaluate';
 import formatNumber from "../utils/formatNumber";
 import getDigitCount from "../utils/getDigitCount";
-import { ActionTypes, INVERT_SYMBOL, MAX_DIGITS } from '../constants';
+import { ActionTypes, DRG_MODES, INVERT_SYMBOL, MAX_DIGITS } from '../constants';
 
 export default function calcReducer(calc: CalcState, action: Action): CalcState {
 
   switch (action.type) {
 
     case ActionTypes.ALL_CLEAR:
-      return allClear();
+      return allClear(calc);
 
     case ActionTypes.CLEAR:
       return clear(calc);
+
+    case ActionTypes.CYCLE_DRG_MODE:
+      return cycleDrgMode(calc);
 
     case ActionTypes.UPDATE_CURRENT_OPERAND:
       const { input } = action.payload as UpdateCurrentOperandPayload; 
@@ -68,8 +71,9 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
   }
 }
 
-function allClear(): CalcState {
+function allClear(calc: CalcState): CalcState {
   return {
+    drgMode: calc.drgMode,
     expression: [],
     currentOperand: "0",
     output: "0",
@@ -147,6 +151,16 @@ function naturalLog(calc: CalcState): CalcState {
 
 function expX(calc: CalcState): CalcState {
   return applyFunc("exp", calc);
+}
+
+function cycleDrgMode(calc: CalcState): CalcState {
+  const currentIndex = DRG_MODES.indexOf(calc.drgMode);
+  const nextIndex = (currentIndex + 1) % DRG_MODES.length;
+
+  return {
+    ...calc,
+    drgMode: DRG_MODES[nextIndex],
+  };
 }
 
 function updateCurrentOperand (calc: CalcState, input: string): CalcState {

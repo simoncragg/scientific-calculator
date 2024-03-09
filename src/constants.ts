@@ -1,10 +1,14 @@
+import type { DrgModeType } from "./types";
+
 export const MAX_DIGITS = 10;
 export const INVERT_SYMBOL = "+/-";
 export const ALL_CLEAR_SYMBOL = "AC";
+export const DRG_MODES: DrgModeType[] = ["DEG", "RAD", "GRA"];
 
 export const ActionTypes = {
   ALL_CLEAR: "ALL_CLEAR",
   CLEAR: "CLEAR",
+  CYCLE_DRG_MODE: "CYCLE_DRG_MODE",
   TOGGLE_SHIFT_STATE: "TOGGLE_SHIFT_STATE",
   UPDATE_CURRENT_OPERAND: "UPDATE_CURRENT_OPERAND",
   UPDATE_EXPRESSION: "UPDATE_EXPRESSION",

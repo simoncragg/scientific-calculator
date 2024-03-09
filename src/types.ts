@@ -1,4 +1,5 @@
 export type OperatorType = "+" | "-" | "*" | "/";
+export type DrgModeType = "DEG" | "RAD" | "GRA";
 
 export interface ShiftState {
   isShiftEnabled: boolean;
@@ -6,6 +7,7 @@ export interface ShiftState {
 }
 
 export interface CalcState {
+  drgMode: DrgModeType;
   currentOperand: string;
   expression: string[];
   lastInput?: string;

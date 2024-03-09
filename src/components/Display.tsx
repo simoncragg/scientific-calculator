@@ -3,11 +3,23 @@ import OperatorIndicator from "./OperatorIndicator";
 import { useCalcState } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
 
+const drgModePositions = { 
+  "DEG": "left-32",
+  "RAD": "left-40",
+  "GRA": "left-48",
+};
+
 const Display: React.FC = () => {
-  const { output, voltageLevel, lastInput } = useCalcState();
+  const { drgMode, output, lastInput, voltageLevel } = useCalcState();
   const { isShiftEnabled } = useShift();
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
   const [isExponential, setIsExponential] = useState(false);
+  const [drgModePosition, setDrgModePosition] = useState("left-32");
+
+  useEffect(() => {
+    const position = drgModePositions[drgMode];
+    setDrgModePosition(position);
+  }, [drgMode])
 
   useEffect(() => {
     setShowEqualsIndicator(lastInput === "=");
@@ -22,17 +34,13 @@ const Display: React.FC = () => {
   return (
     <div className="relative flex w-[307px] h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
       
-      <OperatorIndicator />
-
-      {showEqualsIndicator && (
-        <span 
-          aria-label="equals indicator"
-          className="absolute -top-[7px] left-2 text-3xl text-stone-800"
-          style={{ opacity: voltageLevel }}
-        >
-            =
-          </span>
-      )}
+      <span 
+        aria-label="drg mode indicator"
+        className={`leading-none absolute top-1.5 px-0.5 text-xs text-stone-800 rounded-sm ${drgModePosition}`}
+        style={{ opacity: voltageLevel }}
+      >
+        {drgMode}
+      </span>    
 
       {isShiftEnabled && (
         <span 
@@ -41,6 +49,16 @@ const Display: React.FC = () => {
           style={{ opacity: voltageLevel }}
         >
             S
+          </span>
+      )}
+
+      {showEqualsIndicator && (
+        <span 
+          aria-label="equals indicator"
+          className="absolute -top-[7px] left-2 text-3xl text-stone-800"
+          style={{ opacity: voltageLevel }}
+        >
+            =
           </span>
       )}
 
@@ -57,6 +75,8 @@ const Display: React.FC = () => {
           )}
       </span>
       
+      <OperatorIndicator />
+
     </div>
   );
 };

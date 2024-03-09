@@ -49,6 +49,10 @@ const TopButtonBox: React.FC = () => {
     });
   };
 
+  const handleDrgModeButtonClick = () => {
+    dispatch({ type: ActionTypes.CYCLE_DRG_MODE });
+  }
+
   //console.log("rendering TopButtonBox");
 
   return (
@@ -94,7 +98,11 @@ const TopButtonBox: React.FC = () => {
         ln
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button 
+        ariaLabel="drg mode"
+        className="fn" 
+        onClick={handleDrgModeButtonClick}
+      >
         <span className="ml-1">DRG▸</span>
       </Button>
 

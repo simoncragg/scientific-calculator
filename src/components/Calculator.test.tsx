@@ -4,6 +4,7 @@ import { render, fireEvent, screen } from "@testing-library/react"
 
 import Calculator from "./Calculator"
 import { CalculatorStoreProvider } from "../CalculatorStore";
+import { DRG_MODES } from "../constants";
 
 it("displays zero on start up", async () => {
   renderCalculator();
@@ -216,6 +217,19 @@ it.each([
   renderCalculator();
   pressButtons(inputs);
   await assertOutputIsEqualTo(expected);
+});
+
+it("can cycle through all three DRG modes", async () => {
+  renderCalculator();
+  const drgModeEl = screen.getByLabelText("drg mode indicator");
+  const modeCount = DRG_MODES.length;
+  for (let i = 0; i < modeCount; i++) {
+    const expectedCurrentMode = DRG_MODES[i % modeCount];
+    const expectedNewMode = DRG_MODES[(i + 1) % modeCount];
+    expect(drgModeEl).toHaveTextContent(expectedCurrentMode);
+    pressButton("drg mode");
+    expect(drgModeEl).toHaveTextContent(expectedNewMode);
+  }
 });
 
 it.each([
