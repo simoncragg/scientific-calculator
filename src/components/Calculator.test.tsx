@@ -451,22 +451,22 @@ describe("Calculator", () => {
     }
   };
 
-  const pressButton = (key: string) => {
-    const name = getMappedName(key);
-    fireEvent.click(screen.getByRole("button", { name }));
+  const pressButton = (input: string) => {
+    const ariaLabel = mapToAriaLabel(input);
+    fireEvent.click(screen.getByRole("button", { name: ariaLabel }));
   };
 
-  const getMappedName = (key: string) => {
-    if (key === "SHIFT") return "shift";
-    if (key === "DRG▸") return "drg mode";
-    if (key === "+") return "plus";
-    if (key === "-") return "minus";
-    if (key === "×") return "multiply";
-    if (key === "÷") return "divide";
-    if (key === ".") return "decimal point";
-    if (key === "%") return "percent";
-    if (key === "=") return "equals";
-    return key;
+  const mapToAriaLabel = (input: string): string => {
+    if (input === "SHIFT") return "shift";
+    if (input === "DRG▸") return "drg mode";
+    if (input === "+") return "plus";
+    if (input === "-") return "minus";
+    if (input === "×") return "multiply";
+    if (input === "÷") return "divide";
+    if (input === ".") return "decimal point";
+    if (input === "%") return "percent";
+    if (input === "=") return "equals";
+    return input;
   }
 
   const assertOutputIsEqualTo = (expected: string) => {
