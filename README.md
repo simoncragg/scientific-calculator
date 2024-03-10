@@ -1,10 +1,10 @@
-# 🧮 Calculator App
+# 🧮 Scientific Calculator
 
-A sleek and intuitive Calculator web app, built with React and TypeScript.
+Drawing inspiration from the iconic CASIO scientific calculators, this TypeScript-powered calculator faithfully replicates the beloved functionality of its predecessors, ensuring a timeless user experience cherished by generations of mathematicians and scientists.
 
-![image](./assets/calc-640x640-min.png)
+![image](./assets/scientific-calc-580x700.png)
 
-Live Demo: <a href="https://endearing-crepe-0516dc.netlify.app/" target="_blank">https://endearing-crepe-0516dc.netlify.app/</a>
+Live Demo: [https://solarsim-fx82ts.netlify.app/](https://solarsim-fx82ts.netlify.app/)
 
 ## Installation
 
