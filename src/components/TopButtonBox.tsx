@@ -54,7 +54,12 @@ const TopButtonBox: React.FC = () => {
   };
 
   const handleSinButtonClick = () => {
-    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sin" }});
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "asin" } });
+      toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sin" }});
+    }
   };
 
   //console.log("rendering TopButtonBox");
@@ -140,7 +145,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="sine"
+        ariaLabel={isShiftEnabled ? "arc sine" : "sine"}
         className="fn" 
         onClick={handleSinButtonClick}>
         <ButtonLabel>

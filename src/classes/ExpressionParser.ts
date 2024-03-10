@@ -1,10 +1,11 @@
 import type { 
+  FunctionType,
   GetLastOperatorResultType, 
   OperandAffixes, 
   OperatorType
 } from "../types";
 
-import isTrigonometric from "../utils/isTrigonometric";
+import { isTrigonometric } from "../utils/function-classifiers";
 
 class ExpressionParser {
 
@@ -72,7 +73,7 @@ class ExpressionParser {
   }
 
   determineLastOperation(
-    func: string, 
+    func: FunctionType, 
     result: number
   ): OperandAffixes { 
   

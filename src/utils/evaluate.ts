@@ -1,5 +1,6 @@
 import { 
   addDependencies,
+  asinDependencies,
   create,
   divideDependencies,
   evaluateDependencies,
@@ -20,6 +21,7 @@ const powerOfTen = (exponent: number) => Math.pow(10, exponent);
 
 const { evaluate } = create({
   addDependencies,
+  asinDependencies,
   divideDependencies,
   evaluateDependencies,
   expDependencies,

@@ -1,6 +1,6 @@
 export type OperatorType = "+" | "-" | "*" | "/";
 export type AngleUnit = "deg" | "rad" | "grad";
-export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | "sin";
+export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | "sin" | "asin";
 
 export interface ShiftState {
   isShiftEnabled: boolean;

@@ -18,17 +18,20 @@ export const pressButton = (input: string) => {
 };
 
 export const mapToAriaLabel = (input: string): string => {
-  if (input === "SHIFT") return "shift";
-  if (input === "DRG▸") return "angle mode";
-  if (input === "+") return "plus";
-  if (input === "-") return "minus";
-  if (input === "×") return "multiply";
-  if (input === "÷") return "divide";
-  if (input === ".") return "decimal point";
-  if (input === "%") return "percent";
-  if (input === "sin") return "sine";
-  if (input === "=") return "equals";
-  return input;
+  switch (input) {
+    case "SHIFT": return "shift";
+    case "DRG▸": return "angle mode";
+    case "+": return "plus";
+    case "-": return "minus";
+    case "×": return "multiply";
+    case "÷": return "divide";
+    case ".": return "decimal point";
+    case "%": return "percent";
+    case "sin": return "sine";
+    case "asin": return "arc sine"
+    case "=": return "equals";
+    default: return input;
+  }
 };
 
 export const assertOutputIsEqualTo = (expected: string) => {

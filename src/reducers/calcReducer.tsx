@@ -2,7 +2,6 @@ import type {
   Action,
   AdjustVoltagePayload,
   CalcState,
-  AngleUnit,
   ExecuteFunctionPayload,
   FunctionType,
   OperandAffixes,
@@ -11,14 +10,14 @@ import type {
   UpdateExpressionPayload
 } from "../types";
 
+import ExpressionBuilder from "../classes/ExpressionBuilder";
 import ExpressionParser from "../classes/ExpressionParser";
-import convertToRadians from "../utils/convertToRadians";
 import evaluate from '../utils/evaluate';
 import formatNumber from "../utils/formatNumber";
 import getDigitCount from "../utils/getDigitCount";
-import isTrigonometric from "../utils/isTrigonometric";
 import { ActionTypes, ANGLE_MODES, MAX_DIGITS } from '../constants';
-import ExpressionBuilder from "../classes/ExpressionBuilder";
+import { convertFromRadians } from "../utils/angle-conversion";
+import { isInverseTrigonometric } from "../utils/function-classifiers";
 
 export default function calcReducer(calc: CalcState, action: Action): CalcState {
 
@@ -224,6 +223,10 @@ function executeFunction(func: FunctionType, calc: CalcState): CalcState {
 
   const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
   let result = evaluate([expression]);
+  
+  if (isInverseTrigonometric(func)) {
+    result = convertFromRadians(result, calc.angleMode);
+  }
 
   const output = formatNumber(result, MAX_DIGITS);
   const parser = new ExpressionParser(calc.expression);
