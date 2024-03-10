@@ -55,7 +55,10 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
 
     case ActionTypes.ADJUST_VOLTAGE:
       const { voltageLevel } = action.payload as AdjustVoltagePayload;
-      return adjustVoltage(calc, voltageLevel);
+      return adjustVoltage(calc, voltageLevel)
+
+    case ActionTypes.TODO:
+      return todo(calc);
 
     default:
       return calc;
@@ -204,6 +207,13 @@ function adjustVoltage(calc: CalcState, voltageLevel: number): CalcState {
   return {
     ...calc,
     voltageLevel,
+  }
+}
+
+function todo(calc: CalcState): CalcState {
+  return {
+    ...calc,
+    output: "- TODO -"
   }
 }
 

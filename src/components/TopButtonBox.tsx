@@ -121,7 +121,7 @@ const TopButtonBox: React.FC = () => {
 
       {/* Row 2 */}
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <span className="relative ml-0.5 -top-0.5">d</span>/c
         </ButtonLabel>
@@ -131,7 +131,7 @@ const TopButtonBox: React.FC = () => {
         </MathJax>
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax>{"`leftarrow`"}</MathJax>
         </ButtonLabel>
@@ -140,7 +140,7 @@ const TopButtonBox: React.FC = () => {
         <span className="text-2xl ml-0.5 mt-2">”</span>
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         hyp
       </Button>
 
@@ -154,14 +154,14 @@ const TopButtonBox: React.FC = () => {
         sin
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax>{"`cos^-1`"}</MathJax>
         </ButtonLabel>
         cos
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax>{"`tan^-1`"}</MathJax>
         </ButtonLabel>
@@ -177,35 +177,35 @@ const TopButtonBox: React.FC = () => {
         +/-
       </Button>
       
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax>{"`x^3`"}</MathJax>
         </ButtonLabel>
         ►
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>
         </ButtonLabel>
         (
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax>{"`x!`"}</MathJax>
         </ButtonLabel>
         )
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           Min
         </ButtonLabel>
         MR
       </Button>
 
-      <Button className="fn" onClick={() => null}>
+      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           M-
         </ButtonLabel>

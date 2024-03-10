@@ -127,14 +127,14 @@ const BottomButtonBox: React.FC = () => {
         <MathJax>{"`cdot`"}</MathJax>
       </Button>
       
-      <Button onClick={handleDigitButtonClick}>
+      <Button onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <ButtonLabel>
           <MathJax className="text-sm -mt-1 text-neutral-300">{"`pi`"}</MathJax>
         </ButtonLabel>
         <span className="scale-75">EXP</span>
       </Button>
       
-      <Button onClick={handleDigitButtonClick}>
+      <Button onClick={() => dispatch({ type: ActionTypes.TODO })}>
         <span className="scale-75">Ans</span>
       </Button>
 
