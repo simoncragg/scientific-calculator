@@ -4,6 +4,8 @@ import type {
   OperatorType
 } from "../types";
 
+import isTrigonometric from "../utils/isTrigonometric";
+
 class ExpressionParser {
 
   private readonly expression: string[];
@@ -66,6 +68,33 @@ class ExpressionParser {
     return { 
       lastOperator: undefined,
       index: -1
+    };
+  }
+
+  determineLastOperation(
+    func: string, 
+    result: number
+  ): OperandAffixes { 
+  
+    const { lastOperator } = this.getLastOperator();
+  
+    if (lastOperator) {
+      return { 
+        prefix: "", 
+        suffix: `${lastOperator}${result}`,
+      };
+    }
+  
+    if (isTrigonometric(func)) {
+      return { 
+        prefix: "", 
+        suffix: "",
+      };
+    }
+  
+    return {
+      prefix: `${func}(`, 
+      suffix: `)`,
     };
   }
 

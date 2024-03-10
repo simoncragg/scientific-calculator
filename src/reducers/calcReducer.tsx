@@ -2,6 +2,7 @@ import type {
   Action,
   AdjustVoltagePayload,
   CalcState,
+  AngleUnit,
   ExecuteFunctionPayload,
   FunctionType,
   OperandAffixes,
@@ -11,10 +12,13 @@ import type {
 } from "../types";
 
 import ExpressionParser from "../classes/ExpressionParser";
+import convertToRadians from "../utils/convertToRadians";
 import evaluate from '../utils/evaluate';
 import formatNumber from "../utils/formatNumber";
 import getDigitCount from "../utils/getDigitCount";
-import { ActionTypes, DRG_MODES, MAX_DIGITS } from '../constants';
+import isTrigonometric from "../utils/isTrigonometric";
+import { ActionTypes, ANGLE_MODES, MAX_DIGITS } from '../constants';
+import ExpressionBuilder from "../classes/ExpressionBuilder";
 
 export default function calcReducer(calc: CalcState, action: Action): CalcState {
 
@@ -61,7 +65,7 @@ export default function calcReducer(calc: CalcState, action: Action): CalcState 
 
 function allClear(calc: CalcState): CalcState {
   return {
-    drgMode: calc.drgMode,
+    angleMode: calc.angleMode,
     expression: [],
     currentOperand: "0",
     output: "0",
@@ -118,12 +122,12 @@ function percent(calc: CalcState): CalcState {
 }
 
 function cycleDrgMode(calc: CalcState): CalcState {
-  const currentIndex = DRG_MODES.indexOf(calc.drgMode);
-  const nextIndex = (currentIndex + 1) % DRG_MODES.length;
+  const currentIndex = ANGLE_MODES.indexOf(calc.angleMode);
+  const nextIndex = (currentIndex + 1) % ANGLE_MODES.length;
 
   return {
     ...calc,
-    drgMode: DRG_MODES[nextIndex],
+    angleMode: ANGLE_MODES[nextIndex],
   };
 }
 
@@ -217,13 +221,13 @@ function resolveLastOperation(calc: CalcState, expression: string[]): OperandAff
 }
 
 function executeFunction(func: FunctionType, calc: CalcState): CalcState {
-  const isTrig = isTrigonometric(func);
-  const mode = isTrig ? ` ${calc.drgMode}` : "";
 
-  const expression = [`${func}(${calc.currentOperand}${mode})`];
-  const result = evaluate(expression);
+  const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
+  let result = evaluate([expression]);
+
   const output = formatNumber(result, MAX_DIGITS);
-  const lastOperation = determineLastOperation(func, mode, calc.expression, result);
+  const parser = new ExpressionParser(calc.expression);
+  const lastOperation = parser.determineLastOperation(func, result);
   
   return {
     ...calc,
@@ -233,25 +237,6 @@ function executeFunction(func: FunctionType, calc: CalcState): CalcState {
     lastOperation,
     output,
   };
-}
-
-function isTrigonometric(func: string) {
-  return ["sin", "cos", "tan"].includes(func);
-}
-
-function determineLastOperation(
-  func: string, 
-  mode: string,
-  expression: string[],
-  result: number
-): OperandAffixes { 
-
-  const parser = new ExpressionParser(expression);
-  const { lastOperator } = parser.getLastOperator();
-
-  return lastOperator
-    ? { prefix: "", suffix: `${lastOperator}${result}`}
-    : { prefix: `${func}(`, suffix: `${mode})` };
 }
 
 function buildOutputForNewOperator(

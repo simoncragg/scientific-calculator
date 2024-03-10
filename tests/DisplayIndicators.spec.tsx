@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "../src/components/App";
-import { DRG_MODES } from "../src/constants";
+import { ANGLE_MODES } from "../src/constants";
 
 import { 
   assertElementIsHidden, 
@@ -17,11 +17,11 @@ describe("Display indicators", () => {
   });
 
   it("can cycle through all three DRG▸s", () => {
-    const drgModeEl = screen.getByLabelText("drg mode indicator");
-    const modeCount = DRG_MODES.length;
+    const drgModeEl = screen.getByLabelText("angle mode indicator");
+    const modeCount = ANGLE_MODES.length;
     for (let i = 0; i < modeCount; i++) {
-      const expectedCurrentMode = DRG_MODES[i % modeCount];
-      const expectedNewMode = DRG_MODES[(i + 1) % modeCount];
+      const expectedCurrentMode = ANGLE_MODES[i % modeCount];
+      const expectedNewMode = ANGLE_MODES[(i + 1) % modeCount];
       expect(drgModeEl).toHaveTextContent(expectedCurrentMode);
       pressButton("DRG▸");
       expect(drgModeEl).toHaveTextContent(expectedNewMode);

@@ -103,7 +103,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="drg mode"
+        ariaLabel="angle mode"
         className="fn" 
         onClick={handleDrgModeButtonClick}
       >

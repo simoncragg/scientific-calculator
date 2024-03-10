@@ -1,5 +1,5 @@
 export type OperatorType = "+" | "-" | "*" | "/";
-export type DrgModeType = "deg" | "rad" | "grad";
+export type AngleUnit = "deg" | "rad" | "grad";
 export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | "sin";
 
 export interface ShiftState {
@@ -8,7 +8,7 @@ export interface ShiftState {
 }
 
 export interface CalcState {
-  drgMode: DrgModeType;
+  angleMode: AngleUnit;
   currentOperand: string;
   expression: string[];
   lastInput?: string;

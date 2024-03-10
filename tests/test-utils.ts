@@ -19,7 +19,7 @@ export const pressButton = (input: string) => {
 
 export const mapToAriaLabel = (input: string): string => {
   if (input === "SHIFT") return "shift";
-  if (input === "DRG▸") return "drg mode";
+  if (input === "DRG▸") return "angle mode";
   if (input === "+") return "plus";
   if (input === "-") return "minus";
   if (input === "×") return "multiply";

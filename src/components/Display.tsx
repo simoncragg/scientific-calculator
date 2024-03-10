@@ -3,23 +3,23 @@ import OperatorIndicator from "./OperatorIndicator";
 import { useCalcState } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
 
-const drgModePositions = { 
+const angleModePositions = { 
   "deg": "left-32",
   "rad": "left-40",
   "grad": "left-48",
 };
 
 const Display: React.FC = () => {
-  const { drgMode, output, lastInput, voltageLevel } = useCalcState();
+  const { angleMode: angleMode, output, lastInput, voltageLevel } = useCalcState();
   const { isShiftEnabled } = useShift();
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
   const [isExponential, setIsExponential] = useState(false);
-  const [drgModePosition, setDrgModePosition] = useState("left-32");
+  const [angleModePosition, setAngleModePosition] = useState("left-32");
 
   useEffect(() => {
-    const position = drgModePositions[drgMode];
-    setDrgModePosition(position);
-  }, [drgMode])
+    const position = angleModePositions[angleMode];
+    setAngleModePosition(position);
+  }, [angleMode])
 
   useEffect(() => {
     setShowEqualsIndicator(lastInput === "=");
@@ -35,11 +35,11 @@ const Display: React.FC = () => {
     <div className="relative flex w-[307px] h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
       
       <span 
-        aria-label="drg mode indicator"
-        className={`leading-none absolute top-1.5 px-0.5 uppercase text-xs text-stone-800 rounded-sm ${drgModePosition}`}
+        aria-label="angle mode indicator"
+        className={`leading-none absolute top-1.5 px-0.5 uppercase text-xs text-stone-800 rounded-sm ${angleModePosition}`}
         style={{ opacity: voltageLevel }}
       >
-        {drgMode}
+        {angleMode}
       </span>    
 
       {isShiftEnabled && (
@@ -110,4 +110,3 @@ const ExponentialOutput: React.FC<ExponentialOutputProps> = ({ exponentialNumber
 };
 
 export default Display;
-

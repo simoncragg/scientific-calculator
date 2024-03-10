@@ -15,7 +15,7 @@ describe("Initial conditions", () => {
   });
 
   it("displays DEG mode on start up", () => {
-    const el = screen.getByLabelText("drg mode indicator");
+    const el = screen.getByLabelText("angle mode indicator");
     expect(el).toBeInTheDocument();
   });
 

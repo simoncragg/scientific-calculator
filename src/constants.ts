@@ -1,7 +1,7 @@
-import type { DrgModeType } from "./types";
+import type { AngleUnit } from "./types";
 
 export const MAX_DIGITS = 10;
-export const DRG_MODES: DrgModeType[] = ["deg", "rad", "grad"];
+export const ANGLE_MODES: AngleUnit[] = ["deg", "rad", "grad"];
 
 export const ActionTypes = {
   ALL_CLEAR: "ALL_CLEAR",
