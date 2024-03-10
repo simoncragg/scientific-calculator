@@ -1,5 +1,4 @@
-import React, { MouseEventHandler, ReactNode } from "react";
-import findChildNode from "../utils/findChildNode";
+import React, { Children, MouseEventHandler, ReactNode } from "react";
 
 interface ButtonProps {
   operator?: string;
@@ -9,24 +8,30 @@ interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
+interface ChildType {
+  name: string;
+}
+
 const Button: React.FC<ButtonProps> = ({ 
   operator,
-  className, 
+  className = "", 
   ariaLabel, 
   children,
   onClick,
 }) => {
-  
-  const { match, mismatches } = findChildNode("ButtonLabel", children);
-  const buttonLabel = match;
-  const buttonContent = mismatches;
-  
-  const height = buttonLabel ? "h-full" : "";
-  const customClasses = className ? className : "";
-  const buttonClass = `flex justify-center items-center ${height} ${customClasses}`;
+    
+  let buttonLabel: ReactNode;
+  let buttonContent: ReactNode;
+
+  Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && (child.type as ChildType).name === "ButtonLabel") {
+      buttonLabel = child.props.children;
+    } else {
+      buttonContent = child;
+    }
+  });
 
   return (
-
     <div className="flex flex-col justify-end">
 
       {buttonLabel && (
@@ -38,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
       <button 
         type="button" 
         data-operator={operator} 
-        className={buttonClass} 
+        className={`flex justify-center items-center ${buttonLabel ? "h-full" : ""} ${className}`} 
         aria-label={ariaLabel} 
         onClick={onClick}
       >
