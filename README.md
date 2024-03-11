@@ -1,6 +1,6 @@
 # 🧮 Scientific Calculator
 
-Drawing inspiration from the iconic CASIO scientific calculators, this TypeScript-powered calculator faithfully replicates the beloved functionality of its predecessors, ensuring a timeless user experience cherished by generations of mathematicians and scientists.
+This TypeScript-powered calculator faithfully replicates the beloved user interface design of the classic CASIO scientific calculators, using React and Tailwind CSS.
 
 ![image](./assets/scientific-calc-580x700.png)
 
