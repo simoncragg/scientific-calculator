@@ -3,7 +3,7 @@ import { LuPlus, LuMinus, LuX, LuDivide, LuEqual } from "react-icons/lu";
 import { MathJax } from "better-react-mathjax";
 
 import type { OperatorType } from "../types";
-import Button, { ButtonLabel } from "./Button";
+import Button from "./Button";
 import { ActionTypes } from "../constants";
 import { useDispatch } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
@@ -57,10 +57,11 @@ const BottomButtonBox: React.FC = () => {
       <Button onClick={handleDigitButtonClick}>9</Button>
       <Button className="bg-red-500" onClick={handleClearButtonClick}>C</Button>
       
-      <Button className="bg-red-500" onClick={handleAllClearButtonClick}>
-        <ButtonLabel>
-          Mcl<span className="ml-2 text-neutral-300">ON</span>
-        </ButtonLabel>
+      <Button 
+        className="bg-red-500" 
+        onClick={handleAllClearButtonClick}
+        buttonLabel={<>Mcl<span className="ml-2 text-neutral-300">ON</span></>}
+      >
         AC
       </Button>
 
@@ -70,22 +71,28 @@ const BottomButtonBox: React.FC = () => {
       <Button onClick={handleDigitButtonClick}>5</Button>
       <Button onClick={handleDigitButtonClick}>6</Button>
       
-      <Button operator="*" ariaLabel="multiply" onClick={handleOperatorButtonClick}>
-        <ButtonLabel>
-          <MathJax>{"`x^y`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        operator="*" 
+        ariaLabel="multiply" 
+        onClick={handleOperatorButtonClick}
+        buttonLabel={<MathJax>{"`x^y`"}</MathJax>}
+      >
         <LuX />
       </Button>
 
-      <Button operator="/" ariaLabel="divide" onClick={handleOperatorButtonClick}>
-        <ButtonLabel>
+      <Button 
+        operator="/" 
+        ariaLabel="divide" 
+        onClick={handleOperatorButtonClick}
+        buttonLabel={
           <MathJax>
-            {"`x`"}
-            <span className="relative -top-0.5">
-              <span className="relative ml-0.5 -top-0.5 text-[10px]">1</span>/y
-            </span>
+              {"`x`"}
+              <span className="relative -top-0.5">
+                <span className="relative ml-0.5 -top-0.5 text-[10px]">1</span>/y
+              </span>
           </MathJax>
-        </ButtonLabel>
+        }
+      >
         <LuDivide className="relative mt-0.5" />
       </Button>
 
@@ -93,44 +100,50 @@ const BottomButtonBox: React.FC = () => {
       <Button onClick={handleDigitButtonClick}>2</Button>
       <Button onClick={handleDigitButtonClick}>3</Button>
 
-      <Button operator="+" ariaLabel="plus" onClick={handleOperatorButtonClick}>
-        <ButtonLabel>
+      <Button 
+        operator="+" 
+        ariaLabel="plus" 
+        onClick={handleOperatorButtonClick}
+        buttonLabel={
           <MathJax>
             P<span className="mx-0.5">{"`to`"}</span>R
           </MathJax>
-        </ButtonLabel>
+        }
+      >
         <LuPlus className="relative mt-0.5" />
       </Button>
 
-      <Button operator="-" ariaLabel="minus" onClick={handleOperatorButtonClick}>
-        <ButtonLabel>
+      <Button 
+        operator="-" 
+        ariaLabel="minus" 
+        onClick={handleOperatorButtonClick}
+        buttonLabel={
           <MathJax>
             R<span className="mx-0.5">{"`to`"}</span>P
           </MathJax>
-        </ButtonLabel>
+        }
+      >
         <LuMinus className="relative mt-0.5" />
       </Button>
 
       {/* Row 3 */}
       
-      <Button onClick={handleDigitButtonClick}>
-        <ButtonLabel>
-          RND
-        </ButtonLabel>
+      <Button onClick={handleDigitButtonClick} buttonLabel="RND">
         0
       </Button>
       
-      <Button ariaLabel="decimal point" onClick={handleDecimalPointClick}>
-        <ButtonLabel>
-          RAD#
-        </ButtonLabel>
+      <Button ariaLabel="decimal point" onClick={handleDecimalPointClick} buttonLabel="RAD#">
         <MathJax>{"`cdot`"}</MathJax>
       </Button>
       
-      <Button onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax className="text-sm -mt-1 text-neutral-300">{"`pi`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={
+          <MathJax className="text-sm -mt-1 text-neutral-300">
+            {"`pi`"}
+          </MathJax>
+        }
+      >
         <span className="scale-75">EXP</span>
       </Button>
       
@@ -141,10 +154,8 @@ const BottomButtonBox: React.FC = () => {
       <Button 
         ariaLabel={isShiftEnabled ? "percent" : "equals"} 
         onClick={handleEqualsButtonClick}
+        buttonLabel="%"
       >
-        <ButtonLabel>
-          %
-        </ButtonLabel>
         <LuEqual className="relative mt-0.5" />
       </Button>
     </div>

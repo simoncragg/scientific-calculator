@@ -4,6 +4,7 @@ interface ButtonProps {
   operator?: string;
   className?: string;
   ariaLabel?: string;
+  buttonLabel?: ReactNode;
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
@@ -15,22 +16,12 @@ interface ChildType {
 const Button: React.FC<ButtonProps> = ({ 
   operator,
   className = "", 
-  ariaLabel, 
+  ariaLabel,
+  buttonLabel,
   children,
   onClick,
 }) => {
     
-  let buttonLabel: ReactNode;
-  let buttonContent: ReactNode;
-
-  Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && (child.type as ChildType).name === "ButtonLabel") {
-      buttonLabel = child.props.children;
-    } else {
-      buttonContent = child;
-    }
-  });
-
   return (
     <div className="flex flex-col justify-end">
 
@@ -47,24 +38,11 @@ const Button: React.FC<ButtonProps> = ({
         aria-label={ariaLabel} 
         onClick={onClick}
       >
-        {buttonContent}
+        {children}
       </button>
 
     </div>
   );
 };
 
-interface ButtonLabelProps {
-  children: React.ReactNode;
-}
-
-const ButtonLabel: React.FC<ButtonLabelProps> = ({ children }) => {
-  return (
-    <>
-      {children}
-    </>
-  );
-};
-
 export default Button;
-export { ButtonLabel };

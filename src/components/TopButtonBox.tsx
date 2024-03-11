@@ -1,7 +1,7 @@
 import React from "react";
 import { MathJax } from "better-react-mathjax";
 
-import Button, { ButtonLabel } from "./Button";
+import Button from "./Button";
 import { ActionTypes } from "../constants";
 import { useDispatch } from "../CalculatorStore";
 import { useShift } from "../ShiftProvider";
@@ -69,8 +69,11 @@ const TopButtonBox: React.FC = () => {
 
       {/* Row 1 */}
 
-      <Button ariaLabel="shift" className="fn" onClick={() => toggleShift()}>
-        <ButtonLabel>SHIFT</ButtonLabel>
+      <Button 
+        ariaLabel="shift" 
+        className="fn" 
+        onClick={() => toggleShift()}
+        buttonLabel={"SHIFT"}>
         &nbsp;
       </Button>
 
@@ -78,10 +81,8 @@ const TopButtonBox: React.FC = () => {
         ariaLabel={isShiftEnabled ? "square" : "square root"} 
         className="fn" 
         onClick={() => handleSquareRootButtonClick()}
+        buttonLabel={<MathJax>{"`x^2`"}</MathJax>}
       >
-        <ButtonLabel>
-          <MathJax>{"`x^2`"}</MathJax>
-        </ButtonLabel>
         <MathJax className="scale-75">{"`root()(x)`"}</MathJax>
       </Button>
 
@@ -89,10 +90,8 @@ const TopButtonBox: React.FC = () => {
         ariaLabel={isShiftEnabled ? "power of ten" : "log"}
         className="fn"
         onClick={handleLogButtonClick}
+        buttonLabel={<MathJax>{"`10^x`"}</MathJax>}
       >
-        <ButtonLabel>
-          <MathJax>{"`10^x`"}</MathJax>
-        </ButtonLabel>
         log
       </Button>
 
@@ -100,10 +99,8 @@ const TopButtonBox: React.FC = () => {
         ariaLabel={isShiftEnabled ? "exp x" : "natural log"}
         className="fn" 
         onClick={handleNaturalLogButtonClick}
+        buttonLabel={<MathJax>{"`e^x`"}</MathJax>}
       >
-        <ButtonLabel>
-          <MathJax>{"`e^x`"}</MathJax>
-        </ButtonLabel>
         ln
       </Button>
 
@@ -121,20 +118,22 @@ const TopButtonBox: React.FC = () => {
 
       {/* Row 2 */}
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <span className="relative ml-0.5 -top-0.5">d</span>/c
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<><span className="relative ml-0.5 -top-0.5">d</span>/c</>}
+      >
         <MathJax>
           <span className="text-lg">{"`a`"}</span>
           <span className="relative ml-0.5 -top-0.5">b</span>/c
         </MathJax>
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax>{"`leftarrow`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax>{"`leftarrow`"}</MathJax>}
+      >
         <span className="text-lg ml-0.5 mt-1">°</span>
         <span className="text-2xl ml-0.5 mt-2">’</span>
         <span className="text-2xl ml-0.5 mt-2">”</span>
@@ -147,68 +146,75 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={isShiftEnabled ? "arc sine" : "sine"}
         className="fn" 
-        onClick={handleSinButtonClick}>
-        <ButtonLabel>
-          <MathJax>{"`sin^-1`"}</MathJax>
-        </ButtonLabel>
+        onClick={handleSinButtonClick}
+        buttonLabel={<MathJax>{"`sin^-1`"}</MathJax>}
+      >
         sin
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax>{"`cos^-1`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
+        >
         cos
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax>{"`tan^-1`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}
+      >
         tan
       </Button>
 
       {/* Row 3 */}
 
-      <Button className="fn" onClick={handleInvertNumberButtonClick}>
-        <ButtonLabel>
-          <MathJax>{"`root(3)(x)`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={handleInvertNumberButtonClick}
+        buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
+      >
         +/-
       </Button>
       
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax>{"`x^3`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax>{"`x^3`"}</MathJax>}
+      >
         ►
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>}
+      >
         (
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          <MathJax>{"`x!`"}</MathJax>
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={<MathJax>{"`x!`"}</MathJax>}
+      >
         )
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          Min
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel="Min"
+      >
         MR
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
-        <ButtonLabel>
-          M-
-        </ButtonLabel>
+      <Button 
+        className="fn" 
+        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        buttonLabel={"M-"}
+      >
         M+
       </Button>
     </div>
