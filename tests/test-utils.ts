@@ -29,6 +29,7 @@ export const mapToAriaLabel = (input: string): string => {
     case "%": return "percent";
     case "sin": return "sine";
     case "cos": return "cosine";
+    case "tan": return "tangent";
     case "asin": return "arc sine";
     case "acos": return "arc cosine";
     case "=": return "equals";

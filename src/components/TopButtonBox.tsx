@@ -71,6 +71,10 @@ const TopButtonBox: React.FC = () => {
     }
   };
 
+  const handleTangentButtonClick = () => {
+    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "tan" }});
+  };
+
   //console.log("rendering TopButtonBox");
 
   return (
@@ -171,8 +175,9 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
+        ariaLabel="tangent"
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={handleTangentButtonClick}
         buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}
       >
         tan

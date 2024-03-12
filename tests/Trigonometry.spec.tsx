@@ -45,7 +45,7 @@ describe("Trigonometry", () => {
       {inputs: ["DRG▸", "45", "sin", "=", "=", "=", "=" ], expected: "0.850903525"},
       {inputs: ["DRG▸", "DRG▸", "45", "sin", "=", "=", "=", "=" ], expected: "0.649448048"},
     ])(
-      "does not repeat the last sine function operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      "does not repeat the last sine operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
       ({inputs, expected}) => {
   
         pressButtons(inputs);
@@ -101,7 +101,7 @@ describe("Trigonometry", () => {
       {inputs: ["DRG▸", "22.5", "cos", "=", "=", "=", "=" ], expected: "-0.87330464"},
       {inputs: ["DRG▸", "DRG▸", "22.5", "cos", "=", "=", "=", "=" ], expected: "0.938191336"},
     ])(
-      "does not repeat the last cosine function operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      "does not repeat the last cosine operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
       ({inputs, expected}) => {
   
         pressButtons(inputs);
@@ -113,6 +113,62 @@ describe("Trigonometry", () => {
       {inputs: ["1", "+", "22.5", "cos", "=", "=", "=", "="], expected: "4.69551813"},
       {inputs: ["DRG▸", "1", "+", "22.5", "cos", "=", "=", "=", "="], expected: "-2.49321856"},
       {inputs: ["DRG▸", "DRG▸", "1", "+", "22.5", "cos", "=", "=", "=", "="], expected: "4.752765344"},
+    ])(
+      "repeats the last operation for an arithmetic operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      ({inputs, expected}) => {
+  
+        pressButtons(inputs);
+        assertOutputIsEqualTo(expected);
+      }
+    );
+  });
+
+  describe("tangent operations", () => {
+
+    it.each([
+      {inputs: ["67.5", "tan"], expected: "2.414213562"},
+      {inputs: ["67.5", "tan", "="], expected: "2.414213562"},
+      {inputs: ["67.5", "tan", "SHIFT", "square"], expected: "5.828427125"},
+    ])("can perform a tangent operation in DEG mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+      pressButtons(inputs);
+      assertOutputIsEqualTo(expected);
+    });
+
+    it.each([
+      {inputs: ["DRG▸", "67.5", "tan"], expected: "22.58818053"},
+      {inputs: ["DRG▸", "67.5", "tan", "="], expected: "22.58818053"},
+      {inputs: ["DRG▸", "67.5", "tan", "SHIFT", "square"], expected: "510.2258998"},
+    ])("can perform a tangent operation in RAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+      pressButtons(inputs);
+      assertOutputIsEqualTo(expected);
+    });
+
+    it.each([
+      {inputs: ["DRG▸", "DRG▸", "67.5", "tan"], expected: "1.785628485"},
+      {inputs: ["DRG▸", "DRG▸", "67.5", "tan", "="], expected: "1.785628485"},
+      {inputs: ["DRG▸", "DRG▸", "67.5", "tan", "SHIFT", "square"], expected: "3.188469086"},
+    ])("can perform a tangent operation in GRAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
+      pressButtons(inputs);
+      assertOutputIsEqualTo(expected);
+    });
+
+    it.each([
+      {inputs: ["67.5", "tan", "=", "=", "=", "=" ], expected: "2.414213562"},
+      {inputs: ["DRG▸", "67.5", "tan", "=", "=", "=", "=" ], expected: "22.58818053"},
+      {inputs: ["DRG▸", "DRG▸", "67.5", "tan", "=", "=", "=", "=" ], expected: "1.785628485"},
+    ])(
+      "does not repeat the last tangent operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      ({inputs, expected}) => {
+  
+        pressButtons(inputs);
+        assertOutputIsEqualTo(expected);
+      }
+    );
+
+    it.each([
+      {inputs: ["1", "+", "67.5", "tan", "=", "=", "=", "="], expected: "10.65685425"},
+      {inputs: ["DRG▸", "1", "+", "67.5", "tan", "=", "=", "=", "="], expected: "91.35272213"},
+      {inputs: ["DRG▸", "DRG▸", "1", "+", "67.5", "tan", "=", "=", "=", "="], expected: "8.142513939"},
     ])(
       "repeats the last operation for an arithmetic operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
       ({inputs, expected}) => {
@@ -156,7 +212,7 @@ describe("Trigonometry", () => {
       {inputs: ["DRG▸", "0.5", "SHIFT", "asin", "=", "=", "=", "=" ], expected: "0.523598776"},
       {inputs: ["DRG▸", "DRG▸", "0.5", "SHIFT", "asin", "=", "=", "=", "=" ], expected: "33.33333333"},
     ])(
-      "does not repeat the last arc sine function operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      "does not repeat the last arc sine operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
       ({inputs, expected}) => {
   
         pressButtons(inputs);
@@ -212,7 +268,7 @@ describe("Trigonometry", () => {
       {inputs: ["DRG▸", "0.5", "SHIFT", "acos", "=", "=", "=", "=" ], expected: "1.047197551"},
       {inputs: ["DRG▸", "DRG▸", "0.5", "SHIFT", "acos", "=", "=", "=", "=" ], expected: "66.66666667"},
     ])(
-      "does not repeat the last arc cosine function operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
+      "does not repeat the last arc cosine operation when the equals button is pressed consecutively: $inputs 🡢 $expected", 
       ({inputs, expected}) => {
   
         pressButtons(inputs);
