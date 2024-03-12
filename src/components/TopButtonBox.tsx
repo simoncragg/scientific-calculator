@@ -72,7 +72,12 @@ const TopButtonBox: React.FC = () => {
   };
 
   const handleTangentButtonClick = () => {
-    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "tan" }});
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "atan" }});
+      toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "tan" }});
+    }
   };
 
   //console.log("rendering TopButtonBox");
@@ -175,7 +180,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="tangent"
+        ariaLabel={isShiftEnabled ? "arc tangent" : "tangent"}
         className="fn" 
         onClick={handleTangentButtonClick}
         buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}

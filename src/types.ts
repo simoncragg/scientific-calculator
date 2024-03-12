@@ -1,7 +1,7 @@
 export type OperatorType = "+" | "-" | "*" | "/";
 export type AngleUnit = "deg" | "rad" | "grad";
 export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | TrigonometricFunctionType;
-export type TrigonometricFunctionType = "sin" | "cos" | "tan" | "asin" | "acos";
+export type TrigonometricFunctionType = "sin" | "cos" | "tan" | "asin" | "acos" | "atan";
 
 export interface ShiftState {
   isShiftEnabled: boolean;
