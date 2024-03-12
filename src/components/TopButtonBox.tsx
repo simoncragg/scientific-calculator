@@ -63,7 +63,12 @@ const TopButtonBox: React.FC = () => {
   };
   
   const handleCosineButtonClick = () => {
-    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "cos" }});
+    if (isShiftEnabled) {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "acos" }});
+      toggleShift();
+    } else {
+      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "cos" }});
+    }
   };
 
   //console.log("rendering TopButtonBox");
@@ -157,7 +162,7 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel="cosine"
+        ariaLabel={isShiftEnabled ? "arc cosine" : "cosine"}
         className="fn" 
         onClick={handleCosineButtonClick}
         buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
