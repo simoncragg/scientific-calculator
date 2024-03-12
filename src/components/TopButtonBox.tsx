@@ -53,13 +53,17 @@ const TopButtonBox: React.FC = () => {
     dispatch({ type: ActionTypes.CYCLE_DRG_MODE });
   };
 
-  const handleSinButtonClick = () => {
+  const handleSineButtonClick = () => {
     if (isShiftEnabled) {
       dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "asin" } });
       toggleShift();
     } else {
       dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sin" }});
     }
+  };
+  
+  const handleCosineButtonClick = () => {
+    dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "cos" }});
   };
 
   //console.log("rendering TopButtonBox");
@@ -146,15 +150,16 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={isShiftEnabled ? "arc sine" : "sine"}
         className="fn" 
-        onClick={handleSinButtonClick}
+        onClick={handleSineButtonClick}
         buttonLabel={<MathJax>{"`sin^-1`"}</MathJax>}
       >
         sin
       </Button>
 
       <Button 
+        ariaLabel="cosine"
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={handleCosineButtonClick}
         buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
         >
         cos
