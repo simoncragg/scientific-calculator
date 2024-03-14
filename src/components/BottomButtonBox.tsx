@@ -11,7 +11,6 @@ import {
   clear,
   evaluateExpression,
   percent,
-  repeatLastOperation,
   todo,
   toggleShift,
   updateCurrentOperand,
@@ -22,7 +21,6 @@ const BottomButtonBox: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
-  const lastInput = useAppSelector(state => state.calc.lastInput);
 
   const handleAllClearButtonClick = () => {
     dispatch(allClear());
@@ -52,17 +50,9 @@ const BottomButtonBox: React.FC = () => {
       dispatch(percent());
       dispatch(toggleShift());
     } else {
-      handleEquals();
-    }
-  };
-
-  const handleEquals = () => {
-    if (lastInput === "=") {
-      dispatch(repeatLastOperation());
-    } else {
       dispatch(evaluateExpression());
     }
-  }
+  };
 
   //console.log("rendering BottomButtonBox");
 

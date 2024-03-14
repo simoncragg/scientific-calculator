@@ -63,6 +63,13 @@ export const calcSlice = createSlice({
     },
 
     evaluateExpression: calc => {
+      if (calc.lastInput === "=") {
+        const result = repeatLastOperation(calc);
+        calc.currentOperand = result.toString(),
+        calc.output = formatNumber(result, MAX_DIGITS);
+        return;
+      }
+
       const currentOperand = resolveCurrentOperand(calc);
       const expression = [...calc.expression, currentOperand];
       const result = evaluate(expression);
@@ -119,16 +126,7 @@ export const calcSlice = createSlice({
       calc.lastOperation = lastOperation;
       calc.lastInput =  "%";
     },
-
-    repeatLastOperation: calc => {
-      const { prefix, suffix } = calc.lastOperation!;
-      const expression = [prefix, calc.currentOperand, suffix];
-      const result = evaluate(expression);
-    
-      calc.currentOperand = result.toString(),
-      calc.output = formatNumber(result, MAX_DIGITS);
-    },
-   
+  
     todo: calc => {
       calc.output = "- TODO -";
     },
@@ -179,7 +177,6 @@ export const {
   executeFunction,
   invertNumber, 
   percent, 
-  repeatLastOperation,
   todo,
   toggleShift,
   updateCurrentOperand,
@@ -187,6 +184,12 @@ export const {
  } = calcSlice.actions;
 
 // TODO: Move these functions out of this file.
+
+function repeatLastOperation(calc: CalcState): number {
+  const { prefix, suffix } = calc.lastOperation!;
+  const expression = [prefix, calc.currentOperand, suffix];
+  return evaluate(expression);
+}
 
 function buildOutputForNewOperator(
   operand: string, 
