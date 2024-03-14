@@ -17,7 +17,7 @@ import {
   squareDependencies,
   subtractDependencies,
   tanDependencies,
-} from 'mathjs';
+} from "mathjs";
 
 type OperationFunction = (...args: number[]) => number;
 const createOperation = (name: string, fn: OperationFunction) => factory(name, [], () => fn);

@@ -31,7 +31,7 @@ function handleExponentialNotation(exponentialNumber: number, maxDigits: number)
 }
 
 function convertToFixedNotation(number: number): string {
-  return format(number, { notation: 'fixed' });
+  return format(number, { notation: "fixed" });
 }
 
 function isOutsideFixedPointDisplayBounds(number: number, maxDigits: number) {
@@ -71,12 +71,12 @@ function isExponentialNotation(number: number): boolean {
 }
 
 function trimTrailingFractionalZeros(numberString: string): string {
-  let decimalIndex = numberString.indexOf('.');
+  let decimalIndex = numberString.indexOf(".");
   if (decimalIndex === -1) return numberString;
 
   let endIndex = numberString.length - 1;
-  while (numberString[endIndex] === '0' || numberString[endIndex] === '.') {
-    if (numberString[endIndex] === '.') {
+  while (numberString[endIndex] === "0" || numberString[endIndex] === ".") {
+    if (numberString[endIndex] === ".") {
       decimalIndex = endIndex;
     }
     endIndex--;
