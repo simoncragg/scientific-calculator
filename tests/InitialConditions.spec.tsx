@@ -1,13 +1,21 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom"
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import App from "../src/components/App";
-import { assertElementIsHidden } from "./test-utils";
+import { screen } from "@testing-library/react";
+
+import App from "../src/components/App"
+import { initialState } from "../src/calcSlice";
+import { assertElementIsHidden, renderWithProviders } from "./test-utils";
+
 
 describe("Initial conditions", () => {
 
   beforeEach(() => {
-    render(<App />);
+    renderWithProviders(
+      <App />, {
+        preloadedState: {
+          calc: initialState,
+       }
+      });
   });
 
   it("displays zero on start up", () => {

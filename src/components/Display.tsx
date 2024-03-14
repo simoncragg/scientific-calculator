@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OperatorIndicator from "./OperatorIndicator";
-import { useCalcState } from "../CalculatorStore";
-import { useShift } from "../ShiftProvider";
+import { useAppSelector } from "../hooks";
 
 const angleModePositions = { 
   "deg": "left-32",
@@ -10,8 +9,13 @@ const angleModePositions = {
 };
 
 const Display: React.FC = () => {
-  const { angleMode: angleMode, output, lastInput, voltageLevel } = useCalcState();
-  const { isShiftEnabled } = useShift();
+
+  const angleMode = useAppSelector(state => state.calc.angleMode);
+  const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
+  const lastInput = useAppSelector(state => state.calc.lastInput);
+  const output = useAppSelector(state => state.calc.output);
+  const voltageLevel = useAppSelector(state => state.calc.voltageLevel);
+
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
   const [isExponential, setIsExponential] = useState(false);
   const [angleModePosition, setAngleModePosition] = useState("left-32");

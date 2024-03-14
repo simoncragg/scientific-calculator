@@ -1,13 +1,21 @@
 import "@testing-library/jest-dom"
 import React from "react";
-import { render } from "@testing-library/react"
+
 import App from "../src/components/App"
 import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
+import { initialState } from "../src/calcSlice";
+import { renderWithProviders } from "./test-utils";
+
 
 describe("Percentage calculations", () => {
 
   beforeEach(() => {
-    render(<App />);
+    renderWithProviders(
+      <App />, {
+        preloadedState: {
+          calc: initialState,
+       }
+      });
   });
 
   it.each([

@@ -2,7 +2,6 @@ import BottomButtonBox from "./BottomButtonBox";
 import Display from "./Display";
 import HeaderPanel from "./HeaderPanel";
 import TopButtonBox from "./TopButtonBox";
-import { ShiftProvider } from "../ShiftProvider";
 
 const Calculator = () => {
   
@@ -15,8 +14,7 @@ const Calculator = () => {
           className="flex flex-col px-2 pb-3 h-full bg-charcoal-dark rounded-t-xl rounded-x-xl shadow-edge"
           style={{ clipPath: "inset(-8px -8px 0px -8px)"}}
         >
-          <ShiftProvider>
-            <div className="border border-slate-950 border-1 bg-gradient-to-br from-slate-600 to-slate-950 px-3 mb-4 -mt-0.5 -mx-2 rounded-lg shadow-edge">
+          <div className="border border-slate-950 border-1 bg-gradient-to-br from-slate-600 to-slate-950 px-3 mb-4 -mt-0.5 -mx-2 rounded-lg shadow-edge">
               <HeaderPanel />
               <Display />
             </div>
@@ -25,7 +23,6 @@ const Calculator = () => {
               <TopButtonBox />
               <BottomButtonBox />
             </div>
-          </ShiftProvider>
         </div>
         
       </div>

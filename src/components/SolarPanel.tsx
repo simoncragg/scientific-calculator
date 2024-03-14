@@ -1,7 +1,8 @@
-import { useRef } from "react";
-import { ActionTypes } from "../constants";
-import { useDispatch } from "../CalculatorStore";
 import { random } from "mathjs";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+
+import { adjustVoltage } from "../calcSlice";
 
 const SolarPanel = () => {
 
@@ -29,17 +30,11 @@ const SolarPanel = () => {
   }
 
   const dimPower = () => {
-    dispatch({ 
-      type: ActionTypes.ADJUST_VOLTAGE, 
-      payload: { voltageLevel: random(0.1, 0.8)}
-    });
+    dispatch(adjustVoltage({ voltageLevel: random(0.1, 0.8)}));
   };
 
   const restoreFullVoltage = () => {
-    dispatch({ 
-      type: ActionTypes.ADJUST_VOLTAGE,   
-      payload: { voltageLevel: 1.0 }
-    });
+    dispatch(adjustVoltage({ voltageLevel: 1.0 }));
   };
 
   return (

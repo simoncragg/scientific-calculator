@@ -1,19 +1,22 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom"
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import App from "../src/components/App";
+import { screen } from "@testing-library/react";
 import { ANGLE_MODES } from "../src/constants";
 
-import { 
-  assertElementIsHidden, 
-  pressButton, 
-  pressButtons
-} from "./test-utils";
+import App from "../src/components/App"
+import { assertElementIsHidden, pressButton, pressButtons } from "./test-utils";
+import { initialState } from "../src/calcSlice";
+import { renderWithProviders } from "./test-utils";
 
 describe("Display indicators", () => {
 
   beforeEach(() => {
-    render(<App />);
+    renderWithProviders(
+      <App />, {
+        preloadedState: {
+          calc: initialState,
+       }
+      });
   });
 
   it("can cycle through all three DRG▸s", () => {
@@ -76,17 +79,17 @@ describe("Display indicators", () => {
   });
 
   const assertShiftIndicatorIsDisplayed = () => {
-    const indicatorEl = screen.getByLabelText('shift indicator');
+    const indicatorEl = screen.getByLabelText("shift indicator");
     expect(indicatorEl).toBeInTheDocument();
   };
   
   const assertShiftIndicatorIsNotDisplayed = () => {
-    const indicatorEl = screen.queryByLabelText('shift indicator');
+    const indicatorEl = screen.queryByLabelText("shift indicator");
     expect(indicatorEl).not.toBeInTheDocument();
   };
   
   const assertOperatorIndicatorIsDisplayed = (expectedAriaLabel: string) => {
-    const indicatorEl = screen.getByTestId('operator-indicator');
+    const indicatorEl = screen.getByTestId("operator-indicator");
     expect(indicatorEl).toHaveAccessibleName(expectedAriaLabel);
   };
 });

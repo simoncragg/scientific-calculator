@@ -1,82 +1,74 @@
 import React from "react";
 import { MathJax } from "better-react-mathjax";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 import Button from "./Button";
-import { ActionTypes } from "../constants";
-import { useDispatch } from "../CalculatorStore";
-import { useShift } from "../ShiftProvider";
+
+import {
+  adjustVoltage,
+  cycleDrgMode,
+  executeFunction,
+  invertNumber,
+  todo,
+  toggleShift,
+} from "../calcSlice";
 
 const TopButtonBox: React.FC = () => {
 
-  const dispatch = useDispatch();
-  const { isShiftEnabled, toggleShift } = useShift();
+  const dispatch = useAppDispatch();
+  const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
   
-  const handleInvertNumberButtonClick = () => {
-    dispatch({ type: ActionTypes.INVERT_NUMBER });
-  };
-
   const handleSquareRootButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "square" } }); 
-      toggleShift();
+      dispatch(executeFunction({ func: "square"})); 
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sqrt" } });
+      dispatch(executeFunction({ func: "sqrt"}));
     }
   };
 
   const handleLogButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "powerOfTen" } });
-      toggleShift();
+      dispatch(executeFunction({ func: "powerOfTen"}));
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "log10" } });
+      dispatch(executeFunction({ func: "log10"}));
     }
   };
 
   const handleNaturalLogButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "exp" } });
-      toggleShift();
+      dispatch(executeFunction({ func: "exp"}));
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "log" } });
+      dispatch(executeFunction({ func: "log"}));
     }
-  };
-
-  const handleOffButtonClick = () => {
-    dispatch({ 
-      type: ActionTypes.ADJUST_VOLTAGE, 
-      payload: { voltageLevel: 0.0 }
-    });
-  };
-
-  const handleDrgModeButtonClick = () => {
-    dispatch({ type: ActionTypes.CYCLE_DRG_MODE });
   };
 
   const handleSineButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "asin" } });
-      toggleShift();
+      dispatch(executeFunction({ func: "asin"}));
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "sin" }});
+      dispatch(executeFunction({ func: "sin"}));
     }
   };
   
   const handleCosineButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "acos" }});
-      toggleShift();
+      dispatch(executeFunction({ func: "acos"}));
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "cos" }});
+      dispatch(executeFunction({ func: "cos"}));
     }
   };
 
   const handleTangentButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "atan" }});
-      toggleShift();
+      dispatch(executeFunction({ func: "atan"}));
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EXECUTE_FUNCTION, payload: { func: "tan" }});
+      dispatch(executeFunction({ func: "tan"}));
     }
   };
 
@@ -90,7 +82,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel="shift" 
         className="fn" 
-        onClick={() => toggleShift()}
+        onClick={() => dispatch(toggleShift())}
         buttonLabel={"SHIFT"}>
         &nbsp;
       </Button>
@@ -98,7 +90,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={isShiftEnabled ? "square" : "square root"} 
         className="fn" 
-        onClick={() => handleSquareRootButtonClick()}
+        onClick={handleSquareRootButtonClick}
         buttonLabel={<MathJax>{"`x^2`"}</MathJax>}
       >
         <MathJax className="scale-75">{"`root()(x)`"}</MathJax>
@@ -125,12 +117,12 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel="angle mode"
         className="fn" 
-        onClick={handleDrgModeButtonClick}
+        onClick={() => dispatch(cycleDrgMode())}
       >
         <span className="ml-1">DRG▸</span>
       </Button>
 
-      <Button className="fn" onClick={handleOffButtonClick}>
+      <Button className="fn" onClick={() => dispatch(adjustVoltage({ voltageLevel: 0.0 }))}>
         OFF
       </Button>
 
@@ -138,7 +130,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={<><span className="relative ml-0.5 -top-0.5">d</span>/c</>}
       >
         <MathJax>
@@ -149,7 +141,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={<MathJax>{"`leftarrow`"}</MathJax>}
       >
         <span className="text-lg ml-0.5 mt-1">°</span>
@@ -157,7 +149,7 @@ const TopButtonBox: React.FC = () => {
         <span className="text-2xl ml-0.5 mt-2">”</span>
       </Button>
 
-      <Button className="fn" onClick={() => dispatch({ type: ActionTypes.TODO })}>
+      <Button className="fn" onClick={() => dispatch(todo())}>
         hyp
       </Button>
 
@@ -192,7 +184,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={handleInvertNumberButtonClick}
+        onClick={() => dispatch(invertNumber())}
         buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
       >
         +/-
@@ -200,7 +192,7 @@ const TopButtonBox: React.FC = () => {
       
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={<MathJax>{"`x^3`"}</MathJax>}
       >
         ►
@@ -208,7 +200,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={<MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>}
       >
         (
@@ -216,7 +208,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={<MathJax>{"`x!`"}</MathJax>}
       >
         )
@@ -224,7 +216,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel="Min"
       >
         MR
@@ -232,7 +224,7 @@ const TopButtonBox: React.FC = () => {
 
       <Button 
         className="fn" 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={"M-"}
       >
         M+

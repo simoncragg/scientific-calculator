@@ -1,7 +1,6 @@
 import { MathJaxContext } from "better-react-mathjax";
 
 import Calculator from "./Calculator";
-import { CalculatorStoreProvider } from "../CalculatorStore";
 
 const config = {
   loader: { 
@@ -12,9 +11,7 @@ const config = {
 
 const App = () => 
   <MathJaxContext config={config}>
-    <CalculatorStoreProvider>
-      <Calculator />      
-    </CalculatorStoreProvider>
+    <Calculator />
   </MathJaxContext>;
 
 export default App;

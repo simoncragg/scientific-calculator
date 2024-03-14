@@ -1,49 +1,68 @@
 import React from "react";
 import { LuPlus, LuMinus, LuX, LuDivide, LuEqual } from "react-icons/lu";
 import { MathJax } from "better-react-mathjax";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 import type { OperatorType } from "../types";
 import Button from "./Button";
-import { ActionTypes } from "../constants";
-import { useDispatch } from "../CalculatorStore";
-import { useShift } from "../ShiftProvider";
+
+import { 
+  allClear,
+  clear,
+  evaluateExpression,
+  percent,
+  repeatLastOperation,
+  todo,
+  toggleShift,
+  updateCurrentOperand,
+  updateExpression,
+} from "../calcSlice";
 
 const BottomButtonBox: React.FC = () => {
 
-  const { isShiftEnabled, toggleShift } = useShift();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
+  const lastInput = useAppSelector(state => state.calc.lastInput);
 
   const handleAllClearButtonClick = () => {
-    dispatch({ type: ActionTypes.ALL_CLEAR });
+    dispatch(allClear());
   };
 
   const handleClearButtonClick = () => {
-    dispatch({ type: ActionTypes.CLEAR });
+    dispatch(clear());
   };
 
   const handleDigitButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { innerHTML } = e.currentTarget as HTMLButtonElement; 
-    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { input: innerHTML }});
+    dispatch(updateCurrentOperand({ input: innerHTML }));
   };
 
   const handleDecimalPointClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    dispatch({ type: ActionTypes.UPDATE_CURRENT_OPERAND, payload: { input: "." }});
+    dispatch(updateCurrentOperand({ input: "." }));
   };
 
   const handleOperatorButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const currentTarget = e.currentTarget as HTMLButtonElement;
     const operator = currentTarget.getAttribute("data-operator")! as OperatorType;
-    dispatch({ type: ActionTypes.UPDATE_EXPRESSION, payload: { operator }});
+    dispatch(updateExpression({ operator }));
   };
 
   const handleEqualsButtonClick = () => {
     if (isShiftEnabled) {
-      dispatch({ type: ActionTypes.PERCENT });
-      toggleShift();
+      dispatch(percent());
+      dispatch(toggleShift());
     } else {
-      dispatch({ type: ActionTypes.EVALUATE_EXPRESSION });
+      handleEquals();
     }
   };
+
+  const handleEquals = () => {
+    if (lastInput === "=") {
+      dispatch(repeatLastOperation());
+    } else {
+      dispatch(evaluateExpression());
+    }
+  }
 
   //console.log("rendering BottomButtonBox");
 
@@ -137,7 +156,7 @@ const BottomButtonBox: React.FC = () => {
       </Button>
       
       <Button 
-        onClick={() => dispatch({ type: ActionTypes.TODO })}
+        onClick={() => dispatch(todo())}
         buttonLabel={
           <MathJax className="text-sm -mt-1 text-neutral-300">
             {"`pi`"}
@@ -147,7 +166,7 @@ const BottomButtonBox: React.FC = () => {
         <span className="scale-75">EXP</span>
       </Button>
       
-      <Button onClick={() => dispatch({ type: ActionTypes.TODO })}>
+      <Button onClick={() => dispatch(todo())}>
         <span className="scale-75">Ans</span>
       </Button>
 

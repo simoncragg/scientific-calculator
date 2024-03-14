@@ -9,6 +9,7 @@ export interface ShiftState {
 }
 
 export interface CalcState {
+  isShiftEnabled: boolean;
   angleMode: AngleUnit;
   currentOperand: string;
   expression: string[];
@@ -22,11 +23,6 @@ export interface CalcState {
 export interface OperandAffixes {
   prefix: string;
   suffix: string;
-}
-
-export interface Action {
-  type: string;
-  payload?: AdjustVoltagePayload | ExecuteFunctionPayload | UpdateCurrentOperandPayload | UpdateExpressionPayload;
 }
 
 export interface AdjustVoltagePayload {
