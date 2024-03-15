@@ -2,6 +2,7 @@ import React from "react";
 import { MathJax } from "better-react-mathjax";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
+import { FunctionType } from "../types";
 import Button from "./Button";
 
 import {
@@ -18,57 +19,12 @@ const TopButtonBox: React.FC = () => {
   const dispatch = useAppDispatch();
   const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
   
-  const handleSquareRootButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "square"})); 
-      dispatch(toggleShift());
+  const handleFunctionButtonClick = (primary: FunctionType, secondary: FunctionType) => {
+    if (!isShiftEnabled) {
+      dispatch(executeFunction({ func: primary}));
     } else {
-      dispatch(executeFunction({ func: "sqrt"}));
-    }
-  };
-
-  const handleLogButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "powerOfTen"}));
+      dispatch(executeFunction({ func: secondary})); 
       dispatch(toggleShift());
-    } else {
-      dispatch(executeFunction({ func: "log10"}));
-    }
-  };
-
-  const handleNaturalLogButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "exp"}));
-      dispatch(toggleShift());
-    } else {
-      dispatch(executeFunction({ func: "log"}));
-    }
-  };
-
-  const handleSineButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "asin"}));
-      dispatch(toggleShift());
-    } else {
-      dispatch(executeFunction({ func: "sin"}));
-    }
-  };
-  
-  const handleCosineButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "acos"}));
-      dispatch(toggleShift());
-    } else {
-      dispatch(executeFunction({ func: "cos"}));
-    }
-  };
-
-  const handleTangentButtonClick = () => {
-    if (isShiftEnabled) {
-      dispatch(executeFunction({ func: "atan"}));
-      dispatch(toggleShift());
-    } else {
-      dispatch(executeFunction({ func: "tan"}));
     }
   };
 
@@ -88,27 +44,27 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "square" : "square root"} 
+        ariaLabel={!isShiftEnabled ? "square root" : "square"} 
         className="fn" 
-        onClick={handleSquareRootButtonClick}
+        onClick={() => handleFunctionButtonClick("sqrt", "square")}
         buttonLabel={<MathJax>{"`x^2`"}</MathJax>}
       >
         <MathJax className="scale-75">{"`root()(x)`"}</MathJax>
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "power of ten" : "log"}
+        ariaLabel={!isShiftEnabled ? "log" : "power of ten"}
         className="fn"
-        onClick={handleLogButtonClick}
+        onClick={() => handleFunctionButtonClick("log10", "powerOfTen")}
         buttonLabel={<MathJax>{"`10^x`"}</MathJax>}
       >
         log
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "exp x" : "natural log"}
+        ariaLabel={!isShiftEnabled ? "natural log" : "exp x" }
         className="fn" 
-        onClick={handleNaturalLogButtonClick}
+        onClick={() => handleFunctionButtonClick("log", "exp")}
         buttonLabel={<MathJax>{"`e^x`"}</MathJax>}
       >
         ln
@@ -154,27 +110,27 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "arc sine" : "sine"}
+        ariaLabel={!isShiftEnabled ? "sine" : "arc sine"}
         className="fn" 
-        onClick={handleSineButtonClick}
+        onClick={() => handleFunctionButtonClick("sin", "asin")}
         buttonLabel={<MathJax>{"`sin^-1`"}</MathJax>}
       >
         sin
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "arc cosine" : "cosine"}
+        ariaLabel={!isShiftEnabled ? "cosine" : "arc cosine"}
         className="fn" 
-        onClick={handleCosineButtonClick}
+        onClick={() => handleFunctionButtonClick("cos", "acos")}
         buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
         >
         cos
       </Button>
 
       <Button 
-        ariaLabel={isShiftEnabled ? "arc tangent" : "tangent"}
+        ariaLabel={!isShiftEnabled ? "tangent" : "arc tangent"}
         className="fn" 
-        onClick={handleTangentButtonClick}
+        onClick={() => handleFunctionButtonClick("tan", "atan")}
         buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}
       >
         tan
