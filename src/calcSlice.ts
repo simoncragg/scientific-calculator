@@ -47,6 +47,7 @@ export const calcSlice = createSlice({
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
       calc.lastOperation = undefined;
+      calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
     },
 
@@ -56,6 +57,7 @@ export const calcSlice = createSlice({
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
       calc.lastOperation = undefined;
+      calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
     },
 

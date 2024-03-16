@@ -54,6 +54,16 @@ describe("Display indicators", () => {
     assertShiftIndicatorIsNotDisplayed();
   });
 
+  it("hides the shift indicator when the 'All Clear' button is pressed", () => {
+    pressButtons(["SHIFT", "AC"]);
+    assertShiftIndicatorIsNotDisplayed();
+  });
+
+  it("hides the shift indicator when the 'Clear' button is pressed", () => {
+    pressButtons(["SHIFT", "C"]);
+    assertShiftIndicatorIsNotDisplayed();
+  });
+
   it.each([
     {inputs: ["+"], expected: "plus indicator"},
     {inputs: ["-"], expected: "minus indicator"},
