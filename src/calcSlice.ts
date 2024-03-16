@@ -16,7 +16,7 @@ import evaluate from "./utils/evaluate";
 import formatNumber from "./utils/formatNumber";
 import getDigitCount from "./utils/getDigitCount";
 import { ANGLE_MODES, MAX_DIGITS } from "./constants";
-import { isHyperbolic, isArc, isAreaHyperbolic } from "./utils/isTrigonometric";
+import { isArc, isAreaHyperbolic, isHyperbolic } from "./utils/isTrigonometric";
 import { convertFromRadians } from "./utils/convertFromRadians";
 
 export const initialState: CalcState = {
