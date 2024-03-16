@@ -40,6 +40,14 @@ describe("Display indicators", () => {
   });
 
   it.each([
+    {inputs: ["SHIFT", "SHIFT"]},
+    {inputs: ["5", "+", "SHIFT", "10", "SHIFT"]},
+  ])("toggles the shift indicator off", ({inputs}) => {
+    pressButtons(inputs);
+    assertShiftIndicatorIsNotDisplayed();
+  });
+
+  it.each([
     {inputs: ["5", "+", "10", "SHIFT", "%"]},
   ])("hides the shift indicator when a function is selected", ({inputs}) => {
     pressButtons(inputs);
@@ -67,6 +75,46 @@ describe("Display indicators", () => {
     expect(indicatorEl).not.toBeInTheDocument();
   });
 
+  it.each([
+    {inputs: ["HYP"]},
+    {inputs: ["5", "+", "10", "HYP"]},
+  ])("displays the hyperbolic indicator when 'hyp' key is pressed", ({inputs}) => {
+    pressButtons(inputs);
+    assertHyperbolicIndicatorIsDisplayed();
+  });
+
+  it("toggles the hyperbolic indicator off", () => {
+    pressButtons(["HYP", "HYP"]);
+    assertShiftIndicatorIsNotDisplayed();
+  });
+
+  it.each([
+    {inputs: ["HYP", "SHIFT"]},
+  ])("does not hide the hyperbolic indicator when the SHIFT key is pressed", ({inputs}) => {
+    pressButtons(inputs);
+    assertHyperbolicIndicatorIsDisplayed();
+  });
+
+  it.each([
+    {inputs: ["HYP", "5"]},
+    {inputs: ["5", "+", "HYP", "1"]},
+    {inputs: ["5", "+", "10", "HYP", "SHIFT", "%"]},
+    {inputs: ["5", "HYP", "SHIFT", "square"]},
+  ])("hides the hyperbolic indicator when a non-related button is pressed", ({inputs}) => {
+    pressButtons(inputs);
+    assertHyperbolicIndicatorIsNotDisplayed();
+  });
+
+  it("hides the hyperbolic indicator when the 'All Clear' button is pressed", () => {
+    pressButtons(["HYP", "AC"]);
+    assertHyperbolicIndicatorIsNotDisplayed();
+  });
+
+  it("hides the hyperbolic indicator when the 'Clear' button is pressed", () => {
+    pressButtons(["HYP", "C"]);
+    assertHyperbolicIndicatorIsNotDisplayed();
+  });
+
   it("displays the equals indicator when the equals button is pressed", () => {
     pressButtons(["1", "+", "1", "="]);
     const indicatorEl = screen.queryByLabelText("equals indicator");
@@ -82,12 +130,22 @@ describe("Display indicators", () => {
     const indicatorEl = screen.getByLabelText("shift indicator");
     expect(indicatorEl).toBeInTheDocument();
   };
-  
+
   const assertShiftIndicatorIsNotDisplayed = () => {
     const indicatorEl = screen.queryByLabelText("shift indicator");
     expect(indicatorEl).not.toBeInTheDocument();
   };
+
+  const assertHyperbolicIndicatorIsDisplayed = () => {
+    const indicatorEl = screen.getByLabelText("hyperbolic indicator");
+    expect(indicatorEl).toBeInTheDocument();
+  };
   
+  const assertHyperbolicIndicatorIsNotDisplayed = () => {
+    const indicatorEl = screen.queryByLabelText("hyperbolic indicator");
+    expect(indicatorEl).not.toBeInTheDocument();
+  };
+
   const assertOperatorIndicatorIsDisplayed = (expectedAriaLabel: string) => {
     const indicatorEl = screen.getByTestId("operator-indicator");
     expect(indicatorEl).toHaveAccessibleName(expectedAriaLabel);

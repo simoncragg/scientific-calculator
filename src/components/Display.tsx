@@ -12,6 +12,7 @@ const Display: React.FC = () => {
 
   const angleMode = useAppSelector(state => state.calc.angleMode);
   const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
+  const isHyperbolic = useAppSelector(state => state.calc.isHyperbolic);
   const lastInput = useAppSelector(state => state.calc.lastInput);
   const output = useAppSelector(state => state.calc.output);
   const voltageLevel = useAppSelector(state => state.calc.voltageLevel);
@@ -45,6 +46,16 @@ const Display: React.FC = () => {
       >
         {angleMode}
       </span>    
+
+      {isHyperbolic && (
+        <span 
+          aria-label={"hyperbolic indicator"}
+          className="leading-none absolute top-1.5 left-12 px-0.5 text-xs text-stone-800"
+          style={{ opacity: voltageLevel }}
+        >
+            hyp
+          </span>
+      )}
 
       {isShiftEnabled && (
         <span 

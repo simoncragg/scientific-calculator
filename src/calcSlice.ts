@@ -10,17 +10,18 @@ import type {
   UpdateExpressionPayload
 } from "./types";
 
+import ExpressionBuilder from "./classes/ExpressionBuilder";
 import ExpressionParser from "./classes/ExpressionParser";
 import evaluate from "./utils/evaluate";
 import formatNumber from "./utils/formatNumber";
 import getDigitCount from "./utils/getDigitCount";
 import { ANGLE_MODES, MAX_DIGITS } from "./constants";
-import { isFunction, isInverseTrigonometric } from "./utils/function-classifiers";
-import ExpressionBuilder from "./classes/ExpressionBuilder";
-import { convertFromRadians } from "./utils/angle-conversion";
+import { isHyperbolic, isArc, isAreaHyperbolic } from "./utils/isTrigonometric";
+import { convertFromRadians } from "./utils/convertFromRadians";
 
 export const initialState: CalcState = {
   isShiftEnabled: false,
+  isHyperbolic: false,
   angleMode: "deg",
   currentOperand: "0",
   expression: [],
@@ -46,6 +47,7 @@ export const calcSlice = createSlice({
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
       calc.lastOperation = undefined;
+      calc.isHyperbolic = false;
     },
 
     clear: calc => {
@@ -54,6 +56,7 @@ export const calcSlice = createSlice({
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
       calc.lastOperation = undefined;
+      calc.isHyperbolic = false;
     },
 
     cycleDrgMode: calc => {
@@ -67,6 +70,7 @@ export const calcSlice = createSlice({
         const result = repeatLastOperation(calc);
         calc.currentOperand = result.toString(),
         calc.output = formatNumber(result, MAX_DIGITS);
+        calc.isHyperbolic = false;
         return;
       }
 
@@ -79,24 +83,32 @@ export const calcSlice = createSlice({
       calc.lastInput = "=";
       calc.lastOperation = resolveLastOperation(calc, expression);
       calc.output = formatNumber(result, MAX_DIGITS);
+      calc.isHyperbolic = false;
     },
 
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
       const { func } = action.payload;
+
+      if (isHyperbolic(func) || isAreaHyperbolic(func)) {
+        calc.output = "- TODO -";
+        return;
+      }
+
       const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
       let result = evaluate([expression]);
       
-      if (isInverseTrigonometric(func)) {
+      if (isArc(func)) {
         result = convertFromRadians(result, calc.angleMode);
       }
-    
-      const parser = new ExpressionParser(calc.expression);
-      
+          
       calc.currentOperand = result.toString();
       calc.output = formatNumber(result, MAX_DIGITS);
       calc.lastOperand = result.toString();
-      calc.lastOperation = parser.determineLastOperation(func, result);
       calc.lastInput = func;
+      calc.isHyperbolic = false;
+
+      const parser = new ExpressionParser(calc.expression);
+      calc.lastOperation = parser.determineLastOperation(func, result);
     },
 
     invertNumber: calc => {
@@ -105,6 +117,7 @@ export const calcSlice = createSlice({
       calc.currentOperand = invertedNumber.toString();
       calc.output = formatNumber(invertedNumber, MAX_DIGITS);
       calc.lastInput = "+/-";
+      calc.isHyperbolic = false;
     },
 
     percent: calc => {
@@ -125,10 +138,15 @@ export const calcSlice = createSlice({
       calc.expression = [];
       calc.lastOperation = lastOperation;
       calc.lastInput =  "%";
+      calc.isHyperbolic = false;
     },
   
     todo: calc => {
       calc.output = "- TODO -";
+    },
+
+    toggleHyperbolic: calc => {
+      calc.isHyperbolic = !calc.isHyperbolic;
     },
 
     toggleShift: calc => {
@@ -147,6 +165,7 @@ export const calcSlice = createSlice({
       calc.currentOperand = currentOperand;
       calc.output = currentOperand;
       calc.lastInput = input;
+      calc.isHyperbolic = false;
     },
 
     updateExpression: (calc, action: PayloadAction<UpdateExpressionPayload>) => {
@@ -178,12 +197,13 @@ export const {
   invertNumber, 
   percent, 
   todo,
+  toggleHyperbolic,
   toggleShift,
   updateCurrentOperand,
   updateExpression,
  } = calcSlice.actions;
 
-// TODO: Move these functions out of this file.
+// Helper functions
 
 function repeatLastOperation(calc: CalcState): number {
   const { prefix, suffix } = calc.lastOperation!;
@@ -224,6 +244,13 @@ function isFirstDigit(input: string, calc: CalcState) {
     input !== "." || 
     calc.lastInput === "=" ||
     isFunction(calc.lastInput)
+}
+
+function isFunction(input: string | undefined): boolean {
+  return input !== undefined &&
+    input !== "." && 
+    input !== "+/-" &&
+    isNaN(Number(input));
 }
 
 export default calcSlice.reducer;

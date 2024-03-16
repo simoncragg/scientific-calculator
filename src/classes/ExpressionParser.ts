@@ -5,7 +5,7 @@ import type {
   OperatorType
 } from "../types";
 
-import { isTrigonometric } from "../utils/function-classifiers";
+import { isTrigonometric } from "../utils/isTrigonometric";
 
 class ExpressionParser {
 

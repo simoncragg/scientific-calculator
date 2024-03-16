@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MathJax } from "better-react-mathjax";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
-import { FunctionType } from "../types";
+import type { FunctionType } from "../types";
+import type { TrigFunction } from "../classes/TrigFunctionConfig";
+
 import Button from "./Button";
+import TrigFunctionConfig from "../classes/TrigFunctionConfig";
 
 import {
   adjustVoltage,
@@ -11,6 +14,7 @@ import {
   executeFunction,
   invertNumber,
   todo,
+  toggleHyperbolic,
   toggleShift,
 } from "../calcSlice";
 
@@ -18,6 +22,11 @@ const TopButtonBox: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
+  const isHyperbolic = useAppSelector(state => state.calc.isHyperbolic);
+
+  const [sin, setSin] = useState<TrigFunction>({ func: "sin", aria: "sine"});
+  const [cos, setCos] = useState<TrigFunction>({ func: "cos", aria: "cosine"});
+  const [tan, setTan] = useState<TrigFunction>({ func: "tan", aria: "tangent"});
   
   const handleFunctionButtonClick = (primary: FunctionType, secondary: FunctionType) => {
     if (!isShiftEnabled) {
@@ -27,6 +36,19 @@ const TopButtonBox: React.FC = () => {
       dispatch(toggleShift());
     }
   };
+
+  const handleTrigFunctionButtonClick = (trigFunc: FunctionType) => {
+    dispatch(executeFunction({ func: trigFunc}));
+    if (isShiftEnabled) {
+      dispatch(toggleShift());
+    }
+  };
+
+  useEffect(() => {
+    setSin(TrigFunctionConfig.instance.get("sin", isShiftEnabled, isHyperbolic));
+    setCos(TrigFunctionConfig.instance.get("cos", isShiftEnabled, isHyperbolic));
+    setTan(TrigFunctionConfig.instance.get("tan", isShiftEnabled, isHyperbolic));
+  }, [isHyperbolic, isShiftEnabled]);
 
   //console.log("rendering TopButtonBox");
 
@@ -105,32 +127,36 @@ const TopButtonBox: React.FC = () => {
         <span className="text-2xl ml-0.5 mt-2">”</span>
       </Button>
 
-      <Button className="fn" onClick={() => dispatch(todo())}>
+      <Button 
+        ariaLabel="hyperbolic"
+        className="fn" 
+        onClick={() => dispatch(toggleHyperbolic())
+      }>
         hyp
       </Button>
 
       <Button 
-        ariaLabel={!isShiftEnabled ? "sine" : "arc sine"}
+        ariaLabel={sin.aria}
         className="fn" 
-        onClick={() => handleFunctionButtonClick("sin", "asin")}
+        onClick={() => handleTrigFunctionButtonClick(sin.func)}
         buttonLabel={<MathJax>{"`sin^-1`"}</MathJax>}
       >
         sin
       </Button>
 
       <Button 
-        ariaLabel={!isShiftEnabled ? "cosine" : "arc cosine"}
+        ariaLabel={cos.aria}
         className="fn" 
-        onClick={() => handleFunctionButtonClick("cos", "acos")}
+        onClick={() => handleTrigFunctionButtonClick(cos.func)}
         buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
         >
         cos
       </Button>
 
       <Button 
-        ariaLabel={!isShiftEnabled ? "tangent" : "arc tangent"}
+        ariaLabel={tan.aria}
         className="fn" 
-        onClick={() => handleFunctionButtonClick("tan", "atan")}
+        onClick={() => handleTrigFunctionButtonClick(tan.func)}
         buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}
       >
         tan

@@ -1,4 +1,4 @@
-import React, { Children, MouseEventHandler, ReactNode } from "react";
+import React, { MouseEventHandler, ReactNode } from "react";
 
 interface ButtonProps {
   operator?: string;
@@ -7,10 +7,6 @@ interface ButtonProps {
   buttonLabel?: ReactNode;
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
-}
-
-interface ChildType {
-  name: string;
 }
 
 const Button: React.FC<ButtonProps> = ({ 

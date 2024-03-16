@@ -1,6 +1,6 @@
 import type { AngleUnit, FunctionType } from "../types";
-import { convertToRadians } from "../utils/angle-conversion";
-import { isInverseTrigonometric, isTrigonometric } from "../utils/function-classifiers";
+import { convertToRadians } from "../utils/convertToRadians";
+import { isArc, isTrigonometric } from "../utils/isTrigonometric";
  
 class ExpressionBuilder {
   
@@ -8,7 +8,7 @@ class ExpressionBuilder {
       let unit = "";
       let convertedOperand = operand;
     
-      if (isTrigonometric(func) && !isInverseTrigonometric(func)) {
+      if (isTrigonometric(func) && !isArc(func)) {
         unit = "rad";
         convertedOperand = convertToRadians(parseFloat(operand), angleUnit).toString();
       }
