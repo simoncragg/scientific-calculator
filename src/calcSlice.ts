@@ -91,7 +91,7 @@ export const calcSlice = createSlice({
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
       const { func } = action.payload;
 
-      if (["acosh", "atanh"].includes(func)) {
+      if (func === "atanh") {
         calc.output = "- TODO -";
         return;
       }
