@@ -59,6 +59,7 @@ export const mapToAriaLabel = (input: string): string => {
     case "acos": return "arc cosine";
     case "atan": return "arc tangent";
     case "sinh": return "hyperbolic sine";
+    case "cosh": return "hyperbolic cosine";
     case "=": return "equals";
     default: return input;
   }
