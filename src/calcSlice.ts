@@ -90,12 +90,6 @@ export const calcSlice = createSlice({
 
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
       const { func } = action.payload;
-
-      if (func === "atanh") {
-        calc.output = "- TODO -";
-        return;
-      }
-
       const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
       let result = evaluate([expression]);
       
