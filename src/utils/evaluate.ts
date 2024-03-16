@@ -19,6 +19,7 @@ import {
   squareDependencies,
   subtractDependencies,
   tanDependencies,
+  tanhDependencies,
 } from "mathjs";
 
 type OperationFunction = (...args: number[]) => number;
@@ -44,6 +45,7 @@ const { evaluate } = create({
   squareDependencies,
   subtractDependencies,
   tanDependencies,
+  tanhDependencies,
   createPowerOfTen: createOperation("powerOfTen", powerOfTen),
 });
 

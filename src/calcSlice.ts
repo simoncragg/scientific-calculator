@@ -91,7 +91,7 @@ export const calcSlice = createSlice({
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
       const { func } = action.payload;
 
-      if (func === "tanh" || isAreaHyperbolic(func)) {
+      if (isAreaHyperbolic(func)) {
         calc.output = "- TODO -";
         return;
       }
