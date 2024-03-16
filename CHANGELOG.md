@@ -1,3 +1,50 @@
+# 1.3.0 (2024-03-16)
+
+[Compare v1.2.0 → v1.3.0](https://github.com/simoncragg/scientific-calculator/compare/v1.2.0...v1.3.0)
+
+### Bug Fixes
+
+    * address the increased rendering of BottomButtonBox (65c95f9 (https://github.com/simoncragg/scientific-calculator/commit/65c95f97b938ddeba8536e5218e055c077d84e71))
+    * correct parameter types in exponential test cases (505f00a (https://github.com/simoncragg/scientific-calculator/commit/505f00a12df119251a62c70edc5780ca144be407))
+    * incorrect operand concatenation after function execution (dfd542d (https://github.com/simoncragg/scientific-calculator/commit/dfd542d0efe9b873ed5bb1fd212d75b09733284a))
+    * loss of button label through minification (e08b6dd (https://github.com/simoncragg/scientific-calculator/commit/e08b6ddf8f513e7e594688f76975884a46666abc))
+    * prevent repeat last operation for sine function (3d98e6f (https://github.com/simoncragg/scientific-calculator/commit/3d98e6f8f9a3ca1612a3ad40832212fce41629bb))
+
+### Features
+
+    * arc cosine function (1de2d73 (https://github.com/simoncragg/scientific-calculator/commit/1de2d73aabf5d7ea2c5b6f68b5ef4ff64554a75f))
+    * arc sine function (4007ce6 (https://github.com/simoncragg/scientific-calculator/commit/4007ce6ed94326a9b00354fa4c280425cbe4e822))
+    * arc tangent function (e83ccc8 (https://github.com/simoncragg/scientific-calculator/commit/e83ccc82c83300a31d7e901f8db91c9981c115f5))
+    * area hyperbolic cosine (5827690 (https://github.com/simoncragg/scientific-calculator/commit/5827690f08db1f086437dc91728bcb75f4dd0f07))
+    * area hyperbolic sine function (bd3d749 (https://github.com/simoncragg/scientific-calculator/commit/bd3d7495a7ca98aa0c2aae75f3def0fcb2a96ff2))  
+    * area hyperbolic tangent (a5c87f1 (https://github.com/simoncragg/scientific-calculator/commit/a5c87f157b59146d80f803c6ebc84c1cc36dc67b))        
+    * cosine function (5a1cce7 (https://github.com/simoncragg/scientific-calculator/commit/5a1cce73402ffa11a76cad82ff4184d8fab619cf))
+    * disable the shift key when the calculator is cleared (77d88f3 (https://github.com/simoncragg/scientific-calculator/commit/77d88f39f3a10eea78858e2d9f3daa5963ff58f3))
+    * display 'TODO' for non-implemented functions (ec5b047 (https://github.com/simoncragg/scientific-calculator/commit/ec5b047f3483dc7085753578f3efee404a77f7fa))
+    * display exponential numbers with maximal precision (01d5b73 (https://github.com/simoncragg/scientific-calculator/commit/01d5b732f0f49cc37f0e458acb9a6a7adeb61440))
+    * DRG mode select (0884ebf (https://github.com/simoncragg/scientific-calculator/commit/0884ebf856b3af67273f2562525c218d43af890e))
+    * extend max digits to 10 and drop commas (db55e6a (https://github.com/simoncragg/scientific-calculator/commit/db55e6a1d2ba86d915c7b38e00425a4585630523))
+    * hyperbolic cosine function (e2863f6 (https://github.com/simoncragg/scientific-calculator/commit/e2863f62ad5d5ff8d6cc55717c3248cfa2033470))     
+    * hyperbolic sine function (751556d (https://github.com/simoncragg/scientific-calculator/commit/751556dbe8b09eac491557151d493836ba91be9b))       
+    * hyperbolic tangent function (c8cc3d8 (https://github.com/simoncragg/scientific-calculator/commit/c8cc3d830493794152c59f854b6f3c8f39829922))    
+    * hyperbolic toggle button (548c65a (https://github.com/simoncragg/scientific-calculator/commit/548c65a3a22fb0e86faa4787a052372b9bb7d3e8))       
+    * improve aria label for sine function (83be93a (https://github.com/simoncragg/scientific-calculator/commit/83be93a8d72fc55b6f53d3109a81396e4d878942))
+    * log function (c6c2df8 (https://github.com/simoncragg/scientific-calculator/commit/c6c2df86dcbae2d89dff6cd83ff02b7bde5f2aca))
+    * migrate to redux toolkit (1a1e62d (https://github.com/simoncragg/scientific-calculator/commit/1a1e62d8808d58480a536034bf6ddca47a17cb2d))       
+    * natural log function (901b647 (https://github.com/simoncragg/scientific-calculator/commit/901b64793f098d363881fb757bd12b91657c2dfe))
+    * PI constant button (b98c9b1 (https://github.com/simoncragg/scientific-calculator/commit/b98c9b1ca88bbff8f3a200351d813a576ef3ab42))
+    * power of ten function (63b0d66 (https://github.com/simoncragg/scientific-calculator/commit/63b0d66721d2a3c6b9a30d4144f1d30026815e19))
+    * power off (ff35a80 (https://github.com/simoncragg/scientific-calculator/commit/ff35a80fb4182f6a1677bdc222abcb0029d4ce60))
+    * require manual pressing of equals key to show equals indicator (ac6cbbe (https://github.com/simoncragg/scientific-calculator/commit/ac6cbbe690857adb7cbd40f904cebed7c1604115))
+    * reset lastInput on clear (cad5be1 (https://github.com/simoncragg/scientific-calculator/commit/cad5be1ea35dcbbeb905fd205a7be48bfa89e481))       
+    * scientific calculator user interface (c555304 (https://github.com/simoncragg/scientific-calculator/commit/c55530412779326b70330da112debd0fb0407020))
+    * shift key function + percentage calculations (6090835 (https://github.com/simoncragg/scientific-calculator/commit/6090835e5170ae024810285bdc01de1f7f316ed7))
+    * sin function (f9ef644 (https://github.com/simoncragg/scientific-calculator/commit/f9ef6446ffe9855678c51b398fae4c60faeb7dab))
+    * square function (7994204 (https://github.com/simoncragg/scientific-calculator/commit/7994204469f765a543482c2c6429356044a5d656))
+    * square root function (084ea94 (https://github.com/simoncragg/scientific-calculator/commit/084ea94df04845cff688079bd94e2fd44968cad0))
+    * tangent function (3884b3d (https://github.com/simoncragg/scientific-calculator/commit/3884b3d03e36430f0154d22a711e17f57ff32530))
+    * the exp(x) function (c14d23e (https://github.com/simoncragg/scientific-calculator/commit/c14d23eaee8c2f66a7fe63dfd1ee7230a443e2aa))
+
 # 1.2.0 (2024-02-25)
 
 [Compare v1.1.0 → v1.2.0](https://github.com/simoncragg/calculator-app/compare/v1.1.0...v1.2.0)
