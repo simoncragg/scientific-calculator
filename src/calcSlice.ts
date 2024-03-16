@@ -91,7 +91,7 @@ export const calcSlice = createSlice({
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
       const { func } = action.payload;
 
-      if (isAreaHyperbolic(func)) {
+      if (["acosh", "atanh"].includes(func)) {
         calc.output = "- TODO -";
         return;
       }
@@ -99,7 +99,7 @@ export const calcSlice = createSlice({
       const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
       let result = evaluate([expression]);
       
-      if (isArc(func)) {
+      if (isArc(func) || isAreaHyperbolic(func)) {
         result = convertFromRadians(result, calc.angleMode);
       }
           
