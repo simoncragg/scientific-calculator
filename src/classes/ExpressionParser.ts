@@ -5,6 +5,7 @@ import type {
   OperatorType
 } from "../types";
 
+import isOperator from "../utils/isOperator";
 import { isTrigonometric } from "../utils/isTrigonometric";
 
 class ExpressionParser {
@@ -58,7 +59,7 @@ class ExpressionParser {
 
   getLastOperator(): GetLastOperatorResultType {
     for (let i = this.expression.length - 1; i > -1; i--) {
-      if (this.isOperator(this.expression[i])) {
+      if (isOperator(this.expression[i])) {
         return { 
           lastOperator: this.expression[i] as OperatorType,
           index: i
@@ -97,12 +98,6 @@ class ExpressionParser {
       prefix: `${func}(`, 
       suffix: `)`,
     };
-  }
-
-  isOperator(candidate: string | undefined): boolean {
-    return candidate 
-      ? "/*-+".includes(candidate)
-      : false;
   }
 
   isNumber(candidate: string): boolean {

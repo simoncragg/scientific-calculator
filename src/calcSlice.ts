@@ -15,8 +15,9 @@ import ExpressionParser from "./classes/ExpressionParser";
 import evaluate from "./utils/evaluate";
 import formatNumber from "./utils/formatNumber";
 import getDigitCount from "./utils/getDigitCount";
+import isOperator from "./utils/isOperator";
 import { ANGLE_MODES, MAX_DIGITS } from "./constants";
-import { isArc, isAreaHyperbolic, isHyperbolic } from "./utils/isTrigonometric";
+import { isArc, isAreaHyperbolic } from "./utils/isTrigonometric";
 import { convertFromRadians } from "./utils/convertFromRadians";
 
 export const initialState: CalcState = {
@@ -107,6 +108,17 @@ export const calcSlice = createSlice({
       calc.lastOperation = parser.determineLastOperation(func, result);
     },
 
+    expOrPi: calc => {
+      if (calc.currentOperand === "0" || isOperator(calc.lastInput)) {
+        const pi = Math.PI;
+        calc.currentOperand = pi.toString();
+        calc.output = formatNumber(pi, MAX_DIGITS);
+        return;
+      }
+      // TODO: Exp input mode
+      calc.output = "- TODO -";
+    },
+
     invertNumber: calc => {
       if (calc.lastInput === "=" && calc.output === "Error") return;
       const invertedNumber = parseFloat(calc.currentOperand) * -1;
@@ -190,6 +202,7 @@ export const {
   cycleDrgMode,
   evaluateExpression,
   executeFunction,
+  expOrPi,
   invertNumber, 
   percent, 
   todo,

@@ -10,6 +10,7 @@ import {
   allClear,
   clear,
   evaluateExpression,
+  expOrPi,
   percent,
   todo,
   toggleShift,
@@ -146,7 +147,8 @@ const BottomButtonBox: React.FC = () => {
       </Button>
       
       <Button 
-        onClick={() => dispatch(todo())}
+        ariaLabel="exponent or pi constant"
+        onClick={() => dispatch(expOrPi())}
         buttonLabel={
           <MathJax className="text-sm -mt-1 text-neutral-300">
             {"`pi`"}

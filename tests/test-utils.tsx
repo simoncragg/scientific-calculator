@@ -46,6 +46,7 @@ export const mapToAriaLabel = (input: string): string => {
     case "SHIFT": return "shift";
     case "DRG▸": return "angle mode";
     case "HYP": return "hyperbolic";
+    case "PI": return "exponent or pi constant";
     case "+": return "plus";
     case "-": return "minus";
     case "×": return "multiply";
