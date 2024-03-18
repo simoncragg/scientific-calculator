@@ -43,14 +43,7 @@ class ExpressionParser {
         suffix: this.expression.slice(index).join(""),
       }
     }
-  
-    if (this.expression[0].startsWith("sqrt")) {
-      return {
-        prefix: "sqrt(",
-        suffix: ")",
-      }
-    }
-  
+   
     return {
       prefix: "",
       suffix: "",
