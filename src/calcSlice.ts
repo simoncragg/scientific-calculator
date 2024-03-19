@@ -4,6 +4,7 @@ import type {
   AdjustVoltagePayload, 
   CalcState, 
   ExecuteFunctionPayload, 
+  FunctionType, 
   OperandAffixes, 
   OperatorType, 
   UpdateCurrentOperandPayload, 
@@ -17,7 +18,7 @@ import formatNumber from "./utils/formatNumber";
 import getDigitCount from "./utils/getDigitCount";
 import isOperator from "./utils/isOperator";
 import { ANGLE_MODES, MAX_DIGITS } from "./constants";
-import { isArc, isAreaHyperbolic } from "./utils/isTrigonometric";
+import { isArc, isAreaHyperbolic, isTrigonometric } from "./utils/isTrigonometric";
 import { convertFromRadians } from "./utils/convertFromRadians";
 
 export const initialState: CalcState = {
@@ -47,7 +48,7 @@ export const calcSlice = createSlice({
       calc.voltageLevel = 1.0;
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
-      calc.lastOperation = undefined;
+      calc.repeatOperationAffixes = undefined;
       calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
     },
@@ -57,7 +58,7 @@ export const calcSlice = createSlice({
       calc.output = "0";
       calc.lastInput = undefined;
       calc.lastOperand = undefined;
-      calc.lastOperation = undefined;
+      calc.repeatOperationAffixes = undefined;
       calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
     },
@@ -84,7 +85,7 @@ export const calcSlice = createSlice({
       calc.currentOperand = result.toString();
       calc.expression = [];
       calc.lastInput = "=";
-      calc.lastOperation = resolveLastOperation(calc, expression);
+      calc.repeatOperationAffixes = calc.repeatOperationAffixes ?? new ExpressionParser(expression).getRepeatOperationAffixes();
       calc.output = formatNumber(result, MAX_DIGITS);
       calc.isHyperbolic = false;
     },
@@ -103,9 +104,7 @@ export const calcSlice = createSlice({
       calc.lastOperand = result.toString();
       calc.lastInput = func;
       calc.isHyperbolic = false;
-
-      const parser = new ExpressionParser(calc.expression);
-      calc.lastOperation = parser.determineLastOperation(func, result);
+      calc.repeatOperationAffixes = getRepeatOperationAffixes(calc, func, result);
     },
 
     expOrPi: calc => {
@@ -139,12 +138,12 @@ export const calcSlice = createSlice({
     
       const result = evaluate(expression);
       const formattedResult = formatNumber(result, MAX_DIGITS);
-      const lastOperation = new ExpressionParser(expression).getLastOperation();
-    
+      const parser = new ExpressionParser(expression);
+
       calc.currentOperand = formattedResult;
       calc.output = formattedResult;
       calc.expression = [];
-      calc.lastOperation = lastOperation;
+      calc.repeatOperationAffixes = parser.getRepeatOperationAffixes();
       calc.lastInput =  "%";
       calc.isHyperbolic = false;
     },
@@ -214,8 +213,29 @@ export const {
 
 // Helper functions
 
+function getRepeatOperationAffixes(calc: CalcState, func: FunctionType, result: number): OperandAffixes {
+  const parser = new ExpressionParser([...calc.expression, result.toString()]);
+  const { prefix, suffix } = parser.getRepeatOperationAffixes();
+  
+  if (prefix + suffix !== "") {
+    return { prefix, suffix };
+  }
+
+  if (isTrigonometric(func)) {
+    return { 
+      prefix: "", 
+      suffix: "",
+    };
+  }
+  
+  return {
+    prefix: `${func}(`, 
+    suffix: `)`,
+  };
+}
+
 function repeatLastOperation(calc: CalcState): number {
-  const { prefix, suffix } = calc.lastOperation!;
+  const { prefix, suffix } = calc.repeatOperationAffixes!;
   const expression = [prefix, calc.currentOperand, suffix];
   return evaluate(expression);
 }
@@ -240,12 +260,6 @@ function resolveCurrentOperand(calc: CalcState): string {
   return calc.currentOperand !== ""
     ? calc.currentOperand
     : calc.lastOperand ?? "0";
-}
-
-function resolveLastOperation(calc: CalcState, expression: string[]): OperandAffixes {
-  return calc.lastOperation
-    ? calc.lastOperation
-    : new ExpressionParser(expression).getLastOperation();
 }
 
 function isFirstDigit(input: string, calc: CalcState) {

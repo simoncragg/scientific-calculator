@@ -11,7 +11,7 @@ export interface CalcState {
   expression: string[];
   lastInput?: string;
   lastOperand?: string;
-  lastOperation?: OperandAffixes;
+  repeatOperationAffixes?: OperandAffixes;
   output: string;
   voltageLevel: number;
 }

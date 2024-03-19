@@ -33,7 +33,7 @@ class ExpressionParser {
     return this.expression.slice(index - 1);
   }
 
-  getLastOperation(): OperandAffixes {
+  getRepeatOperationAffixes(): OperandAffixes {
 
     const { lastOperator, index } = this.getLastOperator();
     
@@ -41,7 +41,7 @@ class ExpressionParser {
       return { 
         prefix: "",
         suffix: this.expression.slice(index).join(""),
-      }
+      };
     }
    
     return {
@@ -63,33 +63,6 @@ class ExpressionParser {
     return { 
       lastOperator: undefined,
       index: -1
-    };
-  }
-
-  determineLastOperation(
-    func: FunctionType, 
-    result: number
-  ): OperandAffixes { 
-  
-    const { lastOperator } = this.getLastOperator();
-  
-    if (lastOperator) {
-      return { 
-        prefix: "", 
-        suffix: `${lastOperator}${result}`,
-      };
-    }
-  
-    if (isTrigonometric(func)) {
-      return { 
-        prefix: "", 
-        suffix: "",
-      };
-    }
-  
-    return {
-      prefix: `${func}(`, 
-      suffix: `)`,
     };
   }
 
