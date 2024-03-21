@@ -11,7 +11,9 @@ import TrigFunctionConfig from "../classes/TrigFunctionConfig";
 import {
   adjustVoltage,
   cycleDrgMode,
+  decimalToSexagesimal,
   executeFunction,
+  inputSexagesimal,
   invertNumber,
   todo,
   toggleHyperbolic,
@@ -33,6 +35,15 @@ const TopButtonBox: React.FC = () => {
       dispatch(executeFunction({ func: primary}));
     } else {
       dispatch(executeFunction({ func: secondary})); 
+      dispatch(toggleShift());
+    }
+  };
+
+  const handleSexagesimalButtonClick = () => {
+    if (!isShiftEnabled) {
+      dispatch(inputSexagesimal());
+    } else {
+      dispatch(decimalToSexagesimal());
       dispatch(toggleShift());
     }
   };
@@ -118,8 +129,9 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
+        ariaLabel={!isShiftEnabled ? "sexagesimal to decimal" : "decimal to sexagesimal"}
         className="fn" 
-        onClick={() => dispatch(todo())}
+        onClick={handleSexagesimalButtonClick}
         buttonLabel={<MathJax>{"`leftarrow`"}</MathJax>}
       >
         <span className="text-lg ml-0.5 mt-1">°</span>

@@ -26,6 +26,7 @@ export const initialState: CalcState = {
   isHyperbolic: false,
   angleMode: "deg",
   currentOperand: "0",
+  sexagesimalInputs: [],
   expression: [],
   output: "0",
   voltageLevel: 1.0,
@@ -51,6 +52,7 @@ export const calcSlice = createSlice({
       calc.repeatOperationAffixes = undefined;
       calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
+      calc.sexagesimalInputs = [];
     },
 
     clear: calc => {
@@ -61,6 +63,7 @@ export const calcSlice = createSlice({
       calc.repeatOperationAffixes = undefined;
       calc.isShiftEnabled = false;
       calc.isHyperbolic = false;
+      calc.sexagesimalInputs = [];
     },
 
     cycleDrgMode: calc => {
@@ -69,12 +72,26 @@ export const calcSlice = createSlice({
       calc.angleMode = ANGLE_MODES[nextIndex];
     },
 
+    decimalToSexagesimal: calc => {
+      const decimal = parseFloat(calc.currentOperand);
+      const isNegative = decimal < 0;
+      const absoluateDecimal = Math.abs(decimal);
+      const degrees = Math.floor(absoluateDecimal);
+      const remainingMinutes = (absoluateDecimal - degrees) * 60;
+      const minutes = Math.floor(remainingMinutes);
+      const remainingSeconds = (remainingMinutes - minutes) * 60;
+      const seconds = Math.round(remainingSeconds);
+      const sign = isNegative ? "-" : "";
+      calc.output = `${sign}${degrees}°${minutes}’${seconds}”`;
+    },
+
     evaluateExpression: calc => {
       if (calc.lastInput === "=") {
         const result = repeatLastOperation(calc);
         calc.currentOperand = result.toString(),
         calc.output = formatNumber(result, MAX_DIGITS);
         calc.isHyperbolic = false;
+        calc.sexagesimalInputs = [];
         return;
       }
 
@@ -84,10 +101,11 @@ export const calcSlice = createSlice({
     
       calc.currentOperand = result.toString();
       calc.expression = [];
-      calc.lastInput = "=";
       calc.repeatOperationAffixes = calc.repeatOperationAffixes ?? new ExpressionParser(expression).getRepeatOperationAffixes();
       calc.output = formatNumber(result, MAX_DIGITS);
       calc.isHyperbolic = false;
+      calc.lastInput = "=";
+      calc.sexagesimalInputs = [];
     },
 
     executeFunction: (calc, action: PayloadAction<ExecuteFunctionPayload>) => {
@@ -102,9 +120,9 @@ export const calcSlice = createSlice({
       calc.currentOperand = result.toString();
       calc.output = formatNumber(result, MAX_DIGITS);
       calc.lastOperand = result.toString();
-      calc.lastInput = func;
       calc.isHyperbolic = false;
       calc.repeatOperationAffixes = getRepeatOperationAffixes(calc, func, result);
+      calc.lastInput = func;
     },
 
     expOrPi: calc => {
@@ -112,10 +130,31 @@ export const calcSlice = createSlice({
         const pi = Math.PI;
         calc.currentOperand = pi.toString();
         calc.output = formatNumber(pi, MAX_DIGITS);
+        calc.lastInput = "PI";
         return;
       }
       // TODO: Exp input mode
       calc.output = "- TODO -";
+    },
+
+    inputSexagesimal: calc => {
+      const input = parseFloat(calc.currentOperand || calc.output);
+      const isNegative = calc.sexagesimalInputs[0] < 0;
+      calc.sexagesimalInputs.push(input);
+
+      const total = calc.sexagesimalInputs.reduce((acc, val, i) => {
+        const absoluteValue = Math.abs(val);
+        return acc + absoluteValue / Math.pow(60, i);
+      }, 0);
+
+      const adjustedTotal = isNegative ? 0 - Math.abs(total) : Math.abs(total);
+      calc.output = formatNumber(adjustedTotal, MAX_DIGITS);
+      calc.currentOperand = adjustedTotal.toString();
+      calc.lastInput = "SEX";
+      
+      if (calc.sexagesimalInputs.length === 3) {
+        calc.sexagesimalInputs= [];
+      }
     },
 
     invertNumber: calc => {
@@ -123,8 +162,8 @@ export const calcSlice = createSlice({
       const invertedNumber = parseFloat(calc.currentOperand) * -1;
       calc.currentOperand = invertedNumber.toString();
       calc.output = formatNumber(invertedNumber, MAX_DIGITS);
-      calc.lastInput = "+/-";
       calc.isHyperbolic = false;
+      calc.lastInput = "+/-";
     },
 
     percent: calc => {
@@ -144,10 +183,10 @@ export const calcSlice = createSlice({
       calc.output = formattedResult;
       calc.expression = [];
       calc.repeatOperationAffixes = parser.getRepeatOperationAffixes();
-      calc.lastInput =  "%";
       calc.isHyperbolic = false;
+      calc.lastInput =  "%";
     },
-  
+
     todo: calc => {
       calc.output = "- TODO -";
     },
@@ -164,6 +203,10 @@ export const calcSlice = createSlice({
       const { input } = action.payload;
       if (getDigitCount(calc.currentOperand) === MAX_DIGITS) return;
       if (input === "." && calc.currentOperand.includes(".")) return;
+
+      if (calc.lastInput === "SEX") {
+        calc.currentOperand = "0";
+      }
     
       const currentOperand = isFirstDigit(input, calc) 
         ? input
@@ -190,26 +233,10 @@ export const calcSlice = createSlice({
       calc.output = buildOutputForNewOperator(currentOperand, expression, operator);
       calc.lastOperand = currentOperand;
       calc.lastInput = operator;
+      calc.sexagesimalInputs = [];
     },
   }
 });
-
-export const { 
-  adjustVoltage,
-  allClear, 
-  clear, 
-  cycleDrgMode,
-  evaluateExpression,
-  executeFunction,
-  expOrPi,
-  invertNumber, 
-  percent, 
-  todo,
-  toggleHyperbolic,
-  toggleShift,
-  updateCurrentOperand,
-  updateExpression,
- } = calcSlice.actions;
 
 // Helper functions
 
@@ -277,3 +304,22 @@ function isFunction(input: string | undefined): boolean {
 }
 
 export default calcSlice.reducer;
+
+export const { 
+  adjustVoltage,
+  allClear, 
+  clear, 
+  cycleDrgMode,
+  decimalToSexagesimal,
+  evaluateExpression,
+  executeFunction,
+  expOrPi,
+  inputSexagesimal,
+  invertNumber, 
+  percent, 
+  todo,
+  toggleHyperbolic,
+  toggleShift,
+  updateCurrentOperand,
+  updateExpression,
+ } = calcSlice.actions;

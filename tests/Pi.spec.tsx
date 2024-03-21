@@ -6,7 +6,6 @@ import { assertOutputIsEqualTo, pressButton, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
-
 describe("PI constant", () => {
 
   beforeEach(() => {
