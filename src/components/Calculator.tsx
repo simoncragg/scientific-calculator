@@ -6,7 +6,7 @@ import TopButtonBox from "./TopButtonBox";
 const Calculator = () => {
   
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-[345px]">
 
       <div className="flex flex-col pt-2 px-2 bg-zinc-900 rounded-t-xl rounded-x-xl md:shadow-drop">
 

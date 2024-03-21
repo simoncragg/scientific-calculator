@@ -1,5 +1,5 @@
 import React from "react";
-import { LuPlus, LuMinus, LuX, LuDivide, LuEqual } from "react-icons/lu";
+import { LuPlus, LuMinus, LuX, LuDivide, LuDot, LuEqual } from "react-icons/lu";
 import { MathJax } from "better-react-mathjax";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
@@ -143,7 +143,7 @@ const BottomButtonBox: React.FC = () => {
       </Button>
       
       <Button ariaLabel="decimal point" onClick={handleDecimalPointClick} buttonLabel="RAD#">
-        <MathJax>{"`cdot`"}</MathJax>
+        <LuDot />
       </Button>
       
       <Button 

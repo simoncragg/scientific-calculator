@@ -19,7 +19,7 @@ const Display: React.FC = () => {
 
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
   const [isExponential, setIsExponential] = useState(false);
-  const [angleModePosition, setAngleModePosition] = useState("left-32");
+  const [angleModePosition, setAngleModePosition] = useState(angleModePositions["deg"]);
 
   useEffect(() => {
     const position = angleModePositions[angleMode];
@@ -37,7 +37,7 @@ const Display: React.FC = () => {
   //console.log("rendering Display");
 
   return (
-    <div className="relative flex w-[307px] h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
+    <div className="relative flex w-full h-20 items-center justify-end mb-3 bg-[#687] font-sans rounded shadow-inner shadow-black overflow-hidden">
       
       <span 
         aria-label="angle mode indicator"

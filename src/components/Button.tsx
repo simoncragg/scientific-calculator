@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
     <div className="flex flex-col justify-end">
 
       {buttonLabel && (
-        <span className="text-yellow-600 text-xs self-center">
+        <span className="max-h-4 text-yellow-600 text-xs self-center">
           {buttonLabel}
         </span>
       )}

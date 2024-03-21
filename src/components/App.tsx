@@ -10,7 +10,7 @@ const config = {
 };
 
 const App = () => 
-  <MathJaxContext config={config}>
+  <MathJaxContext config={config} hideUntilTypeset="first">
     <Calculator />
   </MathJaxContext>;
 
