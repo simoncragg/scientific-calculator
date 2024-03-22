@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MathJax } from "better-react-mathjax";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
 
 import type { FunctionType } from "../types";
 import type { TrigFunction } from "../classes/TrigFunctionConfig";
@@ -8,7 +8,7 @@ import type { TrigFunction } from "../classes/TrigFunctionConfig";
 import Button from "./Button";
 import TrigFunctionConfig from "../classes/TrigFunctionConfig";
 
-import {
+const {
   adjustVoltage,
   cycleDrgMode,
   decimalToSexagesimal,
@@ -18,7 +18,7 @@ import {
   todo,
   toggleHyperbolic,
   toggleShift,
-} from "../calcSlice";
+} = useCalcActions();
 
 const TopButtonBox: React.FC = () => {
 

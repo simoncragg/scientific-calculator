@@ -1,12 +1,11 @@
 import { random } from "mathjs";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
-
-import { adjustVoltage } from "../calcSlice";
+import { useAppDispatch, useCalcActions  } from "../hooks";
 
 const SolarPanel = () => {
 
-  const dispatch = useDispatch();
+  const { adjustVoltage } = useCalcActions();
+  const dispatch = useAppDispatch();
   const solarPanelRef = useRef<HTMLDivElement>(null);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {

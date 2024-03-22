@@ -1,24 +1,24 @@
 import React from "react";
 import { LuPlus, LuMinus, LuX, LuDivide, LuDot, LuEqual } from "react-icons/lu";
 import { MathJax } from "better-react-mathjax";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
 
 import type { OperatorType } from "../types";
 import Button from "./Button";
 
-import { 
-  allClear,
-  clear,
-  evaluateExpression,
-  expOrPi,
-  percent,
-  todo,
-  toggleShift,
-  updateCurrentOperand,
-  updateExpression,
-} from "../calcSlice";
-
 const BottomButtonBox: React.FC = () => {
+
+  const { 
+    allClear,
+    clear,
+    evaluateExpression,
+    expOrPi,
+    percent,
+    todo,
+    toggleShift,
+    updateCurrentOperand,
+    updateExpression,
+  } = useCalcActions();
 
   const dispatch = useAppDispatch();
   const isShiftEnabled = useAppSelector(state => state.calc.isShiftEnabled);
