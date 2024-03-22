@@ -150,7 +150,7 @@ export const calcSlice = createSlice({
       const adjustedTotal = isNegative ? 0 - Math.abs(total) : Math.abs(total);
       calc.output = formatNumber(adjustedTotal, MAX_DIGITS);
       calc.currentOperand = adjustedTotal.toString();
-      calc.lastInput = "SEX";
+      calc.lastInput = "sex";
       
       if (calc.sexagesimalInputs.length === 3) {
         calc.sexagesimalInputs= [];
@@ -204,7 +204,7 @@ export const calcSlice = createSlice({
       if (getDigitCount(calc.currentOperand) === MAX_DIGITS) return;
       if (input === "." && calc.currentOperand.includes(".")) return;
 
-      if (calc.lastInput === "SEX") {
+      if (calc.lastInput === "sex") {
         calc.currentOperand = "0";
       }
     
