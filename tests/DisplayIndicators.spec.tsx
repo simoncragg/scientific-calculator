@@ -1,9 +1,9 @@
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom";
 import React from "react";
 import { screen } from "@testing-library/react";
 import { ANGLE_MODES } from "../src/constants";
 
-import App from "../src/components/App"
+import App from "../src/components/App";
 import { assertElementIsHidden, pressButton, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";

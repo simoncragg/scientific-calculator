@@ -1,8 +1,8 @@
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom";
 import React from "react";
 import { screen } from "@testing-library/react";
 
-import App from "../src/components/App"
+import App from "../src/components/App";
 import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
