@@ -1,17 +1,21 @@
 import type { Draft } from "@reduxjs/toolkit";
-import type { CalcState } from "../types";
+import type { CalcState, NumericModeType } from "../types";
 
+import ExpressionParser from "../classes/ExpressionParser";
+import Fraction from "../classes/Fraction";
 import evaluate from "../utils/evaluate";
 import formatNumber from "../utils/formatNumber";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
-import { MAX_DIGITS } from "../constants";
-import ExpressionParser from "../classes/ExpressionParser";
+import { FRACTION_BAR, MAX_DIGITS } from "../constants";
 
 function evaluateExpression(calc: Draft<CalcState>) {
+  
   if (calc.lastInput === "=") {
     repeatLastOperation(calc);
     return;
   }
+
+  updateFractionInputsIfNeeded(calc);
 
   const currentOperand = resolveCurrentOperand(calc);
   const expression = [...calc.expression, currentOperand];
@@ -20,10 +24,14 @@ function evaluateExpression(calc: Draft<CalcState>) {
   calc.currentOperand = result.toString();
   calc.expression = [];
   calc.repeatOperationAffixes = resolveRepeatOperationAffixes(calc, expression);
-  calc.output = formatNumber(result, MAX_DIGITS);
-  calc.isHyperbolic = false;
   calc.lastInput = "=";
+
+  calc.numericMode = determineNumericMode(calc);
+  calc.output = formatResult(result, calc.numericMode);
+
+  calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
+  calc.isHyperbolic = false;
 }
 
 function repeatLastOperation(calc: Draft<CalcState>) {
@@ -31,14 +39,49 @@ function repeatLastOperation(calc: Draft<CalcState>) {
   const expression = [prefix, calc.currentOperand, suffix];
   const result = evaluate(expression);
   calc.currentOperand = result.toString(),
-  calc.output = formatNumber(result, MAX_DIGITS);
-  calc.isHyperbolic = false;
+
+  calc.numericMode = determineNumericMode(calc);
+  calc.output = formatResult(result, calc.numericMode);
+
+  calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
+  calc.isHyperbolic = false;
+}
+
+function updateFractionInputsIfNeeded(calc: Draft<CalcState>): void {
+  if (calc.numericMode === "fraction") {
+    calc.fractionInputs.push(parseInt(calc.currentOperand));    
+  }
+}
+
+function formatResult(result: number, numericMode: NumericModeType): string {
+  if (numericMode === "decimal") {
+    return formatNumber(result, MAX_DIGITS)
+  }
+
+  if (numericMode === "fraction") {
+    return Fraction
+      .fromDecimal(result)
+      .toString();
+  }
+
+  throw new Error("Non-supported numeric mode");
 }
 
 function resolveRepeatOperationAffixes(calc: CalcState, expression: string[])  {
   return calc.repeatOperationAffixes 
     ?? new ExpressionParser(expression).getRepeatOperationAffixes();
+}
+
+function determineNumericMode(calc: CalcState): NumericModeType {
+  
+  if (calc.lastInput === "=" && calc.output.includes(FRACTION_BAR)) {
+    return "fraction";
+  }
+  
+  return calc.fractionInputs.length === 0
+    ? "decimal"
+    : calc.numericMode;
 }
 
 export default evaluateExpression;

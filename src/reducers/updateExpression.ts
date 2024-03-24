@@ -1,9 +1,11 @@
 import type { Draft, PayloadAction } from "@reduxjs/toolkit";
-import type { CalcState, OperatorType, UpdateExpressionPayload } from "../types";
+import type { CalcState, NumericModeType, OperatorType, UpdateExpressionPayload } from "../types";
 
 import ExpressionParser from "../classes/ExpressionParser";
+import Fraction from "../classes/Fraction";
 import evaluate from "../utils/evaluate";
 import formatNumber from "../utils/formatNumber";
+import isOperator from "../utils/isOperator";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
 import { MAX_DIGITS } from "../constants";
 
@@ -11,18 +13,42 @@ function updateExpression(calc: Draft<CalcState>, action: PayloadAction<UpdateEx
   const { operator } = action.payload;
   if (operator === calc.lastInput) return;
   
-  const currentOperand = resolveCurrentOperand(calc);
+  updateFractionInputsIfNeeded(calc);
 
-  const expression = calc.currentOperand !== ""
-    ? [...calc.expression, currentOperand]
-    : calc.expression.slice(0, -1);
+  const currentOperand = resolveCurrentOperand(calc);
+  const expression = resolveExpression(currentOperand, calc);
 
   calc.expression = [...expression, operator];
-  calc.currentOperand = "";
-  calc.output = buildOutputForNewOperator(currentOperand, expression, operator);
+  calc.currentOperand = "0";
   calc.lastOperand = currentOperand;
   calc.lastInput = operator;
+  calc.output = resolveOutput(currentOperand, expression, operator, calc.numericMode);
+  calc.numericMode = "decimal";
+  calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
+}
+
+function updateFractionInputsIfNeeded(calc: CalcState) : void {
+  if (calc.numericMode === "fraction" && calc.fractionInputs.length > 0) {
+    calc.fractionInputs.push(parseInt(calc.currentOperand));    
+  }
+}
+
+function resolveExpression(currentOperand: string, calc: CalcState): string[] {
+  return isOperator(calc.lastInput)
+    ? calc.expression.slice(0, -1)
+    : [...calc.expression, currentOperand];
+}
+
+function resolveOutput(
+  currentOperand: string, 
+  expression: string[], 
+  operator: OperatorType,
+  numericMode: NumericModeType
+): string {
+  return numericMode === "fraction" 
+    ? Fraction.fromDecimal(parseFloat(currentOperand)).toString()
+    : buildOutputForNewOperator(currentOperand, expression, operator);
 }
 
 function buildOutputForNewOperator(

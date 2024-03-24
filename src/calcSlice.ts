@@ -10,6 +10,7 @@ import decimalToSexagesimal from "./reducers/decimalToSexagesimal";
 import evaluateExpression from "./reducers/evaluateExpression";
 import executeFunction from "./reducers/executeFunction"
 import expOrPi from "./reducers/expOrPi";
+import fraction from "./reducers/fraction";
 import inputSexagesimal from "./reducers/inputSexagesimal";
 import invertNumber from "./reducers/invertNumber";
 import percent from "./reducers/percent";
@@ -20,13 +21,15 @@ import updateCurrentOperand from "./reducers/updateCurrentOperand";
 import updateExpression from "./reducers/updateExpression";
 
 export const initialState: CalcState = {
+  numericMode: "decimal",
   isShiftEnabled: false,
   isHyperbolic: false,
   angleMode: "deg",
   currentOperand: "0",
-  sexagesimalInputs: [],
   expression: [],
   output: "0",
+  fractionInputs: [],
+  sexagesimalInputs: [],
   voltageLevel: 1.0,
 };
 
@@ -42,6 +45,7 @@ export const calcSlice = createSlice({
     evaluateExpression,
     executeFunction,
     expOrPi,
+    fraction,
     inputSexagesimal,
     invertNumber,
     percent,
