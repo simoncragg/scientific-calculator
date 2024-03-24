@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 
 import App from "../src/components/App";
-import { assertOutputIsEqualTo, pressButton, pressButtons } from "./test-utils";
+import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
