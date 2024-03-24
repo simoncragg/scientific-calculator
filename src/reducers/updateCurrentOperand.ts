@@ -6,23 +6,17 @@ import { MAX_DIGITS } from "../constants";
 
 function updateCurrentOperand(calc: CalcState, action: PayloadAction<UpdateCurrentOperandPayload>) {
   const { input } = action.payload;
-  if (isMaxLength(calc)) return;
-  if (input === "." && calc.currentOperand.includes(".")) return;
 
-  if (calc.lastInput === "sex") {
-    calc.currentOperand = "0";
-  }
+  if (shouldAbort(input, calc)) return;
 
-  calc.currentOperand = isFirstDigit(input, calc) 
-    ? input
-    : `${calc.currentOperand}${input}`;
-
-  calc.output = calc.numericMode === "decimal"
-    ? calc.currentOperand
-    : `${calc.output}${input}`;
-
+  calc.currentOperand = resolveOperand(input, calc);
+  calc.output = resolveOutput(input, calc);
   calc.lastInput = input;
   calc.isHyperbolic = false;
+}
+
+function shouldAbort(input: string, calc: CalcState) {
+  return isMaxLength(calc) || (input === "." && calc.currentOperand.includes("."));
 }
 
 function isMaxLength(calc: CalcState): boolean {
@@ -41,6 +35,24 @@ function isMaxLength(calc: CalcState): boolean {
   }
 
   return false;
+}
+
+function resolveOperand(input: string, calc: CalcState): string {
+  if (isFirstDigit(input, calc) || lastInputWasSexagesimal(calc)) {
+    return input;
+  }
+ 
+  return `${calc.currentOperand}${input}`;
+}
+
+function lastInputWasSexagesimal(calc: CalcState): boolean {
+  return calc.lastInput === "sex";
+}
+
+function resolveOutput(input: string, calc: CalcState): string {
+  return calc.numericMode === "decimal"
+    ? calc.currentOperand
+    : `${calc.output}${input}`;
 }
 
 function isFirstDigit(input: string, calc: CalcState) {
