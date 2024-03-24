@@ -1,10 +1,10 @@
-import type { Draft, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import type { CalcState, UpdateCurrentOperandPayload } from "../types";
 
 import getDigitCount from "../utils/getDigitCount";
 import { MAX_DIGITS } from "../constants";
 
-function updateCurrentOperand(calc: Draft<CalcState>, action: PayloadAction<UpdateCurrentOperandPayload>) {
+function updateCurrentOperand(calc: CalcState, action: PayloadAction<UpdateCurrentOperandPayload>) {
   const { input } = action.payload;
   if (isMaxLength(calc)) return;
   if (input === "." && calc.currentOperand.includes(".")) return;

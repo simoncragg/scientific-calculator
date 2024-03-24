@@ -1,4 +1,4 @@
-import type { Draft, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import type { CalcState, ExecuteFunctionPayload, FunctionType, OperandAffixes } from "../types";
 
 import ExpressionBuilder from "../classes/ExpressionBuilder";
@@ -10,7 +10,7 @@ import { convertFromRadians } from "../utils/convertFromRadians";
 import { isArc, isAreaHyperbolic, isTrigonometric } from "../utils/isTrigonometric";
 import { MAX_DIGITS } from "../constants";
 
-function executeFunction(calc: Draft<CalcState>, action: PayloadAction<ExecuteFunctionPayload>) {
+function executeFunction(calc: CalcState, action: PayloadAction<ExecuteFunctionPayload>) {
   const { func } = action.payload;
   const expression = ExpressionBuilder.build(func, calc.currentOperand, calc.angleMode);
   let result = evaluate([expression]);

@@ -1,7 +1,6 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
-function invertNumber(calc: Draft<CalcState>) {
+function invertNumber(calc: CalcState) {
   if (calc.lastInput === "=" && calc.output === "Error") return;
   
   calc.currentOperand = invert(calc.currentOperand);

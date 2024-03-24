@@ -1,11 +1,10 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
 import isOperator from "../utils/isOperator";
 import formatNumber from "../utils/formatNumber";
 import { MAX_DIGITS } from "../constants";
 
-function expOrPi(calc: Draft<CalcState>) {
+function expOrPi(calc: CalcState) {
   if (calc.currentOperand === "0" || isOperator(calc.lastInput)) {
     const pi = Math.PI;
     calc.currentOperand = pi.toString();

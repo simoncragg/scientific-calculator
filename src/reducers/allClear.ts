@@ -1,7 +1,6 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
-function allClear(calc: Draft<CalcState>) {
+function allClear(calc: CalcState) {
   calc.numericMode = "decimal";
   calc.angleMode = calc.angleMode;
   calc.expression = [];

@@ -1,4 +1,3 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState, NumericModeType } from "../types";
 
 import ExpressionParser from "../classes/ExpressionParser";
@@ -8,7 +7,7 @@ import formatNumber from "../utils/formatNumber";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
 import { FRACTION_BAR, MAX_DIGITS } from "../constants";
 
-function evaluateExpression(calc: Draft<CalcState>) {
+function evaluateExpression(calc: CalcState) {
   
   if (calc.lastInput === "=") {
     repeatLastOperation(calc);
@@ -34,7 +33,7 @@ function evaluateExpression(calc: Draft<CalcState>) {
   calc.isHyperbolic = false;
 }
 
-function repeatLastOperation(calc: Draft<CalcState>) {
+function repeatLastOperation(calc: CalcState) {
   const { prefix, suffix } = calc.repeatOperationAffixes!;
   const expression = [prefix, calc.currentOperand, suffix];
   const result = evaluate(expression);
@@ -48,7 +47,7 @@ function repeatLastOperation(calc: Draft<CalcState>) {
   calc.isHyperbolic = false;
 }
 
-function updateFractionInputsIfNeeded(calc: Draft<CalcState>): void {
+function updateFractionInputsIfNeeded(calc: CalcState): void {
   if (calc.numericMode === "fraction") {
     calc.fractionInputs.push(parseInt(calc.currentOperand));    
   }

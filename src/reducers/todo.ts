@@ -1,7 +1,6 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
-function todo(calc: Draft<CalcState>) {
+function todo(calc: CalcState) {
   calc.output = "- TODO -";
 }
 

@@ -1,11 +1,10 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
 import Fraction from "../classes/Fraction";
 import formatNumber from "../utils/formatNumber";
 import { FRACTION_BAR, MAX_DIGITS } from "../constants";
 
-function fraction(calc: Draft<CalcState>) {
+function fraction(calc: CalcState) {
     
   if (shouldConvertToDecimal(calc)) {
     calc.output = formatNumber(parseFloat(calc.currentOperand), MAX_DIGITS);

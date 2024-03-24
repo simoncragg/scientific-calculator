@@ -1,4 +1,4 @@
-import type { Draft, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import type { CalcState, NumericModeType, OperatorType, UpdateExpressionPayload } from "../types";
 
 import ExpressionParser from "../classes/ExpressionParser";
@@ -9,7 +9,7 @@ import isOperator from "../utils/isOperator";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
 import { MAX_DIGITS } from "../constants";
 
-function updateExpression(calc: Draft<CalcState>, action: PayloadAction<UpdateExpressionPayload>) {
+function updateExpression(calc: CalcState, action: PayloadAction<UpdateExpressionPayload>) {
   const { operator } = action.payload;
   if (operator === calc.lastInput) return;
   
@@ -59,6 +59,7 @@ function buildOutputForNewOperator(
 
   const parser = new ExpressionParser(expression);
   const expressionToEvaluate = parser.getExpressionToEvaluate(newOperator);
+
   if (expressionToEvaluate) {
     const evaluation = evaluate(expressionToEvaluate);
     return formatNumber(evaluation, MAX_DIGITS);

@@ -1,4 +1,3 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
 import ExpressionParser from "../classes/ExpressionParser";
@@ -6,7 +5,7 @@ import evaluate from "../utils/evaluate";
 import formatNumber from "../utils/formatNumber";
 import { MAX_DIGITS } from "../constants";
 
-function percent(calc: Draft<CalcState>) {
+function percent(calc: CalcState) {
   if (calc.lastInput === "=" && calc.output === "Error") return;
 
   const expression = [

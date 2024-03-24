@@ -1,7 +1,6 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
-function toggleHyperbolic(calc: Draft<CalcState>) {
+function toggleHyperbolic(calc: CalcState) {
   calc.isHyperbolic = !calc.isHyperbolic;
 }
 

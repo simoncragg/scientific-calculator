@@ -1,7 +1,6 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
-function decimalToSexagesimal(calc: Draft<CalcState>) {
+function decimalToSexagesimal(calc: CalcState) {
   const decimal = parseFloat(calc.currentOperand);
   const isNegative = decimal < 0;
   const absoluateDecimal = Math.abs(decimal);

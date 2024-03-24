@@ -1,10 +1,9 @@
-import type { Draft } from "@reduxjs/toolkit";
 import type { CalcState } from "../types";
 
 import formatNumber from "../utils/formatNumber";
 import { MAX_DIGITS } from "../constants";
 
-function inputSexagesimal(calc: Draft<CalcState>) {
+function inputSexagesimal(calc: CalcState) {
   const input = parseFloat(calc.currentOperand || calc.output);
   const isNegative = calc.sexagesimalInputs[0] < 0;
   calc.sexagesimalInputs.push(input);
