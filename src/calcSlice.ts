@@ -15,6 +15,7 @@ import inputSexagesimal from "./reducers/inputSexagesimal";
 import invertNumber from "./reducers/invertNumber";
 import percent from "./reducers/percent";
 import todo from "./reducers/todo";
+import toggleFraction from "./reducers/toggleFraction";
 import toggleHyperbolic from "./reducers/toggleHyperbolic";
 import toggleShift from "./reducers/toggleShift";
 import updateCurrentOperand from "./reducers/updateCurrentOperand";
@@ -50,6 +51,7 @@ export const calcSlice = createSlice({
     invertNumber,
     percent,
     todo,
+    toggleFraction,
     toggleHyperbolic,
     toggleShift,
     updateCurrentOperand,

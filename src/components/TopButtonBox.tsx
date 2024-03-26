@@ -17,6 +17,7 @@ const {
   inputSexagesimal,
   invertNumber,
   todo,
+  toggleFraction,
   toggleHyperbolic,
   toggleShift,
 } = useCalcActions();
@@ -41,7 +42,12 @@ const TopButtonBox: React.FC = () => {
   };
 
   const handleFractionButtonClick = () => {
-    dispatch(fractionMode());
+    if (!isShiftEnabled) {
+      dispatch(fractionMode());
+    } else {
+      dispatch(toggleFraction());
+      dispatch(toggleShift());
+    }
   };
 
   const handleSexagesimalButtonClick = () => {
@@ -123,7 +129,7 @@ const TopButtonBox: React.FC = () => {
       {/* Row 2 */}
 
       <Button 
-        ariaLabel="fraction mode"
+        ariaLabel={!isShiftEnabled ? "fraction mode" : "toggle fraction"}
         className="fn" 
         onClick={handleFractionButtonClick}
         buttonLabel={<><span className="relative ml-0.5 -top-0.5">d</span>/c</>}

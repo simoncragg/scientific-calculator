@@ -33,16 +33,20 @@ class Fraction {
     return this.sign * this.numerator / this.denominator;
   }
 
-  toString(): string {
-    if (this.denominator !== 1 && this.numerator > this.denominator) {
+  format(useMixed: boolean = true): string {
+    const strSign = this.sign < 0 ? "-" : "";
+    if (
+      useMixed && 
+      this.denominator > 1 && 
+      this.numerator > this.denominator
+    ) {
       const quotient = Math.floor(this.numerator / this.denominator);
       const remainder = this.numerator % this.denominator;
       const strSign = quotient < 0 ? "-" : "";
       return `${strSign}${quotient}${FRACTION_BAR}${remainder}${FRACTION_BAR}${this.denominator}`;
+    } else {
+      return `${strSign}${this.numerator}${FRACTION_BAR}${this.denominator}`
     }
-
-    const strSign = this.sign < 0 ? "-" : "";
-    return `${strSign}${this.numerator}${FRACTION_BAR}${this.denominator}`
   }
 }
 

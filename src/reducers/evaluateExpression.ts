@@ -49,7 +49,7 @@ function repeatLastOperation(calc: CalcState) {
 
 function updateFractionInputsIfNeeded(calc: CalcState): void {
   if (calc.numericMode === "fraction") {
-    calc.fractionInputs.push(parseInt(calc.currentOperand));    
+    calc.fractionInputs.push(parseInt(calc.currentOperand));
   }
 }
 
@@ -61,7 +61,7 @@ function formatResult(result: number, numericMode: NumericModeType): string {
   if (numericMode === "fraction") {
     return Fraction
       .fromDecimal(result)
-      .toString();
+      .format();
   }
 
   throw new Error("Non-supported numeric mode");

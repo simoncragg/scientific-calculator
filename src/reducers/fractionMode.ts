@@ -16,7 +16,7 @@ function fraction(calc: CalcState) {
   if (shouldConvertToFraction(calc)) {
     calc.output = Fraction
       .fromDecimal(parseFloat(calc.currentOperand))
-      .toString();
+      .format();
     calc.numericMode = "fraction";
     calc.lastInput = "dec-to-frac";
     return;

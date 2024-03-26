@@ -47,7 +47,7 @@ function resolveOutput(
   numericMode: NumericModeType
 ): string {
   return numericMode === "fraction" 
-    ? Fraction.fromDecimal(parseFloat(currentOperand)).toString()
+    ? Fraction.fromDecimal(parseFloat(currentOperand)).format()
     : buildOutputForNewOperator(currentOperand, expression, operator);
 }
 
