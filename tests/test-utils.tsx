@@ -45,7 +45,7 @@ export const mapToAriaLabel = (input: string): string => {
   switch (input) {
     case "SHIFT": return "shift";
     case "DRG▸": return "angle mode";
-    case "FRAC": return "fraction";
+    case "FRAC": return "fraction mode";
     case "HYP": return "hyperbolic";
     case "PI": return "exponent or pi constant";
     case "SEX": return "sexagesimal to decimal";

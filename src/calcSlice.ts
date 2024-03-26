@@ -10,7 +10,7 @@ import decimalToSexagesimal from "./reducers/decimalToSexagesimal";
 import evaluateExpression from "./reducers/evaluateExpression";
 import executeFunction from "./reducers/executeFunction"
 import expOrPi from "./reducers/expOrPi";
-import fraction from "./reducers/fraction";
+import fractionMode from "./reducers/fractionMode";
 import inputSexagesimal from "./reducers/inputSexagesimal";
 import invertNumber from "./reducers/invertNumber";
 import percent from "./reducers/percent";
@@ -45,7 +45,7 @@ export const calcSlice = createSlice({
     evaluateExpression,
     executeFunction,
     expOrPi,
-    fraction,
+    fractionMode,
     inputSexagesimal,
     invertNumber,
     percent,

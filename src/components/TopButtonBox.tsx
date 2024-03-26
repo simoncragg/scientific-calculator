@@ -13,7 +13,7 @@ const {
   cycleDrgMode,
   decimalToSexagesimal,
   executeFunction,
-  fraction,
+  fractionMode,
   inputSexagesimal,
   invertNumber,
   todo,
@@ -41,7 +41,7 @@ const TopButtonBox: React.FC = () => {
   };
 
   const handleFractionButtonClick = () => {
-    dispatch(fraction());
+    dispatch(fractionMode());
   };
 
   const handleSexagesimalButtonClick = () => {
@@ -123,7 +123,7 @@ const TopButtonBox: React.FC = () => {
       {/* Row 2 */}
 
       <Button 
-        ariaLabel="fraction"
+        ariaLabel="fraction mode"
         className="fn" 
         onClick={handleFractionButtonClick}
         buttonLabel={<><span className="relative ml-0.5 -top-0.5">d</span>/c</>}
