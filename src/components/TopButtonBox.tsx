@@ -39,13 +39,19 @@ const TopButtonBox: React.FC = () => {
   };
   
   const handleUtilityButtonClick = (primaryAction: ActionCreatorWithoutPayload, secondaryAction: ActionCreatorWithoutPayload) => {
-    const action = isShiftEnabled ? secondaryAction : primaryAction;
-    dispatch(action());
+    const action = (isShiftEnabled ? secondaryAction : primaryAction)();
+    dispatch(action);
     toggleShiftIfNeeded();
   };
 
   const handleTrigonometricButtonClick = (trigFunc: FunctionType) => {
     dispatch(executeFunction({ func: trigFunc }));
+    toggleShiftIfNeeded();
+  };
+
+  const handleInvertButtonClick = () => {
+    const action = isShiftEnabled ? executeFunction({ func: "cbrt"}) : invertNumber();
+    dispatch(action)
     toggleShiftIfNeeded();
   };
 
@@ -178,8 +184,9 @@ const TopButtonBox: React.FC = () => {
       {/* Row 3 */}
 
       <Button 
+        ariaLabel={!isShiftEnabled ? "invert" : "cube root"}
         className="fn" 
-        onClick={() => dispatch(invertNumber())}
+        onClick={handleInvertButtonClick}
         buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
       >
         +/-

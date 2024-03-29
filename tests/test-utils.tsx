@@ -50,6 +50,8 @@ export const mapToAriaLabel = (input: string): string => {
     case "PI": return "exponent or pi constant";
     case "SEX": return "sexagesimal to decimal";
     case "⇽": return "decimal to sexagesimal";
+    case "+/-": return "invert";
+    case "cbrt": return "cube root"
     case "+": return "plus";
     case "-": return "minus";
     case "×": return "multiply";

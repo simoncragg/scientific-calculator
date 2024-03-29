@@ -1,6 +1,6 @@
 export type OperatorType = "+" | "-" | "*" | "/";
 export type AngleUnit = "deg" | "rad" | "grad";
-export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | TrigFunctionType;
+export type FunctionType = "square" | "sqrt" | "log10" | "powerOfTen" | "log" | "exp" | "cbrt" | TrigFunctionType;
 export type TrigFunctionType = "sin" | "cos" | "tan" | "asin" | "acos" | "atan" | "sinh" | "cosh" | "tanh" | "asinh" | "acosh" | "atanh";
 export type NumericModeType = "decimal" | "fraction";
 
