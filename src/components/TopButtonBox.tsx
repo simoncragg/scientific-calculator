@@ -1,10 +1,10 @@
+import type { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { MathJax } from "better-react-mathjax";
 import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
 
 import type { FunctionType } from "../types";
 import type { TrigFunction } from "../classes/TrigFunctionConfig";
-
 import Button from "./Button";
 import TrigFunctionConfig from "../classes/TrigFunctionConfig";
 
@@ -32,35 +32,24 @@ const TopButtonBox: React.FC = () => {
   const [cos, setCos] = useState<TrigFunction>({ func: "cos", aria: "cosine"});
   const [tan, setTan] = useState<TrigFunction>({ func: "tan", aria: "tangent"});
   
-  const handleFunctionButtonClick = (primary: FunctionType, secondary: FunctionType) => {
-    if (!isShiftEnabled) {
-      dispatch(executeFunction({ func: primary}));
-    } else {
-      dispatch(executeFunction({ func: secondary})); 
-      dispatch(toggleShift());
-    }
+  const handleMathFunctionButtonClick = (primaryFunc: FunctionType, secondaryFunc: FunctionType) => {
+    const func = isShiftEnabled ? secondaryFunc : primaryFunc;
+    dispatch(executeFunction({ func }));
+    toggleShiftIfNeeded();
+  };
+  
+  const handleUtilityButtonClick = (primaryAction: ActionCreatorWithoutPayload, secondaryAction: ActionCreatorWithoutPayload) => {
+    const action = isShiftEnabled ? secondaryAction : primaryAction;
+    dispatch(action());
+    toggleShiftIfNeeded();
   };
 
-  const handleFractionButtonClick = () => {
-    if (!isShiftEnabled) {
-      dispatch(fractionMode());
-    } else {
-      dispatch(toggleFraction());
-      dispatch(toggleShift());
-    }
+  const handleTrigonometricButtonClick = (trigFunc: FunctionType) => {
+    dispatch(executeFunction({ func: trigFunc }));
+    toggleShiftIfNeeded();
   };
 
-  const handleSexagesimalButtonClick = () => {
-    if (!isShiftEnabled) {
-      dispatch(inputSexagesimal());
-    } else {
-      dispatch(decimalToSexagesimal());
-      dispatch(toggleShift());
-    }
-  };
-
-  const handleTrigFunctionButtonClick = (trigFunc: FunctionType) => {
-    dispatch(executeFunction({ func: trigFunc}));
+  const toggleShiftIfNeeded = () => {
     if (isShiftEnabled) {
       dispatch(toggleShift());
     }
@@ -90,7 +79,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "square root" : "square"} 
         className="fn" 
-        onClick={() => handleFunctionButtonClick("sqrt", "square")}
+        onClick={() => handleMathFunctionButtonClick("sqrt", "square")}
         buttonLabel={<MathJax>{"`x^2`"}</MathJax>}
       >
         <MathJax className="scale-75">{"`root()(x)`"}</MathJax>
@@ -99,7 +88,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "log" : "power of ten"}
         className="fn"
-        onClick={() => handleFunctionButtonClick("log10", "powerOfTen")}
+        onClick={() => handleMathFunctionButtonClick("log10", "powerOfTen")}
         buttonLabel={<MathJax>{"`10^x`"}</MathJax>}
       >
         log
@@ -108,7 +97,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "natural log" : "exp x" }
         className="fn" 
-        onClick={() => handleFunctionButtonClick("log", "exp")}
+        onClick={() => handleMathFunctionButtonClick("log", "exp")}
         buttonLabel={<MathJax>{"`e^x`"}</MathJax>}
       >
         ln
@@ -131,7 +120,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "fraction mode" : "toggle fraction"}
         className="fn" 
-        onClick={handleFractionButtonClick}
+        onClick={() => handleUtilityButtonClick(fractionMode, toggleFraction)}
         buttonLabel={<><span className="relative ml-0.5 -top-0.5">d</span>/c</>}
       >
         <MathJax>
@@ -143,7 +132,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "sexagesimal to decimal" : "decimal to sexagesimal"}
         className="fn" 
-        onClick={handleSexagesimalButtonClick}
+        onClick={() => handleUtilityButtonClick(inputSexagesimal, decimalToSexagesimal)}
         buttonLabel={<MathJax>{"`leftarrow`"}</MathJax>}
       >
         <span className="text-lg ml-0.5 mt-1">°</span>
@@ -162,7 +151,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={sin.aria}
         className="fn" 
-        onClick={() => handleTrigFunctionButtonClick(sin.func)}
+        onClick={() => handleTrigonometricButtonClick(sin.func)}
         buttonLabel={<MathJax>{"`sin^-1`"}</MathJax>}
       >
         sin
@@ -171,7 +160,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={cos.aria}
         className="fn" 
-        onClick={() => handleTrigFunctionButtonClick(cos.func)}
+        onClick={() => handleTrigonometricButtonClick(cos.func)}
         buttonLabel={<MathJax>{"`cos^-1`"}</MathJax>}
         >
         cos
@@ -180,7 +169,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={tan.aria}
         className="fn" 
-        onClick={() => handleTrigFunctionButtonClick(tan.func)}
+        onClick={() => handleTrigonometricButtonClick(tan.func)}
         buttonLabel={<MathJax>{"`tan^-1`"}</MathJax>}
       >
         tan
