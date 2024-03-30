@@ -15,7 +15,7 @@ const {
   executeFunction,
   fractionMode,
   inputSexagesimal,
-  invertNumber,
+  invertSign,
   todo,
   toggleFraction,
   toggleHyperbolic,
@@ -49,8 +49,8 @@ const TopButtonBox: React.FC = () => {
     toggleShiftIfNeeded();
   };
 
-  const handleInvertButtonClick = () => {
-    const action = isShiftEnabled ? executeFunction({ func: "cbrt"}) : invertNumber();
+  const handleInvertSignButtonClick = () => {
+    const action = isShiftEnabled ? executeFunction({ func: "cbrt"}) : invertSign();
     dispatch(action)
     toggleShiftIfNeeded();
   };
@@ -184,9 +184,9 @@ const TopButtonBox: React.FC = () => {
       {/* Row 3 */}
 
       <Button 
-        ariaLabel={!isShiftEnabled ? "invert" : "cube root"}
+        ariaLabel={!isShiftEnabled ? "invert sign" : "cube root"}
         className="fn" 
-        onClick={handleInvertButtonClick}
+        onClick={handleInvertSignButtonClick}
         buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
       >
         +/-

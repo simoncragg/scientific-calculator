@@ -1,6 +1,6 @@
 import type { CalcState } from "../types";
 
-function invertNumber(calc: CalcState) {
+function invertSign(calc: CalcState) {
   if (calc.lastInput === "=" && calc.output === "Error") return;
   
   calc.currentOperand = invert(calc.currentOperand);
@@ -15,4 +15,4 @@ function invert(strNumber: string): string {
     : `-${strNumber}`;
 }
 
-export default invertNumber;
+export default invertSign;

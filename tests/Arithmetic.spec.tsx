@@ -90,7 +90,7 @@ describe("Arithmetic", () => {
       expected: "-15"
     },
     {inputs: ["1", "÷", "0", "=", "+/-"], expected: "Error"},
-  ])("inverts a number when the invert function button is pressed: $inputs 🡢 $expected", ({inputs, expected}) => {
+  ])("inverts the sign of a number when the 'invert sign' function button is pressed: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });

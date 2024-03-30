@@ -12,7 +12,7 @@ import executeFunction from "./reducers/executeFunction"
 import expOrPi from "./reducers/expOrPi";
 import fractionMode from "./reducers/fractionMode";
 import inputSexagesimal from "./reducers/inputSexagesimal";
-import invertNumber from "./reducers/invertNumber";
+import invertSign from "./reducers/invertSign";
 import percent from "./reducers/percent";
 import todo from "./reducers/todo";
 import toggleFraction from "./reducers/toggleFraction";
@@ -48,7 +48,7 @@ export const calcSlice = createSlice({
     expOrPi,
     fractionMode,
     inputSexagesimal,
-    invertNumber,
+    invertSign,
     percent,
     todo,
     toggleFraction,
