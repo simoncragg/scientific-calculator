@@ -10,6 +10,7 @@ import TrigFunctionConfig from "../classes/TrigFunctionConfig";
 
 const {
   adjustVoltage,
+  backspace,
   cycleDrgMode,
   decimalToSexagesimal,
   executeFunction,
@@ -195,7 +196,7 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "backspace" : "cube"}
         className="fn" 
-        onClick={() => handleUtilityButtonClickWithSecondFunc(todo, "cube")}
+        onClick={() => handleUtilityButtonClickWithSecondFunc(backspace, "cube")}
         buttonLabel={<MathJax>{"`x^3`"}</MathJax>}
       >
         ►

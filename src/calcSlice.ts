@@ -4,6 +4,7 @@ import type { CalcState } from "./types";
 
 import adjustVoltage from "./reducers/adjustVoltage";
 import allClear from "./reducers/allClear";
+import backspace from "./reducers/backspace";
 import clear from "./reducers/clear";
 import cycleDrgMode from "./reducers/cycleDrgMode";
 import decimalToSexagesimal from "./reducers/decimalToSexagesimal";
@@ -40,6 +41,7 @@ export const calcSlice = createSlice({
   reducers: {
     adjustVoltage,
     allClear,
+    backspace,
     clear,
     cycleDrgMode,
     decimalToSexagesimal,

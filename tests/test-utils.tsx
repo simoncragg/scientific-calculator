@@ -44,6 +44,7 @@ export const pressButton = (input: string) => {
 export const mapToAriaLabel = (input: string): string => {
   switch (input) {
     case "SHIFT": return "shift";
+    case "BACK": return "backspace";
     case "DRG▸": return "angle mode";
     case "FRAC": return "fraction mode";
     case "HYP": return "hyperbolic";
