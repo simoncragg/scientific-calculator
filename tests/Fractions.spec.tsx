@@ -163,6 +163,7 @@ describe("Fraction calculations", () => {
 
   it.each([
     { inputs: ["3", FRAC, "1", FRAC, "4", "SHIFT", "toggle fraction"], expected: "13⨼4" },
+    { inputs: ["3", FRAC, "1", FRAC, "4", "=", "SHIFT", "toggle fraction"], expected: "13⨼4" },
     { inputs: ["13", FRAC, "4", "SHIFT", "toggle fraction"], expected: "3⨼1⨼4" },
     { inputs: ["3", FRAC, "1", FRAC, "4", "SHIFT", "toggle fraction", "SHIFT", "toggle fraction"], expected: "3⨼1⨼4" },
     { inputs: ["13", FRAC, "4", "SHIFT", "toggle fraction", "SHIFT", "toggle fraction"], expected: "13⨼4" },

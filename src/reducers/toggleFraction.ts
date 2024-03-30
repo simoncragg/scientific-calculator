@@ -5,19 +5,33 @@ import type { CalcState } from "../types";
 function toggleFraction(calc: CalcState) {
 
   updateFractionInputsIfNeeded(calc);
-  if (calc.fractionInputs.length < 2) return;
 
-  const fraction = Fraction.fromNumberArray(calc.fractionInputs);
+  const fraction = resolveFraction(calc);
   const decimal = fraction.toDecimal();  
   const useMixed = decimal >= 1 && !isMixedFraction(calc.output);
   calc.output = fraction.format(useMixed);
 }
 
+function resolveFraction(calc: CalcState) {
+  return calc.fractionInputs.length > 1
+    ? Fraction.fromNumberArray(calc.fractionInputs)
+    : Fraction.fromDecimal(parseFloat(calc.currentOperand));
+}
+
 function updateFractionInputsIfNeeded(calc: CalcState): void {
-  if (calc.numericMode === "fraction" && calc.fractionInputs.length < 3 && calc.currentOperand !== "0") {
+  if (shouldUpdateFractionInputs(calc)) {
     calc.fractionInputs.push(parseInt(calc.currentOperand));    
     calc.currentOperand = "0";
   }
+}
+
+function shouldUpdateFractionInputs(calc: CalcState) {
+  return (
+    calc.lastInput !== "=" &&
+    calc.numericMode === "fraction" && 
+    calc.fractionInputs.length < 3 && 
+    calc.currentOperand !== "0"
+  );
 }
 
 function isMixedFraction(str: string) {
