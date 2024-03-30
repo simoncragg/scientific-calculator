@@ -3,10 +3,8 @@ import React from "react";
 import { screen } from "@testing-library/react";
 
 import App from "../src/components/App";
+import { FRAC, SHIFT, pressButtons, renderWithProviders } from "./test-utils";
 import { initialState } from "../src/calcSlice";
-import { pressButtons, renderWithProviders } from "./test-utils";
-
-const FRAC = "FRAC";
 
 describe("Fraction calculations", () => {
 
@@ -162,11 +160,11 @@ describe("Fraction calculations", () => {
   });
 
   it.each([
-    { inputs: ["3", FRAC, "1", FRAC, "4", "SHIFT", "toggle fraction"], expected: "13⨼4" },
-    { inputs: ["3", FRAC, "1", FRAC, "4", "=", "SHIFT", "toggle fraction"], expected: "13⨼4" },
-    { inputs: ["13", FRAC, "4", "SHIFT", "toggle fraction"], expected: "3⨼1⨼4" },
-    { inputs: ["3", FRAC, "1", FRAC, "4", "SHIFT", "toggle fraction", "SHIFT", "toggle fraction"], expected: "3⨼1⨼4" },
-    { inputs: ["13", FRAC, "4", "SHIFT", "toggle fraction", "SHIFT", "toggle fraction"], expected: "13⨼4" },
+    { inputs: ["3", FRAC, "1", FRAC, "4", SHIFT, "toggle fraction"], expected: "13⨼4" },
+    { inputs: ["3", FRAC, "1", FRAC, "4", "=", SHIFT, "toggle fraction"], expected: "13⨼4" },
+    { inputs: ["13", FRAC, "4", SHIFT, "toggle fraction"], expected: "3⨼1⨼4" },
+    { inputs: ["3", FRAC, "1", FRAC, "4", SHIFT, "toggle fraction", SHIFT, "toggle fraction"], expected: "3⨼1⨼4" },
+    { inputs: ["13", FRAC, "4", SHIFT, "toggle fraction", SHIFT, "toggle fraction"], expected: "13⨼4" },
   ])("can toggle between mixed and improper fraction formats: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     expect(screen.getByTestId("output")).toHaveTextContent(expected);

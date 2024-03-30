@@ -3,7 +3,7 @@ import React from "react";
 import { screen } from "@testing-library/react";
 
 import App from "../src/components/App";
-import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
+import { SHIFT, assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
@@ -26,7 +26,7 @@ describe("Exponential notation", () => {
       expectedExponent: 19,
     },
     {
-      inputs: ["9999999999", "SHIFT", "square", "=", "=", "=", "="], 
+      inputs: ["9999999999", SHIFT, "square", "=", "=", "=", "="], 
       expectedCoefficient: 9.999999984,
       expectedBase: 10,
       expectedExponent: 159,

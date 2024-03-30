@@ -4,7 +4,7 @@ import { screen } from "@testing-library/react";
 import { ANGLE_MODES } from "../src/constants";
 
 import App from "../src/components/App";
-import { assertElementIsHidden, pressButton, pressButtons } from "./test-utils";
+import { SHIFT, assertElementIsHidden, pressButton, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
@@ -32,35 +32,35 @@ describe("Display indicators", () => {
   });
 
   it.each([
-    {inputs: ["SHIFT"]},
-    {inputs: ["5", "+", "10", "SHIFT"]},
+    {inputs: [SHIFT]},
+    {inputs: ["5", "+", "10", SHIFT]},
   ])("displays the shift indicator when shift key is pressed", ({inputs}) => {
     pressButtons(inputs);
     assertShiftIndicatorIsDisplayed();
   });
 
   it.each([
-    {inputs: ["SHIFT", "SHIFT"]},
-    {inputs: ["5", "+", "SHIFT", "10", "SHIFT"]},
+    {inputs: [SHIFT, SHIFT]},
+    {inputs: ["5", "+", SHIFT, "10", SHIFT]},
   ])("toggles the shift indicator off", ({inputs}) => {
     pressButtons(inputs);
     assertShiftIndicatorIsNotDisplayed();
   });
 
   it.each([
-    {inputs: ["5", "+", "10", "SHIFT", "%"]},
+    {inputs: ["5", "+", "10", SHIFT, "%"]},
   ])("hides the shift indicator when a function is selected", ({inputs}) => {
     pressButtons(inputs);
     assertShiftIndicatorIsNotDisplayed();
   });
 
   it("hides the shift indicator when the 'All Clear' button is pressed", () => {
-    pressButtons(["SHIFT", "AC"]);
+    pressButtons([SHIFT, "AC"]);
     assertShiftIndicatorIsNotDisplayed();
   });
 
   it("hides the shift indicator when the 'Clear' button is pressed", () => {
-    pressButtons(["SHIFT", "C"]);
+    pressButtons([SHIFT, "C"]);
     assertShiftIndicatorIsNotDisplayed();
   });
 
@@ -99,7 +99,7 @@ describe("Display indicators", () => {
   });
 
   it.each([
-    {inputs: ["HYP", "SHIFT"]},
+    {inputs: ["HYP", SHIFT]},
   ])("does not hide the hyperbolic indicator when the SHIFT key is pressed", ({inputs}) => {
     pressButtons(inputs);
     assertHyperbolicIndicatorIsDisplayed();
@@ -108,8 +108,8 @@ describe("Display indicators", () => {
   it.each([
     {inputs: ["HYP", "5"]},
     {inputs: ["5", "+", "HYP", "1"]},
-    {inputs: ["5", "+", "10", "HYP", "SHIFT", "%"]},
-    {inputs: ["5", "HYP", "SHIFT", "square"]},
+    {inputs: ["5", "+", "10", "HYP", SHIFT, "%"]},
+    {inputs: ["5", "HYP", SHIFT, "square"]},
   ])("hides the hyperbolic indicator when a non-related button is pressed", ({inputs}) => {
     pressButtons(inputs);
     assertHyperbolicIndicatorIsNotDisplayed();

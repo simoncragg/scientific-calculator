@@ -4,6 +4,7 @@ import React from "react";
 import App from "../../src/components/App";
 
 import { 
+  SHIFT,
   assertOutputIsEqualTo, 
   pressButtons, 
   renderWithProviders
@@ -25,7 +26,7 @@ describe("Sine operations", () => {
   it.each([
     {inputs: ["45", "sin"], expected: "0.707106781"},
     {inputs: ["45", "sin", "="], expected: "0.707106781"},
-    {inputs: ["45", "sin", "SHIFT", "square"], expected: "0.5"},
+    {inputs: ["45", "sin", SHIFT, "square"], expected: "0.5"},
   ])("can perform a sine operation in DEG mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
@@ -34,7 +35,7 @@ describe("Sine operations", () => {
   it.each([
     {inputs: ["DRG▸", "45", "sin"], expected: "0.850903525"},
     {inputs: ["DRG▸", "45", "sin", "="], expected: "0.850903525"},
-    {inputs: ["DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.724036808"},
+    {inputs: ["DRG▸", "45", "sin", SHIFT, "square"], expected: "0.724036808"},
   ])("can perform a sine operation in RAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
@@ -43,7 +44,7 @@ describe("Sine operations", () => {
   it.each([
     {inputs: ["DRG▸", "DRG▸", "45", "sin"], expected: "0.649448048"},
     {inputs: ["DRG▸", "DRG▸", "45", "sin", "="], expected: "0.649448048"},
-    {inputs: ["DRG▸", "DRG▸", "45", "sin", "SHIFT", "square"], expected: "0.421782767"},
+    {inputs: ["DRG▸", "DRG▸", "45", "sin", SHIFT, "square"], expected: "0.421782767"},
   ])("can perform a sine operation in GRAD mode: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);

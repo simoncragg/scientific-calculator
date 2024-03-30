@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 
 import App from "../src/components/App";
-import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
+import { SHIFT, assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
@@ -60,7 +60,7 @@ describe("Input", () => {
   });
 
   it.each([
-    {inputs: ["2", "SHIFT", "square", "1", "2", "3"], expected: "123"},
+    {inputs: ["2", SHIFT, "square", "1", "2", "3"], expected: "123"},
     {inputs: ["144", "square root", "7", "7", "7"], expected: "777"},
   ])("replaces current operand after function with new digit", ({inputs, expected}) => {
     pressButtons(inputs);

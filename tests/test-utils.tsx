@@ -4,6 +4,14 @@ import { RenderOptions, fireEvent, render, screen } from "@testing-library/react
 
 import { setupStore, AppStore, RootState } from "../src/store";
 
+export const BACK = "BACK";
+export const DRG = "DRG▸";
+export const FRAC = "FRAC";
+export const HYP = "HYP";
+export const PI = "PI";
+export const SEX = "SEX";
+export const SHIFT = "SHIFT";
+
 interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
   preloadedState?: Partial<RootState>;
   store?: AppStore;
@@ -43,13 +51,13 @@ export const pressButton = (input: string) => {
 
 export const mapToAriaLabel = (input: string): string => {
   switch (input) {
-    case "SHIFT": return "shift";
-    case "BACK": return "backspace";
-    case "DRG▸": return "angle mode";
-    case "FRAC": return "fraction mode";
-    case "HYP": return "hyperbolic";
-    case "PI": return "exponent or pi constant";
-    case "SEX": return "sexagesimal to decimal";
+    case SHIFT: return "shift";
+    case BACK: return "backspace";
+    case DRG: return "angle mode";
+    case FRAC: return "fraction mode";
+    case HYP: return "hyperbolic";
+    case PI: return "exponent or pi constant";
+    case SEX: return "sexagesimal to decimal";
     case "⇽": return "decimal to sexagesimal";
     case "+/-": return "invert sign";
     case "cbrt": return "cube root"

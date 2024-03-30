@@ -2,16 +2,11 @@ import "@testing-library/jest-dom";
 import React from "react";
 
 import App from "../src/components/App";
-import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
+import { BACK, FRAC, SEX, SHIFT, assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
-const SHIFT = "SHIFT";
-const BACK = "BACK";
-const FRAC = "FRAC";
-const SEX = "SEX";
-
-describe(BACK, () => {
+describe("Backspace", () => {
 
   beforeEach(() => {
     renderWithProviders(
