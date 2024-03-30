@@ -6,7 +6,7 @@ import { assertOutputIsEqualTo, pressButtons } from "./test-utils";
 import { initialState } from "../src/calcSlice";
 import { renderWithProviders } from "./test-utils";
 
-describe("Squares and Roots", () => {
+describe("Square and Square Root", () => {
 
   beforeEach(() => {
     renderWithProviders(
