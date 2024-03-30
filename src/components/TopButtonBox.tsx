@@ -49,8 +49,8 @@ const TopButtonBox: React.FC = () => {
     toggleShiftIfNeeded();
   };
 
-  const handleInvertSignButtonClick = () => {
-    const action = isShiftEnabled ? executeFunction({ func: "cbrt"}) : invertSign();
+  const handleUtilityButtonClickWithSecondFunc = (primaryAction: ActionCreatorWithoutPayload, secondFunc: FunctionType) => {
+    const action = isShiftEnabled ? executeFunction({ func: secondFunc}) : primaryAction();
     dispatch(action)
     toggleShiftIfNeeded();
   };
@@ -186,15 +186,16 @@ const TopButtonBox: React.FC = () => {
       <Button 
         ariaLabel={!isShiftEnabled ? "invert sign" : "cube root"}
         className="fn" 
-        onClick={handleInvertSignButtonClick}
+        onClick={() => handleUtilityButtonClickWithSecondFunc(invertSign, "cbrt")}
         buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
       >
         +/-
       </Button>
       
       <Button 
+        ariaLabel={!isShiftEnabled ? "backspace" : "cube"}
         className="fn" 
-        onClick={() => dispatch(todo())}
+        onClick={() => handleUtilityButtonClickWithSecondFunc(todo, "cube")}
         buttonLabel={<MathJax>{"`x^3`"}</MathJax>}
       >
         ►

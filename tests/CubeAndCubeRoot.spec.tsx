@@ -18,6 +18,16 @@ describe("Cube and Cube Root", () => {
   });
 
   it.each([
+    {inputs: ["0.2", "SHIFT", "cube"], expected: "0.008"},
+    {inputs: ["2", "SHIFT", "cube"], expected: "8"},
+    {inputs: ["20", "SHIFT", "cube"], expected: "8000"},
+    {inputs: ["100", "+", "2", "SHIFT", "cube", "="], expected: "108"},
+  ])("performs cube calculations: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    assertOutputIsEqualTo(expected);
+  });
+
+  it.each([
     {inputs: ["8", "SHIFT", "cube root"], expected: "2"},
     {inputs: ["64", "SHIFT", "cube root"], expected: "4"},
     {inputs: ["216", "SHIFT", "cube root"], expected: "6"},
@@ -31,6 +41,8 @@ describe("Cube and Cube Root", () => {
   });
 
   it.each([
+    {inputs: ["2", "SHIFT", "cube", "=", "=", "="], expected: "134217728"},
+    {inputs: ["1", "+", "4", "SHIFT", "cube", "=", "=", "="], expected: "193"},
     {inputs: ["1000000000", "SHIFT", "cube root", "=", "=", "="], expected: "2.15443469"},
     {inputs: ["1", "+", "1000000000", "SHIFT", "cube root", "=", "=", "="], expected: "3001"},
   ])(
