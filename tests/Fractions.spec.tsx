@@ -46,8 +46,16 @@ describe("Fraction calculations", () => {
     { inputs: ["1", FRAC, "+/-", "2"], expected: "-1⨼2" },
     { inputs: ["1", FRAC, "2", "+/-"], expected: "-1⨼2" },
     { inputs: ["1", FRAC, "2", FRAC, "3", "+/-"], expected: "-1⨼2⨼3" },
-    
+    { inputs: ["1", "+/-", FRAC, "2", "+/-", FRAC, "3", "+/-"], expected: "-1⨼2⨼3" },
   ])("allows the input of a negative fraction: $inputs 🡢 $expected", ({inputs, expected}) => {
+    pressButtons(inputs);
+    expect(screen.getByTestId("output")).toHaveTextContent(expected);
+  });
+
+  it.each([
+    { inputs: ["1", "+/-", FRAC, "2", "+/-"], expected: "1⨼2" },
+    { inputs: ["1", FRAC, "2", "+/-", FRAC, "3", "+/-"], expected: "1⨼2⨼3" },
+  ])("toggles the sign back to positive when 'invert sign' is used twice: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     expect(screen.getByTestId("output")).toHaveTextContent(expected);
   });
