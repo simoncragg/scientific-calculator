@@ -1,12 +1,13 @@
 import type { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { MathJax } from "better-react-mathjax";
-import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
+import { PiPlusMinus } from "react-icons/pi";
 
 import type { FunctionType } from "../types";
 import type { TrigFunction } from "../classes/TrigFunctionConfig";
 import Button from "./Button";
 import TrigFunctionConfig from "../classes/TrigFunctionConfig";
+import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
 
 const {
   adjustVoltage,
@@ -188,9 +189,9 @@ const TopButtonBox: React.FC = () => {
         ariaLabel={!isShiftEnabled ? "invert sign" : "cube root"}
         className="fn" 
         onClick={() => handleUtilityButtonClickWithSecondFunc(invertSign, "cbrt")}
-        buttonLabel={<MathJax>{"`root(3)(x)`"}</MathJax>}
+        buttonLabel={<MathJax className="scale-75">{"`root(3)(x)`"}</MathJax>}
       >
-        +/-
+        <PiPlusMinus className="text-2xl pt-0.5" />
       </Button>
       
       <Button 
