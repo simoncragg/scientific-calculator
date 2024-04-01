@@ -207,7 +207,11 @@ const TopButtonBox: React.FC = () => {
         onClick={() => dispatch(todo())}
         buttonLabel={<MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>}
       >
-        (
+        <div className="flex font-bold items-center">
+          <span className="text-sm pr-0.5">(</span>
+          <span className="text-xs pr-0.5">(</span>
+          <span className="text-sm">---</span>
+        </div>
       </Button>
 
       <Button 
@@ -215,7 +219,11 @@ const TopButtonBox: React.FC = () => {
         onClick={() => dispatch(todo())}
         buttonLabel={<MathJax>{"`x!`"}</MathJax>}
       >
-        )
+        <div className="flex font-bold items-center">
+          <span className="text-sm">---</span>
+          <span className="text-xs pl-0.5">)</span>
+          <span className="text-sm pl-0.5">)</span>
+        </div>
       </Button>
 
       <Button 
