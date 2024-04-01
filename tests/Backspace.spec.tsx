@@ -25,7 +25,8 @@ describe("Backspace", () => {
     {inputs: ["123.4", BACK], expected: "123."},
     {inputs: ["123.4", BACK, BACK], expected: "123"},
     {inputs: ["123", BACK, BACK, BACK], expected: "0"},
-  ])("backspaces through the current decimal input: $inputs 🡢 $expected", ({inputs, expected}) => {
+    {inputs: ["123", "+/-", BACK, BACK, BACK], expected: "0"},
+  ])("backspaces through a decimal input: $inputs 🡢 $expected", ({inputs, expected}) => {
     pressButtons(inputs);
     assertOutputIsEqualTo(expected);
   });
@@ -41,7 +42,7 @@ describe("Backspace", () => {
     { backspaces: 8, expected: "12"},
     { backspaces: 9, expected: "1"},
     { backspaces: 10, expected: "0"},
-  ])("backspaces through the current fraction input: $inputs 🡢 $expected", ({backspaces, expected}) => {
+  ])("backspaces through a fraction input: $inputs 🡢 $expected", ({backspaces, expected}) => {
     const inputs = [
       "123",
       FRAC,
@@ -54,7 +55,24 @@ describe("Backspace", () => {
     assertOutputIsEqualTo(expected);
   });
 
-  it("does not break fraction input: $inputs 🡢 $expected", () => {
+  it("preserves the negative sign when backspacing through a fraction input", () => {
+    const inputs = [
+      "3", 
+      "+/-", 
+      FRAC, 
+      "1", 
+      "+/-", 
+      FRAC, 
+      "16", 
+      "+/-",
+      ...Array.from({ length: 5 }, () => BACK),
+    ];
+    
+    pressButtons(inputs);
+    assertOutputIsEqualTo("-3");
+  });
+
+  it("does not break fraction input", () => {
     const inputs = [
       "5",  // 5
       FRAC, // 5⨼

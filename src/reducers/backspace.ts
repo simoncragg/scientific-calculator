@@ -4,36 +4,30 @@ import { FRACTION_BAR } from "../constants";
 function backspace(calc: CalcState) {
   if (shouldAbort(calc)) return;
    
-  updateCurrentOperand(
-    calc.currentOperand.substring(0, calc.currentOperand.length - 1), calc
-  );
+  const backspaceFunc = calc.numericMode === "fraction"
+    ? backspaceFraction
+    : backspaceDecimal;
 
-  if (calc.numericMode === "fraction") {
-    backspaceFraction(calc);
-  } else {
-    calc.output = calc.currentOperand !== ""
-      ? calc.currentOperand
-      : "0";
-  }
+  backspaceFunc(calc);
 }
 
 function shouldAbort(calc: CalcState): boolean {
   if (calc.currentOperand === "0" && calc.numericMode === "decimal") return true;
-  if (calc.lastInput === "=") return true;
-  if ("0123456789.frac".includes(calc.lastInput!) === false) return true;
-  return false;
+  return (
+    !"0123456789.".includes(calc.lastInput!) &&
+    !["frac", "+/-"].includes(calc.lastInput!)
+  );
 }
 
-function backspaceFraction(calc: CalcState) {
-  if (isCurrentOperandEmpty(calc)) {
+function backspaceFraction(calc: CalcState): void {
+  backspaceCurrentOperand(calc);
 
-    updateCurrentOperand(
-      calc.fractionInputs[calc.fractionInputs.length - 1].toString(), calc
-    );
-
+  if (isZeroOrEmpty(calc.lastOperand!)) {
+    const currentOperand = getLastElement(calc.fractionInputs).toString();
+    updateCurrentOperand(currentOperand, calc);
     removeLastFractionInput(calc);
 
-    if (fractionInputsIsEmpty(calc)) {
+    if (calc.fractionInputs.length === 0) {
       calc.numericMode = "decimal";
     }
   }
@@ -41,21 +35,38 @@ function backspaceFraction(calc: CalcState) {
   calc.output = [...calc.fractionInputs, calc.currentOperand].join(FRACTION_BAR);
 }
 
-function isCurrentOperandEmpty(calc: CalcState): boolean {
-  return calc.lastOperand === "" || calc.lastOperand === "0";
+function backspaceDecimal(calc: CalcState): void {
+  backspaceCurrentOperand(calc);
+
+  if (calc.currentOperand === "-") {
+    calc.currentOperand = "0";
+  }
+
+  calc.output = calc.currentOperand !== ""
+    ? calc.currentOperand
+    : "0";
 }
 
-function updateCurrentOperand(newValue: string, calc: CalcState) {
+function backspaceCurrentOperand(calc: CalcState): void {
+  const currentOperand = calc.currentOperand.substring(0, calc.currentOperand.length - 1);
+  updateCurrentOperand(currentOperand, calc);
+}
+
+function updateCurrentOperand(newValue: string, calc: CalcState): void {
   calc.lastOperand = calc.currentOperand;
   calc.currentOperand = newValue;
 }
 
-function removeLastFractionInput(calc: CalcState) {
+function removeLastFractionInput(calc: CalcState): void {
   calc.fractionInputs.splice(calc.fractionInputs.length - 1, 1);
 }
 
-function fractionInputsIsEmpty(calc: CalcState): boolean {
-  return calc.fractionInputs.length === 0;
+function isZeroOrEmpty(operand: string): boolean {
+  return operand === "0" || operand === "";
+}
+
+function getLastElement<T>(arr: T[]) {
+  return arr.slice(-1);
 }
 
 export default backspace;
