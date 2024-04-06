@@ -60,7 +60,9 @@ export const mapToAriaLabel = (input: string): string => {
     case SEX: return "sexagesimal to decimal";
     case "⇽": return "decimal to sexagesimal";
     case "+/-": return "invert sign";
-    case "cbrt": return "cube root"
+    case "cbrt": return "cube root";
+    case "(": return "open bracket";
+    case ")": return "close bracket";
     case "+": return "plus";
     case "-": return "minus";
     case "×": return "multiply";

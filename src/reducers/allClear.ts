@@ -14,6 +14,7 @@ function allClear(calc: CalcState) {
   calc.isHyperbolic = false;
   calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
+  calc.isBracketOpen = false;
 };
 
 export default allClear;

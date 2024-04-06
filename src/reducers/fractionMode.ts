@@ -4,7 +4,7 @@ import Fraction from "../classes/Fraction";
 import formatNumber from "../utils/formatNumber";
 import { FRACTION_BAR, MAX_DIGITS } from "../constants";
 
-function fraction(calc: CalcState) {
+function fractionMode(calc: CalcState) {
     
   if (shouldConvertToDecimal(calc)) {
     calc.output = formatNumber(parseFloat(calc.currentOperand), MAX_DIGITS);
@@ -53,4 +53,4 @@ function shouldAbort(calc: CalcState): boolean {
     calc.fractionInputs.length === 2;
 }
 
-export default fraction;
+export default fractionMode;

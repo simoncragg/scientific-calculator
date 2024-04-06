@@ -5,6 +5,7 @@ import Fraction from "../classes/Fraction";
 import evaluate from "../utils/evaluate";
 import formatNumber from "../utils/formatNumber";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
+import updateFractionInputsIfNeeded from "./updateFractionInputsIfNeeded";
 import { FRACTION_BAR, MAX_DIGITS } from "../constants";
 
 function evaluateExpression(calc: CalcState) {
@@ -45,12 +46,6 @@ function repeatLastOperation(calc: CalcState) {
   calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
   calc.isHyperbolic = false;
-}
-
-function updateFractionInputsIfNeeded(calc: CalcState): void {
-  if (calc.numericMode === "fraction") {
-    calc.fractionInputs.push(parseInt(calc.currentOperand));
-  }
 }
 
 function formatResult(result: number, numericMode: NumericModeType): string {

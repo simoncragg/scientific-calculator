@@ -6,6 +6,7 @@ import adjustVoltage from "./reducers/adjustVoltage";
 import allClear from "./reducers/allClear";
 import backspace from "./reducers/backspace";
 import clear from "./reducers/clear";
+import closeBracket from "./reducers/closeBracket";
 import cycleDrgMode from "./reducers/cycleDrgMode";
 import decimalToSexagesimal from "./reducers/decimalToSexagesimal";
 import evaluateExpression from "./reducers/evaluateExpression";
@@ -14,6 +15,7 @@ import expOrPi from "./reducers/expOrPi";
 import fractionMode from "./reducers/fractionMode";
 import inputSexagesimal from "./reducers/inputSexagesimal";
 import invertSign from "./reducers/invertSign";
+import openBracket from "./reducers/openBracket";
 import percent from "./reducers/percent";
 import todo from "./reducers/todo";
 import toggleFraction from "./reducers/toggleFraction";
@@ -32,6 +34,7 @@ export const initialState: CalcState = {
   output: "0",
   fractionInputs: [],
   sexagesimalInputs: [],
+  isBracketOpen: false,
   voltageLevel: 1.0,
 };
 
@@ -43,6 +46,7 @@ export const calcSlice = createSlice({
     allClear,
     backspace,
     clear,
+    closeBracket,
     cycleDrgMode,
     decimalToSexagesimal,
     evaluateExpression,
@@ -51,6 +55,7 @@ export const calcSlice = createSlice({
     fractionMode,
     inputSexagesimal,
     invertSign,
+    openBracket,
     percent,
     todo,
     toggleFraction,

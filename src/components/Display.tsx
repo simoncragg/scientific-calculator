@@ -16,6 +16,7 @@ const Display: React.FC = () => {
   const lastInput = useAppSelector(state => state.calc.lastInput);
   const output = useAppSelector(state => state.calc.output);
   const voltageLevel = useAppSelector(state => state.calc.voltageLevel);
+  const isBracketOpen = useAppSelector(state => state.calc.isBracketOpen);
 
   const [showEqualsIndicator, setShowEqualsIndicator] = useState(false);
   const [isExponential, setIsExponential] = useState(false);
@@ -64,6 +65,16 @@ const Display: React.FC = () => {
           style={{ opacity: voltageLevel }}
         >
             S
+          </span>
+      )}
+
+    {isBracketOpen && (
+        <span 
+          aria-label="bracket indicator"
+          className="absolute top-1 left-2 text-xl text-stone-800"
+          style={{ opacity: voltageLevel }}
+        >
+          (
           </span>
       )}
 

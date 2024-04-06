@@ -8,12 +8,7 @@ import { MAX_DIGITS } from "../constants";
 function percent(calc: CalcState) {
   if (calc.lastInput === "=" && calc.output === "Error") return;
 
-  const expression = [
-    ...calc.expression, 
-    calc.currentOperand, 
-    "%"
-  ];
-
+  const expression = [...calc.expression, calc.currentOperand,  "%"];
   const result = evaluate(expression);
   const formattedResult = formatNumber(result, MAX_DIGITS);
   const parser = new ExpressionParser(expression);

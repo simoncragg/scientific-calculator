@@ -17,6 +17,7 @@ export interface CalcState {
   repeatOperationAffixes?: OperandAffixes;
   lastInput?: string;
   lastOperand?: string;
+  isBracketOpen: boolean;
   voltageLevel: number;
 }
 

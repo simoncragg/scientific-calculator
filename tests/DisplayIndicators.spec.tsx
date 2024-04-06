@@ -136,6 +136,17 @@ describe("Display indicators", () => {
     assertElementIsHidden("equals-operator");
   });
 
+  it("displays the bracket indicator when the open bracket button is pressed", () => {
+    pressButtons(["("]);
+    const indicatorEl = screen.queryByLabelText("bracket indicator");
+    expect(indicatorEl).toBeInTheDocument();
+  });
+
+  it("hides the bracket indicator when an close bracket button is pressed", () => {
+    pressButtons(["(", ")"]);
+    assertElementIsHidden("bracket indicator");
+  });
+
   const assertShiftIndicatorIsDisplayed = () => {
     const indicatorEl = screen.getByLabelText("shift indicator");
     expect(indicatorEl).toBeInTheDocument();

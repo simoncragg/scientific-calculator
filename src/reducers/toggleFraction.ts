@@ -1,6 +1,8 @@
-import Fraction from "../classes/Fraction";
-import { FRACTION_BAR } from "../constants";
 import type { CalcState } from "../types";
+
+import Fraction from "../classes/Fraction";
+import updateFractionInputsIfNeeded from "./updateFractionInputsIfNeeded";
+import { FRACTION_BAR } from "../constants";
 
 function toggleFraction(calc: CalcState) {
 
@@ -10,28 +12,14 @@ function toggleFraction(calc: CalcState) {
   const decimal = fraction.toDecimal();  
   const useMixed = decimal >= 1 && !isMixedFraction(calc.output);
   calc.output = fraction.format(useMixed);
+  calc.lastInput = "frac";
+  calc.fractionInputs = [];
 }
 
 function resolveFraction(calc: CalcState) {
   return calc.fractionInputs.length > 1
     ? Fraction.fromNumberArray(calc.fractionInputs)
     : Fraction.fromDecimal(parseFloat(calc.currentOperand));
-}
-
-function updateFractionInputsIfNeeded(calc: CalcState): void {
-  if (shouldUpdateFractionInputs(calc)) {
-    calc.fractionInputs.push(parseInt(calc.currentOperand));    
-    calc.currentOperand = "0";
-  }
-}
-
-function shouldUpdateFractionInputs(calc: CalcState) {
-  return (
-    calc.lastInput !== "=" &&
-    calc.numericMode === "fraction" && 
-    calc.fractionInputs.length < 3 && 
-    calc.currentOperand !== "0"
-  );
 }
 
 function isMixedFraction(str: string) {

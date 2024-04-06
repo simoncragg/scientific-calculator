@@ -12,12 +12,14 @@ import { useAppDispatch, useAppSelector, useCalcActions } from "../hooks";
 const {
   adjustVoltage,
   backspace,
+  closeBracket,
   cycleDrgMode,
   decimalToSexagesimal,
   executeFunction,
   fractionMode,
   inputSexagesimal,
   invertSign,
+  openBracket,
   todo,
   toggleFraction,
   toggleHyperbolic,
@@ -204,8 +206,9 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
+        ariaLabel="open bracket"
         className="fn" 
-        onClick={() => dispatch(todo())}
+        onClick={() => dispatch(openBracket())}
         buttonLabel={<MathJax><span className="relative -top-0.5 text-[10px]">1</span>{"/`x`"}</MathJax>}
       >
         <div className="flex font-bold items-center">
@@ -216,8 +219,9 @@ const TopButtonBox: React.FC = () => {
       </Button>
 
       <Button 
+        ariaLabel="close bracket"
         className="fn" 
-        onClick={() => dispatch(todo())}
+        onClick={() => dispatch(closeBracket())}
         buttonLabel={<MathJax>{"`x!`"}</MathJax>}
       >
         <div className="flex font-bold items-center">

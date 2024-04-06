@@ -7,6 +7,7 @@ import evaluate from "../utils/evaluate";
 import formatNumber from "../utils/formatNumber";
 import isOperator from "../utils/isOperator";
 import resolveCurrentOperand from "../utils/resolveCurrentOperand";
+import updateFractionInputsIfNeeded from "./updateFractionInputsIfNeeded";
 import { MAX_DIGITS } from "../constants";
 
 function updateExpression(calc: CalcState, action: PayloadAction<UpdateExpressionPayload>) {
@@ -26,12 +27,6 @@ function updateExpression(calc: CalcState, action: PayloadAction<UpdateExpressio
   calc.numericMode = "decimal";
   calc.fractionInputs = [];
   calc.sexagesimalInputs = [];
-}
-
-function updateFractionInputsIfNeeded(calc: CalcState) : void {
-  if (calc.numericMode === "fraction" && calc.fractionInputs.length > 0) {
-    calc.fractionInputs.push(parseInt(calc.currentOperand));    
-  }
 }
 
 function resolveExpression(currentOperand: string, calc: CalcState): string[] {
